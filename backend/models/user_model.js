@@ -1,5 +1,5 @@
 // Include Sequelize module.
-const { Sequelize, DataTypes, BOOLEAN } = require('sequelize');
+const { DataTypes } = require('sequelize');
 
 // Import sequelize object, 
 // Database connection pool managed by Sequelize.
@@ -19,7 +19,7 @@ const User = database.define('user', {
         type: DataTypes.STRING(20)
     },
     isMale: {
-        type: BOOLEAN
+        type: DataTypes.BOOLEAN
     },
     email: {
         type: DataTypes.STRING,
@@ -38,7 +38,7 @@ const User = database.define('user', {
         allowNull: false
     },
     isAdmin: {
-        type: BOOLEAN,
+        type: DataTypes.BOOLEAN,
         defaultValue: 0
     }
 });
