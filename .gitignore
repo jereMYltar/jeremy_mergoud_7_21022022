@@ -10,4 +10,4 @@
 /backend/app_copy.js
 
 
-/backend/.env
+/backend/config/env.js

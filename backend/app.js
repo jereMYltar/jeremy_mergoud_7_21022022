@@ -1,20 +1,35 @@
-require('dotenv').config();
-const Sequelize = require('sequelize');
-const database = require('./config/database');
-//Import du module de base de Node intitulé express
-const express = require('express');
-
-
-
-database.authenticate()
-    .then(() => console.log('Connected to the database !'))
-    .catch((error) => console.error('Unable to connect to the database:', error));
-
-
+const express = require("express");
 //Création d'une application Express, via la fonction express() du module Express. Celle-ci sera utilisée comme serveur
 const app = express();
 
-//Ajout des middleware
+//JSON
+app.use(express.json());
 
-//Export de l'application Express créée
+//helmet
+const helmet = require("helmet");
+app.use(helmet());
+
+//CORS
+const cors = require("cors");
+app.use(cors());
+
+//rate-limiter
+const rateLimit = require("express-rate-limit");
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: 'Too many request. Try again after 15 minutes'
+});
+app.use(limiter);
+
+//synchronisation à la base de données MySQL
+const database = require('./config/database');
+database.sync({force: true}).then(() => {
+console.log('Drop and Resync with { force: true }');
+});
+
+//Implémentation des routes
+const userRoutes = require('./route/user.route');
+app.use('/api/user', userRoutes);
+
 module.export = app;

@@ -1,9 +1,5 @@
-// Include Sequelize module.
 const { DataTypes } = require('sequelize');
-
-// Import sequelize object, 
-// Database connection pool managed by Sequelize.
-const database = require('../utils/database');
+const database = require('../config/database');
 
 const User = database.define('user', {
     id: {
