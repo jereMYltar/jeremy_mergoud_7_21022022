@@ -5,8 +5,8 @@ exports.findAll = (req, res) => {
     User.findAll()
         .then(users => {
 	        // Send all users to Client
-	        //res.send(users);
-            console.log(1);
+            console.log(users);
+	        res.send(users);
 	    })
         .catch(error => {
             console.log(error);

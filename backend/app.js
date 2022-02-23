@@ -9,11 +9,11 @@ app.use(express.json());
 const helmet = require("helmet");
 app.use(helmet());
 
-//CORS
+// //CORS
 const cors = require("cors");
 app.use(cors());
 
-//rate-limiter
+// //rate-limiter
 const rateLimit = require("express-rate-limit");
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -22,14 +22,9 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-//synchronisation à la base de données MySQL
-const database = require('./config/database');
-database.sync({force: true}).then(() => {
-console.log('Drop and Resync with { force: true }');
-});
-
 //Implémentation des routes
 const userRoutes = require('./route/user.route');
 app.use('/api/user', userRoutes);
 
-module.export = app;
+
+module.exports = app;

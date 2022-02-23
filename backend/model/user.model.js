@@ -37,6 +37,10 @@ const User = database.define('user', {
         type: DataTypes.BOOLEAN,
         defaultValue: 0
     }
+},
+{
+    freezeTableName: true,
+    timestamps: false
 });
 
 module.exports = User;
