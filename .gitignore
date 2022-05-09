@@ -1,13 +1,34 @@
+# Les ressources du projet
 /Ressources/
 
-
+# Les modules de Node
 /backend/node_modules/
-
-
 /frontend/node_modules/
 
-
+# Les reliquats de développement (à nettayer)
 /backend/app_copy.js
 
-
+# Les variables globales de connexion à la BdD
 /backend/config/env.js
+
+# Le répertoire de production
+/dist
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

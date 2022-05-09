@@ -33,9 +33,29 @@ exports.findAll = (req, res) => {
         });
 };
 
-//READ one user
-exports.findOne = (req, res) => {
+//READ one user searched by id
+exports.findOneById = (req, res) => {
     User.findOne({ where: {id: req.params.id}})
+        .then(user => {
+            // Send all users to Client
+	        if (!!user) {
+                res.status(200).json(
+                    user
+                );
+            } else {
+                throw 'La ressource demandée n\'existe pas';
+            };
+        })
+        .catch(error => {
+            res.status(400).json({
+                error: error
+            });
+        });
+};
+
+//READ one user searched by email
+exports.findOneByEmail = (req, res) => {
+    User.findOne({ where: {email: req.body.email}})
         .then(user => {
             // Send all users to Client
 	        if (!!user) {

@@ -8,8 +8,11 @@ router.post('/', users.createOne);
 // Retrieve all User
 router.get('/', users.findAll);
 
-// Retrieve all User
-router.get('/:id', users.findOne);
+// Retrieve one User searched by id
+router.get('/find/:id', users.findOneById);
+
+// Retrieve one User searched by id
+router.get('/findEmail', users.findOneByEmail);
 
 // Update one User
 router.put('/:id', users.updateOne);
