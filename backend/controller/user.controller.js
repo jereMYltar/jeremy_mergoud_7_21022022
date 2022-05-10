@@ -37,7 +37,7 @@ exports.findAll = (req, res) => {
 exports.findOneById = (req, res) => {
     User.findOne({ where: {id: req.params.id}})
         .then(user => {
-            // Send all users to Client
+            // Send user found to Client
 	        if (!!user) {
                 res.status(200).json(
                     user
@@ -57,7 +57,7 @@ exports.findOneById = (req, res) => {
 exports.findOneByEmail = (req, res) => {
     User.findOne({ where: {email: req.body.email}})
         .then(user => {
-            // Send all users to Client
+            // Send user found to Client
 	        if (!!user) {
                 res.status(200).json(
                     user

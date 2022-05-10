@@ -25,6 +25,8 @@ app.use(limiter);
 //Implémentation des routes
 const userRoutes = require('./route/user.route');
 app.use('/api/user', userRoutes);
+const connectionRoutes = require('./route/connection.route');
+app.use('/api/connection', connectionRoutes);
 
 
 module.exports = app;
