@@ -13,7 +13,7 @@ exports.signup = (req, res, next) => {
                     res.status(201).json({
                         message: 'Utilisateur créé avec succès'
                     });
-                    console.log(user);
+                    // console.log(user);
                 })
                 .catch(error => {
                     res.status(400).json({
@@ -34,7 +34,7 @@ exports.login = (req, res, next) => {
                         return res.status(401).json({ error: 'User not found' })
                     }
                 const user = sequelizeInstance.toJSON();
-                console.log(user);
+                // console.log(user);
                 argon2.verify(user.password, req.body.password)
                     .then(
                         (valid) => {

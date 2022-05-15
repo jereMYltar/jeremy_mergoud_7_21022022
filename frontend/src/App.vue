@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <p>Projet 7</p>
+  <div class="container">
+    <h1 class="titre">Together at Work</h1>
+    <ConnectionView></ConnectionView>
   </div>
-  <ConnectionView></ConnectionView>
 </template>
 
 <script>
