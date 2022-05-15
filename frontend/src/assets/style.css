@@ -31,6 +31,11 @@ body {
   color: #202020;
   text-align: left;
 }
+.text {
+  font-family: "Calibri", sans-serif;
+  font-size: 1em;
+  text-align: center;
+}
 .container {
   display: flex;
   flex-direction: column;
@@ -46,18 +51,33 @@ body {
   background-color: #ffd10061;
   border: none;
 }
-.connectionButton {
+.basicButton {
   margin: 20px;
   padding: 10px;
   font-family: "Sonsie One", sans-serif;
   font-size: 1.5em;
   text-align: center;
+  text-decoration: none;
   border: none;
   cursor: pointer;
-  color: #ffee32;
+  color: #ffd100;
   background-color: #333533;
 }
-.connectionButton:hover {
-  color: #ffd100;
+.basicButton:hover {
+  color: #ffee32;
   background-color: #202020;
+}
+.littleButton {
+  margin: 10px 20px;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-size: 1em;
+  text-align: right;
+  text-decoration: underline;
+  border: none;
+  cursor: pointer;
+  color: #333533;
+}
+.littleButton:hover {
+  color: #ffd100;
+  text-decoration: none;
 }

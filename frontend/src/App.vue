@@ -1,13 +1,14 @@
 <template>
   <div class="container">
     <h1 class="titre">Together at Work</h1>
-    <ConnectionView></ConnectionView>
+    <!-- <HomeView></HomeView> -->
+    <router-view />
   </div>
 </template>
 
 <script>
-import ConnectionView from "@/views/ConnectionView.vue";
-export default {
-  components: { ConnectionView },
-};
+// import HomeView from "@/views/HomeView.vue";
+// export default {
+//   components: { HomeView },
+// };
 </script>

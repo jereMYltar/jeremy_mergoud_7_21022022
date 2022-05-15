@@ -1,7 +1,7 @@
 <template>
   <div class="main1 container">
     <h2 class="titre1">Connexion</h2>
-    <form @submit.prevent="connect" class="container" name="connectionForm">
+    <form @submit.prevent="login" class="container" name="connectionForm">
       <div class="question">
         <label for="email" class="titre2">Id de connection</label>
         <input
@@ -24,13 +24,16 @@
           class="textInput"
         />
       </div>
-      <input class="connectionButton" type="submit" value="Se connecter" />
+      <input class="basicButton" type="submit" value="Se connecter" />
+      <router-link :to="{ name: 'HomePage' }" class="littleButton"
+        >Annuler</router-link
+      >
     </form>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import EventService from "@/services/EventService.js";
 
 export default {
   data() {
@@ -42,13 +45,12 @@ export default {
     };
   },
   methods: {
-    connect() {
-      let user = {
+    login() {
+      let userData = {
         email: this.email,
         password: this.password,
       };
-      axios
-        .post("http://localhost:3000/api/connection/login", user)
+      EventService.login(userData)
         .then((response) => {
           sessionStorage.setItem("token", response.data.token);
           console.log(sessionStorage.getItem("token") == response.data.token);
@@ -59,6 +61,17 @@ export default {
         })
         .catch((error) => {
           console.log(error);
+          if (error.response && error.response.status == 404) {
+            this.$router.push({
+              name: "404Resource",
+            });
+          } else if (error.response && error.response.status == 401) {
+            this.$router.push({
+              name: "NotAuthorized",
+            });
+          } else {
+            this.$router.push({ name: "NetworkError" });
+          }
         });
     },
   },
