@@ -8,10 +8,10 @@ const User = database.define('user', {
         allowNull: false,
         primaryKey: true
     },
-    firstname: {
+    firstName: {
         type: DataTypes.STRING(20)
     },
-    lastname: {
+    lastName: {
         type: DataTypes.STRING(20)
     },
     isMale: {
