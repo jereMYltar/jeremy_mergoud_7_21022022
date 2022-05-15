@@ -34,7 +34,7 @@ exports.login = (req, res, next) => {
                         return res.status(401).json({ error: 'User not found' })
                     }
                 const user = sequelizeInstance.toJSON();
-                console.log(user);
+                // console.log(user);
                 argon2.verify(user.password, req.body.password)
                     .then(
                         (valid) => {
@@ -44,7 +44,7 @@ exports.login = (req, res, next) => {
                             res.status(200).json({
                                 userId: user._id,
                                 token: jwt.sign(
-                                    {userId: user._id},
+                                    {userId: user._id + user.email},
                                     env.JWT_SALT,
                                     {expiresIn: '12h'}
                                 )
