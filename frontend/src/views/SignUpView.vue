@@ -20,7 +20,7 @@
           id="lastName"
           type="text"
           maxlength="255"
-          placeholder="Votre nom d'usage"
+          placeholder="Votre nom d\'usage"
           class="textInput"
         />
       </div>
@@ -44,6 +44,7 @@
           maxlength="255"
           placeholder="Votre identifiant de connexion"
           class="textInput"
+          required
         />
       </div>
       <div class="question">
@@ -55,6 +56,7 @@
           maxlength="255"
           placeholder="Votre mot de passe"
           class="textInput"
+          required
         />
       </div>
       <input class="basicButton" type="submit" value="Créer un compte" />
@@ -71,21 +73,19 @@ import EventService from "@/services/EventService.js";
 export default {
   data() {
     return {
-      user: {
-        isMale: 0,
-        firstName: "",
-        lastName: "",
-        pseudo: "",
-        isAdmin: 0,
-        photo: "",
-        email: "",
-        password: "",
-      },
+      isMale: 0,
+      firstName: "",
+      lastName: "",
+      pseudo: "",
+      isAdmin: 0,
+      photo: "",
+      email: "",
+      password: "",
     };
   },
   methods: {
     signUp() {
-      let userData = {
+      let payload = {
         user: {
           isMale: false,
           firstName: this.firstName,
@@ -94,14 +94,18 @@ export default {
           isAdmin: false,
           email: this.email,
           password: this.password,
-          photo: "",
+          photo: null,
         },
       };
-      EventService.signUp(userData)
+      EventService.signUp(payload)
         .then((response) => {
           sessionStorage.setItem("token", response.data.token);
           console.log(sessionStorage.getItem("token") == response.data.token);
-          document.registrationForm.reset();
+          this.firstName = "";
+          this.lastName = "";
+          this.pseudo = "";
+          this.email = "";
+          this.password = "";
         })
         .catch((error) => {
           console.log(error);

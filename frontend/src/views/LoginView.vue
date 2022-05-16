@@ -38,26 +38,24 @@ import EventService from "@/services/EventService.js";
 export default {
   data() {
     return {
-      user: {
-        email: "",
-        password: "",
-      },
+      email: "",
+      password: "",
     };
   },
   methods: {
     login() {
-      let userData = {
+      let payload = {
         email: this.email,
         password: this.password,
       };
-      EventService.login(userData)
+      EventService.login(payload)
         .then((response) => {
           sessionStorage.setItem("token", response.data.token);
           console.log(sessionStorage.getItem("token") == response.data.token);
           // ne fonctionne pas pour effacer le formulaire
-          // this.email = "";
-          // this.password = "";
-          document.connectionForm.reset();
+          this.email = "";
+          this.password = "";
+          // document.connectionForm.reset();
         })
         .catch((error) => {
           console.log(error);
