@@ -16,16 +16,16 @@ exports.createOne = (req, res) => {
         });
 };
 
-//READ all messages from a conversation
-exports.findAll = (req, res) => {
-    const conversation = req.params.id;
+//READ one message from a conversation
+exports.findOne = (req, res) => {
+    const messageId = req.params.id;
     const { QueryTypes } = require('sequelize');
     const database = require('../config/database');
-    database.query(`SELECT CONCAT(user.firstName, ' ', user.lastName) AS 'auteur', message.content AS 'contenu', message.createdAt AS timestamp FROM message JOIN user ON message.user_id=user.id WHERE message.conversation_id=${conversation} ;`, { type: QueryTypes.SELECT })
-    .then(messages => {
+    database.query(`SELECT CONCAT(user.firstName, ' ', user.lastName) AS 'auteur', message.content AS 'contenu', message.createdAt AS firstTimestamp, message.updatedAt AS lastTimestamp FROM message JOIN user ON message.user_id=user.id WHERE message.id=${messageId} ;`, { type: QueryTypes.SELECT })
+    .then(message => {
         // Send all messages from a conversation to Client
         res.status(200).json(
-            messages
+            message
         );
     })
     .catch(error => {

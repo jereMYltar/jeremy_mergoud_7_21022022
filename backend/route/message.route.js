@@ -5,8 +5,8 @@ const messages = require('../controller/message.controller');
 //CREATE one Message
 router.post('/', messages.createOne)
 
-// READ all Messages from a conversation
-router.get('/:id', messages.findAll);
+// READ one Message from a conversation
+router.get('/:id', messages.findOne);
 
 // UPDATE one Message
 router.put('/:id', messages.updateOne);

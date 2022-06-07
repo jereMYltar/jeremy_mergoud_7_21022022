@@ -29,6 +29,8 @@ const connectionRoutes = require('./route/connection.route');
 app.use('/api/connection', connectionRoutes);
 const messageRoutes = require('./route/message.route');
 app.use('/api/message', messageRoutes);
+const conversationRoutes = require('./route/conversation.route');
+app.use('/api/conversation', conversationRoutes);
 
 
 module.exports = app;
