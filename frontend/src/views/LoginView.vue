@@ -52,25 +52,10 @@ export default {
         .then((response) => {
           sessionStorage.setItem("token", response.data.token);
           console.log(sessionStorage.getItem("token") == response.data.token);
-          // ne fonctionne pas pour effacer le formulaire
           this.email = "";
           this.password = "";
-          // document.connectionForm.reset();
         })
-        .catch((error) => {
-          console.log(error);
-          if (error.response && error.response.status == 404) {
-            this.$router.push({
-              name: "404Resource",
-            });
-          } else if (error.response && error.response.status == 401) {
-            this.$router.push({
-              name: "NotAuthorized",
-            });
-          } else {
-            this.$router.push({ name: "NetworkError" });
-          }
-        });
+        .catch();
     },
   },
 };
