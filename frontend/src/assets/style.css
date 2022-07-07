@@ -36,6 +36,14 @@ body {
   font-size: 1em;
   text-align: center;
 }
+.errorMessage {
+  margin: 0px 20px 10px;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-size : 1em;
+  letter-spacing : 0em;
+  color: red;
+  text-align: right;
+}
 .container {
   display: flex;
   flex-direction: column;

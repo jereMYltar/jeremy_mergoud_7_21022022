@@ -19,9 +19,7 @@ exports.createOne = (req, res) => {
 //READ one message from a conversation
 exports.findOne = (req, res) => {
     const messageId = req.params.id;
-    const { QueryTypes } = require('sequelize');
-    const database = require('../config/database');
-    database.query(`SELECT CONCAT(user.firstName, ' ', user.lastName) AS 'auteur', message.content AS 'contenu', message.createdAt AS firstTimestamp, message.updatedAt AS lastTimestamp FROM message JOIN user ON message.user_id=user.id WHERE message.id=${messageId} ;`, { type: QueryTypes.SELECT })
+    Message.findMessage(messageId)
     .then(message => {
         // Send all messages from a conversation to Client
         res.status(200).json(

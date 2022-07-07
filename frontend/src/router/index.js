@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import LoginView from "@/views/LoginView.vue";
+import ConversationView from "@/views/ConversationView.vue";
 import SignUpView from "@/views/SignUpView.vue";
 import NotFound from "@/views/NotFoundView.vue";
 import NetworkError from "@/views/NetworkErrorView.vue";
@@ -23,6 +24,11 @@ const routes = [
     component: SignUpView,
   },
   {
+    path: "/converstion",
+    name: "Conversation",
+    component: ConversationView,
+  },
+  {
     path: "/404/:resource",
     name: "404Resource",
     component: NotFound,
@@ -34,7 +40,7 @@ const routes = [
     component: NetworkError,
   },
   {
-    path: "/unanthorized",
+    path: "/unauthorized",
     name: "NotAuthorized",
     component: NotAuthorized,
   },

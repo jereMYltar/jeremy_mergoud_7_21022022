@@ -1,4 +1,6 @@
-const Message = require('../model/message.model');
+const Conversation = require('../model/conversation.model');
+const jwt = require('jsonwebtoken');
+const env = require('../config/env');
 
 //CREATE one conversation
 // exports.createOne = (req, res) => {
@@ -16,16 +18,32 @@ const Message = require('../model/message.model');
 //         });
 // };
 
-//READ all messages from a conversation
+//READ all messages from ONE conversation
 exports.findOne = (req, res) => {
-    const conversation = req.params.id;
-    const { QueryTypes } = require('sequelize');
-    const database = require('../config/database');
-    database.query(`SELECT CONCAT(user.firstName, ' ', user.lastName) AS 'auteur', message.content AS 'contenu', message.createdAt AS timestamp FROM message JOIN user ON message.user_id=user.id WHERE message.conversation_id=${conversation} ORDER BY Message.createdAt DESC;`, { type: QueryTypes.SELECT })
+    const conversationId = req.params.id;
+    Conversation.findConversation(conversationId)
     .then(messages => {
         // Send all messages from a conversation to Client
         res.status(200).json(
             messages
+        );
+    })
+    .catch(error => {
+        res.status(400).json({
+            error: error
+        });
+    });
+};
+
+//READ ALL conversations in which a user participates
+exports.findAll = (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, `${env.JWT_SALT}`);
+    Conversation.findConversations(decodedToken.userId)
+    .then(conversations => {
+        // Send all messages from a conversation to Client
+        res.status(200).json(
+            conversations
         );
     })
     .catch(error => {

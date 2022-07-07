@@ -11,18 +11,25 @@ const apiUsers = axios.create({
   },
 });
 
+apiUsers.interceptors.request.use(function (config)
+{
+  const token = sessionStorage.getItem('token');
+  config.headers.Authorization = token ? `Bearer ${token}` : 'invalid token';
+  return config;
+});
+
 // Add a response interceptor
 apiUsers.interceptors.response.use(
   (response) => {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
-    console.log('réponse ok, en cours. Statut : ' + response.status);
+    console.log('Ok, réponse serveur : ' + response.status);
     return response;
   },
   (error) => {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-      console.log('erreur interceptée. Statut : ' + error.response.status);
+      console.log('erreur ' + error.response.status);
       if (error.response.status == 401) {
         router.push({
           name: "NotAuthorized",
@@ -38,15 +45,28 @@ apiUsers.interceptors.response.use(
       } else {
         router.push({ name: "NetworkError" });
       }
-    // return Promise.reject(error);
+    return Promise.reject();
   });
 
 export default {
-  login(userData) {
-    return apiUsers.post("/connection/login", userData);
+  login(payload) {
+    return apiUsers.post("/connection/login", payload);
   },
-  signUp(userData) {
-    return apiUsers.post("/connection/signup", userData);
+  signUp(payload) {
+    return apiUsers.post("/connection/signup", payload);
   },
+  getConversations() {
+    // return apiUsers.get("/conversation/", requestHeaders);
+    return apiUsers.get(
+      "/conversation/",
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem('token') ?? 'Invalid token'}`,
+        }
+      }
+    );
+  }
 };
+
+// export default apiUsers
 

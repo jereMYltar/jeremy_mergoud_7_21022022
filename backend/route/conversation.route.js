@@ -8,6 +8,9 @@ const conversations = require('../controller/conversation.controller');
 // READ all Messages from a conversation
 router.get('/:id', conversations.findOne);
 
+//READ all conversations in which a user participates
+router.get('/', conversations.findAll);
+
 // UPDATE one conversation
 // router.put('/:id', conversations.updateOne);
 
