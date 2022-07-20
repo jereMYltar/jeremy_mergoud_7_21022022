@@ -6,7 +6,7 @@ const conversations = require('../controller/conversation.controller');
 // router.post('/', conversations.createOne)
 
 // READ all Messages from a conversation
-router.get('/:id', conversations.findOne);
+router.get('/details/:id', conversations.findOne);
 
 //READ all conversations in which a user participates
 router.get('/', conversations.findAll);

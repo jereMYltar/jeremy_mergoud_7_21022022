@@ -1,11 +1,5 @@
 <template>
   <div class="main1 container">
-    <!-- <ConversationCard
-      v-for="conversation in conversations"
-      :key="conversation.id"
-      :conversation="conversation"
-      @click="showDetails(conversation.id)"
-    /> -->
     <button
       v-for="conversation in conversations"
       :key="conversation.id"
@@ -24,9 +18,6 @@ import EventService from "@/services/EventService.js";
 export default {
   name: "ConversationList",
   emits: ["detailsExpended"],
-  // components: {
-  //   ConversationCard,
-  // },
   data() {
     return {
       conversations: "",
@@ -35,6 +26,8 @@ export default {
   methods: {
     showDetails(id) {
       this.$emit("detailsExpended", id);
+      this.$store.dispatch("setConversationId", id);
+      console.log("store content : ", this.$store.state.conversationId);
     },
   },
   created() {

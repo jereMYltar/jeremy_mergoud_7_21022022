@@ -56,15 +56,10 @@ export default {
     return apiUsers.post("/connection/signup", payload);
   },
   getConversations() {
-    // return apiUsers.get("/conversation/", requestHeaders);
-    return apiUsers.get(
-      "/conversation/",
-      {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem('token') ?? 'Invalid token'}`,
-        }
-      }
-    );
+    return apiUsers.get("/conversation/");
+  },
+  getMessagesFromThisConversation(payload) {
+    return apiUsers.get(`/conversation/details/${payload}`)
   }
 };
 
