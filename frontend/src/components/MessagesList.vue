@@ -32,7 +32,6 @@ export default {
   },
   methods: {
     loadMessage(id) {
-      console.log(id);
       EventService.getMessagesFromThisConversation(id)
         .then((response) => {
           this.messages = response.data;
@@ -40,7 +39,6 @@ export default {
         .catch();
     },
     addMessage(message) {
-      console.log(message);
       this.messages.unshift(message);
     },
   },

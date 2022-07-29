@@ -100,7 +100,6 @@ export default {
       EventService.signUp(payload)
         .then((response) => {
           sessionStorage.setItem("token", response.data.token);
-          console.log(sessionStorage.getItem("token") == response.data.token);
           this.firstName = "";
           this.lastName = "";
           this.pseudo = "";
@@ -108,7 +107,6 @@ export default {
           this.password = "";
         })
         .catch((error) => {
-          console.log(error);
           if (error.response && error.response.status == 404) {
             this.$router.push({
               name: "404Resource",

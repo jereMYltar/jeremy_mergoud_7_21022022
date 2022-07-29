@@ -13,7 +13,6 @@ exports.signup = (req, res, next) => {
                     res.status(201).json({
                         message: 'Utilisateur créé avec succès'
                     });
-                    // console.log(user);
                 })
                 .catch(error => {
                     res.status(400).json({

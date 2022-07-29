@@ -53,7 +53,6 @@ export default {
       };
       EventService.sendMessage(payload)
         .then((data) => {
-          console.log(data);
           this.$emit("messageSend", data.data.message);
           this.message = "";
         })
