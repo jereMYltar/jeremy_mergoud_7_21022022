@@ -13,7 +13,6 @@
 
 <script>
 import EventService from "@/services/EventService.js";
-// import ConversationCard from "./ConversationCard.vue";
 
 export default {
   name: "ConversationList",
@@ -26,8 +25,6 @@ export default {
   methods: {
     showDetails(id) {
       this.$emit("detailsExpended", id);
-      this.$store.dispatch("setConversationId", id);
-      console.log("store content : ", this.$store.state.conversationId);
     },
   },
   created() {

@@ -1,13 +1,22 @@
 const Message = require('../model/message.model');
+const jwt = require('jsonwebtoken');
+const env = require('../config/env');
 
-//CREATE one user
+//CREATE one message and return the registered message
 exports.createOne = (req, res) => {
     const message = req.body.message;
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, `${env.JWT_SALT}`);
+    message.user_id = decodedToken.userId;
     Message.create(message)
         .then(() => {
-            res.status(201).json({
-                message: 'Message créé avec succès'
-            });
+            Message.findLatest()
+                .then((newMessage) => {
+                    res.status(201).json({
+                        message: newMessage[0]
+                    });
+                })
+                .catch();
         })
         .catch(error => {
             res.status(400).json({

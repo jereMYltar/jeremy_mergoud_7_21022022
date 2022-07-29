@@ -24,6 +24,13 @@ import { Form, Field, ErrorMessage } from "vee-validate";
 
 export default {
   name: "MessageEntry",
+  props: {
+    id: {
+      type: Number,
+      default: 0,
+      required: false,
+    },
+  },
   data() {
     return {
       message: "",
@@ -34,15 +41,21 @@ export default {
     Field,
     ErrorMessage,
   },
+  emits: ["messageSend"],
   methods: {
     sendMessage() {
       let payload = {
-        message: this.message,
+        message: {
+          conversation_id: this.id,
+          user_id: 0,
+          content: this.message,
+        },
       };
       EventService.sendMessage(payload)
-        .then(() => {
-          this.email = "";
-          this.password = "";
+        .then((data) => {
+          console.log(data);
+          this.$emit("messageSend", data.data.message);
+          this.message = "";
         })
         .catch();
     },

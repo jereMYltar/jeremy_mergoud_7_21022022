@@ -60,7 +60,10 @@ export default {
   },
   getMessagesFromThisConversation(payload) {
     return apiUsers.get(`/conversation/details/${payload}`)
-  }
+  },
+  sendMessage(payload) {
+    return apiUsers.post("/message/", payload);
+  },
 };
 
 // export default apiUsers
