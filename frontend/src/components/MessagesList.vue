@@ -1,7 +1,6 @@
 <template>
   <div class="main1 container">
     <div v-for="message in messages" :key="message.id">
-      <div>//// {{ message.id }}</div>
       <div>{{ message.auteur }}</div>
       <div>{{ message.contenu }}</div>
       <div>{{ message.timestamp }}</div>
