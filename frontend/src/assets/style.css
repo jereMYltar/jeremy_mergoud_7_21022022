@@ -33,8 +33,8 @@ body {
 }
 .text {
   font-family: "Calibri", sans-serif;
-  font-size: 1em;
-  text-align: center;
+  font-size: 1.5em;
+  text-align: left;
 }
 .errorMessage {
   margin: 0px 20px 10px;
@@ -75,6 +75,23 @@ body {
   color: #ffee32;
   background-color: #202020;
 }
+.mediumButton {
+  margin: 10px 20px;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-size: 1.5em;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  width: 50%;
+  cursor: pointer;
+  color: #202020;
+  background-color: #ffee32;
+}
+.mediumButton:hover {
+  color: #ffd100;
+  background-color: #333533;
+  text-decoration: none;
+}
 .littleButton {
   margin: 10px 20px;
   font-family: "M PLUS Rounded 1c", sans-serif;
@@ -87,5 +104,6 @@ body {
 }
 .littleButton:hover {
   color: #ffd100;
+  background-color: #333533;
   text-decoration: none;
 }

@@ -10,10 +10,10 @@ exports.createOne = (req, res) => {
     message.user_id = decodedToken.userId;
     Message.create(message)
         .then(() => {
-            Message.findLatest()
-                .then((newMessage) => {
+            Message.findLatestByConversationId(message.conversation_id)
+                .then((lastMessage) => {
                     res.status(201).json({
-                        message: newMessage[0]
+                        new_message: lastMessage[0]
                     });
                 })
                 .catch();

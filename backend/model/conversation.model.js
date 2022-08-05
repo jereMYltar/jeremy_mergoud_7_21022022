@@ -26,7 +26,7 @@ module.exports = Conversation;
 
 //Renvoie les message d'une conversation
 module.exports.findConversation = function (id) {
-    return database.query(`SELECT message.id AS id, CONCAT(user.firstName, ' ', user.lastName) AS 'auteur', message.content AS 'contenu', message.createdAt AS timestamp FROM message JOIN user ON message.user_id=user.id WHERE message.conversation_id=${id} ORDER BY Message.createdAt DESC;`, { type: QueryTypes.SELECT });
+    return database.query(`SELECT message.id AS id, CONCAT(user.firstName, ' ', user.lastName) AS 'auteur', message.content AS 'contenu', message.createdAt AS timestamp, message.updatedAt AS lastUpdate FROM message JOIN user ON message.user_id=user.id WHERE message.conversation_id=${id} ORDER BY Message.createdAt DESC;`, { type: QueryTypes.SELECT });
 };
 
 //changer findConversationsForUser
