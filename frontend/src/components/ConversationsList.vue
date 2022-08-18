@@ -8,15 +8,25 @@
     >
       <h4>{{ conversation.name }}</h4>
     </button>
+    <button @click="isOpen = true">Show modal</button>
+    <Modal :open="isOpen" @close="isOpen = !isOpen">
+      <p>lorem ipsum dolor</p>
+    </Modal>
   </div>
 </template>
 
 <script>
 import EventService from "@/services/EventService.js";
-
+import Modal from "@/components/ModalComponent.vue";
+import { ref } from "vue";
 export default {
   name: "ConversationList",
   emits: ["detailsExpended"],
+  components: { Modal },
+  setup() {
+    const isOpen = ref(false);
+    return { isOpen };
+  },
   data() {
     return {
       conversations: "",
