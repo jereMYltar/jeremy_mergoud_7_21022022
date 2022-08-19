@@ -1,52 +1,73 @@
+/* eslint-disable */
 <template>
-  <transition name="fade">
-    <div class="vue-modal" @click.self="$emit('close')" v-show="open">
-      <transition name="drop-in">
-        <div class="vue-modal-inner" v-show="open">
-          <div class="vue-modal-content">
-            <button
-              type="button"
-              aria-label="Fermer"
-              title="Fermer cette fenêtre modale"
-              data-dismiss="dialog"
-              @click="$emit('close')"
-            >
-              X
-            </button>
-            <slot />
-            <button type="button" @click="$emit('close')">Close</button>
-          </div>
-        </div>
-      </transition>
+  <!-- <transition name="fade"> -->
+  <div class="vue-modal" @click.self="$emit('close')" v-show="open">
+    <!-- <transition name="drop-in"> -->
+    <div class="vue-modal-inner" v-show="open">
+      <div class="vue-modal-content">
+        <button
+          type="button"
+          ref="closeButton"
+          aria-label="Fermer"
+          title="Fermer cette fenêtre modale"
+          @click="$emit('close')"
+        >
+          X
+        </button>
+        <slot />
+        <button type="button" @click="$emit('close')">Annuler</button>
+      </div>
     </div>
-  </transition>
+    <!-- </transition> -->
+  </div>
+  <!-- </transition> -->
 </template>
 
 <script>
-import { onMounted, onUnmounted } from "vue";
+import { onMounted, onUnmounted, watch, ref } from "vue";
 export default {
   props: {
     open: {
       type: Boolean,
       required: true,
+      default: false,
     },
   },
-  setup(_, { emit }) {
+  setup(props, ctx) {
+    const closeButton = ref(null);
     const close = () => {
-      emit("close");
+      ctx.emit("close");
     };
 
     const handleKeyup = (event) => {
       if (event.keyCode === 27) {
-        close();
+        if (props.open) {
+          close();
+        }
       }
     };
 
-    onMounted(() => document.addEventListener("keyup", handleKeyup));
+    watch(
+      () => props.open,
+      (isOpen) => {
+        console.log(isOpen);
+        if (isOpen) {
+          setTimeout(() => {
+            console.log(closeButton);
+            closeButton.value?.focus();
+          }, 2000);
+        }
+      }
+    );
+
+    onMounted(() => {
+      document.addEventListener("keyup", handleKeyup);
+    });
     onUnmounted(() => document.removeEventListener("keyup", handleKeyup));
 
     return { close };
   },
+  // methods: {},
 };
 </script>
 
@@ -67,7 +88,7 @@ export default {
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.6);
   z-index: 1;
 }
 

@@ -9,7 +9,7 @@
       <h4>{{ conversation.name }}</h4>
     </button>
     <button @click="isOpen = true">Show modal</button>
-    <Modal :open="isOpen" @close="isOpen = !isOpen">
+    <Modal :open="isOpen" @close="isOpen = false">
       <p>lorem ipsum dolor</p>
     </Modal>
   </div>
