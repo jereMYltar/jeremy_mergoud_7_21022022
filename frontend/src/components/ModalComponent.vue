@@ -50,11 +50,17 @@ export default {
     //     }
     //   }
     // };
-    const handleKeyDown = (event) => {
+    const handleKeyUp = (event) => {
       switch (true) {
         case event.keyCode === 27 && props.open:
           close();
           break;
+        default:
+          break;
+      }
+    };
+    const handleKeyDown = (event) => {
+      switch (true) {
         case !event.shiftKey &&
           event.keyCode === 9 &&
           props.open &&
@@ -85,8 +91,14 @@ export default {
       }
     );
 
-    onMounted(() => document.addEventListener("keydown", handleKeyDown));
-    onUnmounted(() => document.removeEventListener("keydown", handleKeyDown));
+    onMounted(() => {
+      document.addEventListener("keydown", handleKeyDown);
+      document.addEventListener("keyup", handleKeyUp);
+    });
+    onUnmounted(() => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keyup", handleKeyUp);
+    });
 
     return { close, firstButton, lastButton };
   },
