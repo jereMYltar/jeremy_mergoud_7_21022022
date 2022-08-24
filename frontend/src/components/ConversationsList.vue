@@ -8,9 +8,19 @@
     >
       <h4>{{ conversation.name }}</h4>
     </button>
-    <button @click="isOpen = true">Show modal</button>
-    <Modal :open="isOpen" @close="isOpen = false">
+    <button @click="isOpen = true" ref="modalButton">Show modal</button>
+    <Modal :open="isOpen" @close="closeModal">
       <p>lorem ipsum dolor</p>
+      <form>
+        <div>
+          <label for="input1">Mon libellé 1 : </label>
+          <input type="text" id="input1" />
+        </div>
+        <div>
+          <label for="input2">Mon libellé 2 : </label>
+          <input type="text" id="input2" />
+        </div>
+      </form>
     </Modal>
   </div>
 </template>
@@ -25,7 +35,16 @@ export default {
   components: { Modal },
   setup() {
     const isOpen = ref(false);
-    return { isOpen };
+    const modalButton = ref();
+
+    function closeModal() {
+      isOpen.value = false;
+      setTimeout(() => {
+        modalButton.value.focus();
+      }, 50);
+    }
+
+    return { isOpen, modalButton, closeModal };
   },
   data() {
     return {

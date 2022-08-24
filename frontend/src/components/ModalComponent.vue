@@ -1,26 +1,28 @@
 /* eslint-disable */
 <template>
-  <!-- <transition name="fade"> -->
-  <div class="vue-modal" @click.self="$emit('close')" v-show="open">
-    <!-- <transition name="drop-in"> -->
-    <div class="vue-modal-inner" v-show="open">
-      <div class="vue-modal-content">
-        <button
-          type="button"
-          ref="closeButton"
-          aria-label="Fermer"
-          title="Fermer cette fenêtre modale"
-          @click="$emit('close')"
-        >
-          X
-        </button>
-        <slot />
-        <button type="button" @click="$emit('close')">Annuler</button>
-      </div>
+  <transition name="fade">
+    <div class="vue-modal" @click.self="$emit('close')" v-show="open">
+      <transition name="drop-in">
+        <div class="vue-modal-inner" v-show="open">
+          <div class="vue-modal-content">
+            <button
+              type="button"
+              ref="firstButton"
+              aria-label="Fermer"
+              title="Fermer cette fenêtre modale"
+              @click="$emit('close')"
+            >
+              X
+            </button>
+            <slot />
+            <button type="button" ref="lastButton" @click="$emit('close')">
+              Annuler
+            </button>
+          </div>
+        </div>
+      </transition>
     </div>
-    <!-- </transition> -->
-  </div>
-  <!-- </transition> -->
+  </transition>
 </template>
 
 <script>
@@ -34,40 +36,60 @@ export default {
     },
   },
   setup(props, ctx) {
-    const closeButton = ref(null);
+    const firstButton = ref(null);
+    const lastButton = ref(null);
+
     const close = () => {
       ctx.emit("close");
     };
 
-    const handleKeyup = (event) => {
-      if (event.keyCode === 27) {
-        if (props.open) {
+    // const handleKeydown = (event) => {
+    //   if (event.keyCode === 27) {
+    //     if (props.open) {
+    //       close();
+    //     }
+    //   }
+    // };
+    const handleKeydown = (event) => {
+      switch (true) {
+        case event.keyCode === 27 && props.open:
           close();
-        }
+          break;
+        case !event.shiftKey &&
+          event.keyCode === 9 &&
+          props.open &&
+          lastButton.value === document.activeElement:
+          event.preventDefault();
+          firstButton.value.focus();
+          break;
+        case event.shiftKey &&
+          event.keyCode === 9 &&
+          props.open &&
+          firstButton.value === document.activeElement:
+          event.preventDefault();
+          lastButton.value.focus();
+          break;
+        default:
+          break;
       }
     };
 
     watch(
       () => props.open,
       (isOpen) => {
-        console.log(isOpen);
         if (isOpen) {
           setTimeout(() => {
-            console.log(closeButton);
-            closeButton.value?.focus();
-          }, 2000);
+            firstButton.value.focus();
+          }, 50);
         }
       }
     );
 
-    onMounted(() => {
-      document.addEventListener("keyup", handleKeyup);
-    });
-    onUnmounted(() => document.removeEventListener("keyup", handleKeyup));
+    onMounted(() => document.addEventListener("keydown", handleKeydown));
+    onUnmounted(() => document.removeEventListener("keydown", handleKeydown));
 
-    return { close };
+    return { close, firstButton, lastButton };
   },
-  // methods: {},
 };
 </script>
 
