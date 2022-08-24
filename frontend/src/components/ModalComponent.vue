@@ -43,14 +43,14 @@ export default {
       ctx.emit("close");
     };
 
-    // const handleKeydown = (event) => {
+    // const handleKeyUp = (event) => {
     //   if (event.keyCode === 27) {
     //     if (props.open) {
     //       close();
     //     }
     //   }
     // };
-    const handleKeydown = (event) => {
+    const handleKeyDown = (event) => {
       switch (true) {
         case event.keyCode === 27 && props.open:
           close();
@@ -85,8 +85,8 @@ export default {
       }
     );
 
-    onMounted(() => document.addEventListener("keydown", handleKeydown));
-    onUnmounted(() => document.removeEventListener("keydown", handleKeydown));
+    onMounted(() => document.addEventListener("keydown", handleKeyDown));
+    onUnmounted(() => document.removeEventListener("keydown", handleKeyDown));
 
     return { close, firstButton, lastButton };
   },
