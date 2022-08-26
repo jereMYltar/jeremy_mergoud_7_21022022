@@ -8,18 +8,19 @@
     >
       <h4>{{ conversation.name }}</h4>
     </button>
-    <button @click="isOpen = true" ref="modalButton">Show modal</button>
+    <button @click="isOpen = true" ref="modalButton">
+      Nouvelle conversation
+    </button>
     <Modal :open="isOpen" @close="closeModal">
-      <p>lorem ipsum dolor</p>
+      <h1>Créer une nouvelle conversation</h1>
+      <p>Sélectionner les participants à cette conversation :</p>
+      <p>Ici mon outil de choix de personnes</p>
       <form>
         <div>
-          <label for="input1">Mon libellé 1 : </label>
+          <label for="input1">Nom de la conversation : </label>
           <input type="text" id="input1" />
         </div>
-        <div>
-          <label for="input2">Mon libellé 2 : </label>
-          <input type="text" id="input2" />
-        </div>
+        <button>Créer la conversation</button>
       </form>
     </Modal>
   </div>
@@ -49,6 +50,7 @@ export default {
   data() {
     return {
       conversations: "",
+      persons: ["Personne A", "Personne B", "Personne C"],
     };
   },
   methods: {
@@ -65,3 +67,5 @@ export default {
   },
 };
 </script>
+
+<style scoped></style>

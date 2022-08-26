@@ -52,7 +52,7 @@ export default {
     // };
     const handleKeyUp = (event) => {
       switch (true) {
-        case event.keyCode === 27 && props.open:
+        case event.code === "Escape" && props.open:
           close();
           break;
         default:
@@ -60,16 +60,18 @@ export default {
       }
     };
     const handleKeyDown = (event) => {
+      console.log(event.code);
       switch (true) {
-        case !event.shiftKey &&
-          event.keyCode === 9 &&
+        case event.code != "ShiftLeft" &&
+          event.code != "ShiftRight" &&
+          event.code === "Tab" &&
           props.open &&
           lastButton.value === document.activeElement:
           event.preventDefault();
           firstButton.value.focus();
           break;
-        case event.shiftKey &&
-          event.keyCode === 9 &&
+        case (event.code === "ShiftLeft" || event.code === "ShiftRight") &&
+          event.code === "Tab" &&
           props.open &&
           firstButton.value === document.activeElement:
           event.preventDefault();
