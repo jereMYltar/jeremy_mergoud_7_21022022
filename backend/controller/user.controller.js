@@ -19,7 +19,7 @@ exports.createOne = (req, res) => {
 
 // READ all Users
 exports.findAll = (req, res) => {
-    User.findAll()
+    User.findAllUsers()
         .then(users => {
 	        // Send all users to Client
 	        res.status(200).json(

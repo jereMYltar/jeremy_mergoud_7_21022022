@@ -43,3 +43,8 @@ const User = database.define('user', {
 });
 
 module.exports = User;
+
+//Renvoie la liste des utilisateurs
+module.exports.findAllUsers = function () {
+    return database.query(`SELECT CONCAT(user.firstName, ' ', user.lastName) AS 'name', id FROM user ORDER BY name ASC;`, { type: QueryTypes.SELECT });
+};
