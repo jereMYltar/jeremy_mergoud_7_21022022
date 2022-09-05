@@ -18,7 +18,7 @@ exports.createOne = (req, res) => {
 };
 
 // READ all Users
-exports.findAll = (req, res) => {
+exports.findAllUsers = (req, res) => {
     User.findAllUsers()
         .then(users => {
 	        // Send all users to Client

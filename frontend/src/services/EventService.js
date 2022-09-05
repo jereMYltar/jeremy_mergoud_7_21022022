@@ -63,7 +63,7 @@ export default {
     return apiUsers.post("/message/", payload);
   },
   getAllUsers() {
-    return apiUsers.get("/user");
+    return apiUsers.get("/user/all");
   },
 };
 

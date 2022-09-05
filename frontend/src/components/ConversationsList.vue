@@ -21,13 +21,17 @@
           <input type="text" id="input1" />
           <multiselect
             v-model="value"
-            :options="options"
+            mode="tags"
             placeholder="Sélectionner un ou plusieurs interlocuteurs"
-            mode="multiple"
-            valueProp="language"
+            :close-on-select="false"
+            :searchable="true"
+            :object="true"
+            trackBy="name"
+            valueProp="name"
             label="name"
-            trackBy="language"
             ref="multiselect"
+            :options="options"
+            @change="showValue"
           ></multiselect>
         </div>
         <button>Créer la conversation</button>
@@ -49,18 +53,13 @@ export default {
     return {
       conversations: "",
       value: null,
-      options: [
-        { name: "Vue.js", language: "JavaScript" },
-        { name: "Rails", language: "Ruby" },
-        { name: "Sinatra", language: "Ruby" },
-        { name: "Laravel", language: "PHP" },
-        { name: "Phoenix", language: "Elixir" },
-      ],
+      options: [],
     };
   },
   setup() {
     const isOpen = ref(false);
     const modalButton = ref();
+    const multiselect = ref();
 
     function closeModal() {
       isOpen.value = false;
@@ -69,7 +68,11 @@ export default {
       }, 50);
     }
 
-    return { isOpen, modalButton, closeModal };
+    function showValue() {
+      console.log(multiselect);
+    }
+
+    return { isOpen, modalButton, multiselect, closeModal, showValue };
   },
   methods: {
     showDetails(id) {
@@ -84,8 +87,8 @@ export default {
       .catch();
     EventService.getAllUsers()
       .then((response) => {
-        console.log(response);
-        // this.options = response.data;
+        this.options = response.data;
+        console.log(this.options);
       })
       .catch();
   },

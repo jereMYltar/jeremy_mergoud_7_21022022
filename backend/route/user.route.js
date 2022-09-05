@@ -6,7 +6,7 @@ const users = require('../controller/user.controller.js');
 router.post('/', users.createOne);
 
 // Retrieve all User
-router.get('/', users.findAll);
+router.get('/all', users.findAllUsers);
 
 // Retrieve one User searched by id
 router.get('/find/:id', users.findOneById);
