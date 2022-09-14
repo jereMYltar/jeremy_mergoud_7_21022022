@@ -17,24 +17,24 @@
       <p>Ici mon outil de choix de personnes</p>
       <form>
         <div>
-          <label for="input1">Nom de la conversation : </label>
-          <input type="text" id="input1" />
+          <label for="conversationName">Nom de la conversation : </label>
+          <input type="text" id="conversationName" />
           <multiselect
-            v-model="value"
+            v-model="selectedValue"
+            :options="users"
             mode="tags"
-            placeholder="Sélectionner un ou plusieurs interlocuteurs"
             :close-on-select="false"
             :searchable="true"
-            :object="true"
+            placeholder="Sélectionner un ou plusieurs interlocuteurs"
+            label="name"
             trackBy="name"
             valueProp="name"
-            label="name"
-            ref="multiselect"
-            :options="options"
-            @change="showValue"
+            :object="true"
           ></multiselect>
         </div>
-        <button>Créer la conversation</button>
+        <button @click.prevent="createConversation">
+          Créer la conversation
+        </button>
       </form>
     </Modal>
   </div>
@@ -52,14 +52,13 @@ export default {
   data() {
     return {
       conversations: "",
-      value: null,
-      options: [],
+      selectedValue: [],
+      users: [],
     };
   },
   setup() {
     const isOpen = ref(false);
     const modalButton = ref();
-    const multiselect = ref();
 
     function closeModal() {
       isOpen.value = false;
@@ -68,15 +67,23 @@ export default {
       }, 50);
     }
 
-    function showValue() {
-      console.log(multiselect);
-    }
-
-    return { isOpen, modalButton, multiselect, closeModal, showValue };
+    return { isOpen, modalButton, closeModal };
   },
   methods: {
     showDetails(id) {
       this.$emit("detailsExpended", id);
+    },
+
+    createConversation() {
+      //rédiger ici l'appel au back pour la création de la conversation
+      const conversationName =
+        document.getElementById("conversationName").value;
+      console.log(
+        "nom : ",
+        conversationName,
+        "  -  utilisateurs : ",
+        this.selectedValue
+      );
     },
   },
   created() {
@@ -87,8 +94,8 @@ export default {
       .catch();
     EventService.getAllUsers()
       .then((response) => {
-        this.options = response.data;
-        console.log(this.options);
+        this.users = response.data;
+        console.log(this.users);
       })
       .catch();
   },
