@@ -31,5 +31,5 @@ module.exports.findConversation = function (id) {
 
 //changer findConversationsForUser
 module.exports.findConversations = function (userId) {
-    return database.query(`SELECT DISTINCT conversation.id, conversation.name FROM conversation JOIN message ON conversation.id=message.conversation_id WHERE message.user_id=${userId} ORDER BY Conversation.name ASC;`, { type: QueryTypes.SELECT });
+    return database.query(`SELECT DISTINCT conversation.id, conversation.name FROM conversation JOIN user_conversation ON user_conversation.conversation_id = conversation.id WHERE user_conversation.user_id = ${userId} ORDER BY conversation.name ASC;`, { type: QueryTypes.SELECT });
 };
