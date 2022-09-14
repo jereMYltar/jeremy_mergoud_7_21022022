@@ -75,15 +75,17 @@ export default {
     },
 
     createConversation() {
-      //rédiger ici l'appel au back pour la création de la conversation
       const conversationName =
         document.getElementById("conversationName").value;
+      //rédiger ici l'appel au back pour la création de la conversation puis supprimer le log
       console.log(
         "nom : ",
         conversationName,
         "  -  utilisateurs : ",
         this.selectedValue
       );
+      this.selectedValue = [];
+      document.getElementById("conversationName").value = "";
     },
   },
   created() {
