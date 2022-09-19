@@ -12,9 +12,10 @@ const Conversation = database.define('conversation', {
         type: DataTypes.STRING(80),
         allowNull: false
     },
-    admin_id: {
+    conversationAdminId: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true,
+        defaultValue: 0,
     }
 },
 {
