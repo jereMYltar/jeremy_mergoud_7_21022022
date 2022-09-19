@@ -27,8 +27,7 @@
             :searchable="true"
             placeholder="Sélectionner un ou plusieurs interlocuteurs"
             label="name"
-            trackBy="name"
-            valueProp="name"
+            valueProp="id"
             :object="true"
           ></multiselect>
         </div>
@@ -75,17 +74,18 @@ export default {
     },
 
     createConversation() {
-      const conversationName =
-        document.getElementById("conversationName").value;
-      //rédiger ici l'appel au back pour la création de la conversation puis supprimer le log
-      console.log(
-        "nom : ",
-        conversationName,
-        "  -  utilisateurs : ",
-        this.selectedValue
-      );
+      const payload = {
+        name: document.getElementById("conversationName").value,
+        users: Array.from(this.selectedValue, (x) => x.id),
+      };
+      EventService.createConversation(payload)
+        .then((response) => {
+          console.log(response.data.conversation.id);
+        })
+        .catch();
       this.selectedValue = [];
       document.getElementById("conversationName").value = "";
+      this.closeModal();
     },
   },
   created() {
@@ -97,7 +97,6 @@ export default {
     EventService.getAllUsers()
       .then((response) => {
         this.users = response.data;
-        console.log(this.users);
       })
       .catch();
   },

@@ -53,6 +53,9 @@ export default {
   signUp(payload) {
     return apiUsers.post("/connection/signup", payload);
   },
+  createConversation(payload) {
+    return apiUsers.post("/conversation/", payload)
+  },
   getConversations() {
     return apiUsers.get("/conversation/");
   },

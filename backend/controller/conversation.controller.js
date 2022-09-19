@@ -3,20 +3,29 @@ const jwt = require('jsonwebtoken');
 const env = require('../config/env');
 
 //CREATE one conversation
-// exports.createOne = (req, res) => {
-//     const message = req.body.message;
-//     Message.create(message)
-//         .then(() => {
-//             res.status(201).json({
-//                 message: 'Message créé avec succès'
-//             });
-//         })
-//         .catch(error => {
-//             res.status(400).json({
-//                 error: error
-//             });
-//         });
-// };
+exports.createOne = (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, `${env.JWT_SALT}`);
+    let conversation = {
+        name: req.body.name,
+        conversationAdminId: decodedToken.userId,
+    };
+    Conversation.create(conversation)
+        .then((response) => {
+            // console.log(response.dataValues);
+            // console.log(typeof response);
+            res.status(201).json({
+                message: 'Conversation créée avec succès',
+                conversation: response.dataValues,
+                // conversation: response.conversation.dataValues,
+            });
+        })
+        .catch(error => {
+            res.status(400).json({
+                error: error
+            });
+        });
+};
 
 //READ all messages from ONE conversation
 exports.findOne = (req, res) => {
