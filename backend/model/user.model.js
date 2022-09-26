@@ -50,6 +50,6 @@ module.exports.findAllUsers = function () {
 };
 
 //Renvoie le nom de l'utilisateur à partir de son id
-module.exports.findById = function (id) {
+module.exports.findNameById = function (id) {
     return database.query(`SELECT CONCAT(user.firstName, ' ', user.lastName) AS 'name' FROM user WHERE id = ${id};`, { type: QueryTypes.SELECT });
 };

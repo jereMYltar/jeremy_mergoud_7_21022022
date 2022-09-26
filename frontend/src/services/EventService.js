@@ -59,8 +59,8 @@ export default {
   getConversations() {
     return apiUsers.get("/conversation/");
   },
-  getMessagesFromThisConversation(payload) {
-    return apiUsers.get(`/conversation/details/${payload}`)
+  getAllMessagesByConversationId(payload) {
+    return apiUsers.get(`/message//conversation/${payload}`)
   },
   sendMessage(payload) {
     return apiUsers.post("/message/", payload);

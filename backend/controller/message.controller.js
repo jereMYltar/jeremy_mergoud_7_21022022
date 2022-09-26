@@ -23,16 +23,16 @@ exports.createOne = (req, res) => {
     const message = req.body.message;
     message.user_id = res.locals.userId;
     Message.create(message)
-        .then((response) => {
-            console.log(response.dataValues.user_id);
-            User.findById(response.dataValues.user_id)
+        .then((newMessage) => {
+            User.findNameById(newMessage.dataValues.user_id)
                 .then((user) => {
-                    response.dataValues.author = user[0].name;
-                    delete response.dataValues.conversation_id;
-                    delete response.dataValues.user_id;
+                    newMessage.dataValues.author = user[0].name;
+                    newMessage.dataValues.isAuthor = true;
+                    delete newMessage.dataValues.conversation_id;
+                    delete newMessage.dataValues.user_id;
                     res.status(201).json({
                         message: 'Message créé avec succès',
-                        body: response.dataValues,
+                        body: newMessage.dataValues,
                     });
                 })
                 .catch(error => {
@@ -48,10 +48,10 @@ exports.createOne = (req, res) => {
         });
 };
 
-//READ one message from a conversation
+//READ one message by its id
 exports.findOne = (req, res) => {
     const messageId = req.params.id;
-    Message.findById(messageId)
+    Message.findOneById(messageId)
     .then(message => {
         // Send all messages from a conversation to Client
         res.status(200).json(
@@ -64,6 +64,70 @@ exports.findOne = (req, res) => {
         });
     });
 };
+
+//READ all messages from ONE conversation
+exports.readAllByConversationId = (req, res) => {
+    const conversationId = req.params.id;
+    Message.findAllByConversationId(conversationId)
+    .then(messages => {
+        messages.forEach(message => {
+            message.isAuthor = message.user_id == res.locals.userId;
+            delete message.user_id;
+        });
+        // Send all messages from a conversation to Client
+        res.status(200).json(
+            messages
+        );
+    })
+    .catch(error => {
+        res.status(400).json({
+            error: error
+        });
+    });
+};
+
+//READ all actives messages from ONE conversation
+exports.readAllActiveByConversationId = (req, res) => {
+    const conversationId = req.params.id;
+    Message.findAllActiveByConversationId(conversationId)
+    .then(messages => {
+        messages.forEach(message => {
+            message.isAuthor = message.user_id == res.locals.userId;
+            delete message.user_id;
+        });
+        // Send all messages from a conversation to Client
+        res.status(200).json(
+            messages
+        );
+    })
+    .catch(error => {
+        res.status(400).json({
+            error: error
+        });
+    });
+};
+
+//READ latest message from ONE conversation
+exports.readLatestByConversationId = (req, res) => {
+    const conversationId = req.params.id;
+    Message.findLatestByConversationId(conversationId)
+    .then(message => {
+        // Send the latest message found from a conversation to Client
+        res.status(200).json(
+            message
+        );
+    })
+    .catch(error => {
+        res.status(400).json({
+            error: error
+        });
+    });
+};
+
+
+
+
+
 
 //DELETE one message
 exports.deleteOne = (req, res) => {
@@ -79,22 +143,3 @@ exports.deleteOne = (req, res) => {
         });
     });
 };
-
-// TO UPDATE
-
-//UPDATE one user
-exports.updateOne = (req, res) => {
-    const message = req.body.message;
-    Message.update(message, {where: {id: req.params.id}})
-        .then(() => {
-            res.status(201).json({
-                message: 'Message mis à jour avec succès'
-            });
-        })
-        .catch(error => {
-            res.status(400).json({
-                error: error
-            });
-        });
-};
-
