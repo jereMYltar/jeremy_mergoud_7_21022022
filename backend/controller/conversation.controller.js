@@ -16,8 +16,8 @@ exports.createOne = (req, res) => {
             // console.log(typeof response);
             res.status(201).json({
                 message: 'Conversation créée avec succès',
-                conversation: response.dataValues,
-                // conversation: response.conversation.dataValues,
+                body: response.dataValues,
+                // conversation: response.dataValues,
             });
         })
         .catch(error => {

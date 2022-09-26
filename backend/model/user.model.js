@@ -48,3 +48,8 @@ module.exports = User;
 module.exports.findAllUsers = function () {
     return database.query(`SELECT CONCAT(user.firstName, ' ', user.lastName) AS 'name', id FROM user ORDER BY name ASC;`, { type: QueryTypes.SELECT });
 };
+
+//Renvoie le nom de l'utilisateur à partir de son id
+module.exports.findById = function (id) {
+    return database.query(`SELECT CONCAT(user.firstName, ' ', user.lastName) AS 'name' FROM user WHERE id = ${id};`, { type: QueryTypes.SELECT });
+};

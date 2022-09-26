@@ -1,22 +1,22 @@
+const User = require('../model/user.model');
 const jwt = require('jsonwebtoken');
-const User = require('../models/users');
-require('dotenv').config()
+const env = require('../config/env');
 
 module.exports = (req, res, next) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
-        const decodedToken = jwt.verify(token, `${process.env.JWT_SALT}`);
+        const decodedToken = jwt.verify(token, `${env.JWT_SALT}`);
         const userId = decodedToken.userId;
-        User.findOne({_id: userId})
-            .then((user) => {
+        User.findOne({ where: {id: userId}})
+            .then(() => {
                 res.locals.userId = userId;
                 next();
             })
-            .catch((error) => {
+            .catch(() => {
                 res.status(404).json({ error : 'user not found.' })
             });
     } catch {
-        throw new Error();
+        // throw new Error();
         res.status(401).json({ error : 'unauthorized request.' })
     }
 };

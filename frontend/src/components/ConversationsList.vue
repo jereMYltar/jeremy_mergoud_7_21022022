@@ -80,7 +80,7 @@ export default {
       };
       EventService.createConversation(payload)
         .then((response) => {
-          console.log(response.data.conversation.id);
+          console.log(response.data.body.id);
         })
         .catch();
       this.selectedValue = [];

@@ -9,11 +9,11 @@ app.use(express.json());
 const helmet = require("helmet");
 app.use(helmet());
 
-// //CORS
+//CORS
 const cors = require("cors");
 app.use(cors());
 
-// //rate-limiter
+//rate-limiter
 const rateLimit = require("express-rate-limit");
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -22,15 +22,19 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
+//auth
+const auth = require("./middleware/auth");
+// app.use(auth);
+
 //Implémentation des routes
 const userRoutes = require('./route/user.route');
-app.use('/api/user', userRoutes);
+app.use('/api/user', auth, userRoutes);
 const connectionRoutes = require('./route/connection.route');
 app.use('/api/connection', connectionRoutes);
 const messageRoutes = require('./route/message.route');
-app.use('/api/message', messageRoutes);
+app.use('/api/message', auth, messageRoutes);
 const conversationRoutes = require('./route/conversation.route');
-app.use('/api/conversation', conversationRoutes);
+app.use('/api/conversation', auth, conversationRoutes);
 
 
 module.exports = app;
