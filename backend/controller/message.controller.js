@@ -1,7 +1,5 @@
 const Message = require('../model/message.model');
 const User = require('../model/user.model');
-const jwt = require('jsonwebtoken');
-const env = require('../config/env');
 
 //définition des fonctions de base du modèle :
 //- message CREATE : requête de base de Sequelize => create. Requiert un objet contenant conversation_id, user_id et content
@@ -14,33 +12,26 @@ const env = require('../config/env');
 //- message DELETE : requête de base de Sequelize => destroy. Requiert l'id du message modifié (pour la clause WHERE)
 
 //CREATE one message and return the registered message
-exports.createOne = (req, res) => {
+exports.createOne = async (req, res) => {
     const message = req.body.message;
     message.user_id = res.locals.userId;
-    Message.create(message)
-        .then((newMessage) => {
-            User.findNameById(newMessage.dataValues.user_id)
-                .then((user) => {
-                    newMessage.dataValues.author = user[0].name;
-                    newMessage.dataValues.isAuthor = true;
-                    delete newMessage.dataValues.conversation_id;
-                    delete newMessage.dataValues.user_id;
-                    res.status(201).json({
-                        message: 'Message créé avec succès',
-                        body: newMessage.dataValues,
-                    });
-                })
-                .catch(error => {
-                    res.status(400).json({
-                        error: error
-                    });
-                });
-        })
-        .catch(error => {
-            res.status(400).json({
-                error: error
-            });
+    try {
+        const newMessage = await Message.create(message)
+        const user = await User.findNameById(newMessage.dataValues.user_id)
+        newMessage.dataValues.author = user[0].name;
+        newMessage.dataValues.isAuthor = true;
+        delete newMessage.dataValues.conversation_id;
+        delete newMessage.dataValues.user_id;
+        res.status(201).json({
+            message: 'Message créé avec succès',
+            body: newMessage.dataValues,
         });
+    } catch (error) {
+        res.status(400).json({
+            errorMessage: error
+        });
+        
+    }
 };
 
 //READ one message by its id

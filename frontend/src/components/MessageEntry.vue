@@ -55,6 +55,11 @@ export default {
         .then((response) => {
           this.$emit("messageSend", response.data.body);
           this.message = "";
+          window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth",
+          });
         })
         .catch();
     },
