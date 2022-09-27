@@ -13,11 +13,6 @@ const env = require('../config/env');
 //- message UPDATE : requête de base de Sequelize => update. Requiert un objet contenant content (pour la modification du contenu) et/ou isModerated (pour la modération du message), ainsi que l'id du message modifié (pour la clause WHERE)
 //- message DELETE : requête de base de Sequelize => destroy. Requiert l'id du message modifié (pour la clause WHERE)
 
-
-
-
-
-
 //CREATE one message and return the registered message
 exports.createOne = (req, res) => {
     const message = req.body.message;
