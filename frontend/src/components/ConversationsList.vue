@@ -89,7 +89,7 @@ export default {
     },
   },
   created() {
-    EventService.getConversations()
+    EventService.getAllConversationsForCurrentUser()
       .then((response) => {
         this.conversations = response.data;
       })

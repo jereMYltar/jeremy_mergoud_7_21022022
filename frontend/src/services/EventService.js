@@ -56,11 +56,11 @@ export default {
   createConversation(payload) {
     return apiUsers.post("/conversation/", payload)
   },
-  getConversations() {
-    return apiUsers.get("/conversation/");
+  getAllConversationsForCurrentUser() {
+    return apiUsers.get("/conversation/user");
   },
   getAllMessagesByConversationId(payload) {
-    return apiUsers.get(`/message//conversation/${payload}`)
+    return apiUsers.get(`/message/conversation/${payload}`)
   },
   sendMessage(payload) {
     return apiUsers.post("/message/", payload);

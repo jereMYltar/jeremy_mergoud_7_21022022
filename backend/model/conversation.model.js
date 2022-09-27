@@ -25,12 +25,13 @@ const Conversation = database.define('conversation', {
 
 module.exports = Conversation;
 
-//Renvoie les message d'une conversation
-// module.exports.findConversation = function (id) {
-//     return database.query(`SELECT message.id AS id, CONCAT(user.firstName, ' ', user.lastName) AS 'auteur', message.content AS 'content', message.createdAt AS createdAt, message.updatedAt AS updatedAt, message.isModerated as isModerated FROM message JOIN user ON message.user_id=user.id WHERE message.conversation_id=${id} ORDER BY createdAt DESC;`, { type: QueryTypes.SELECT });
-// };
+//définition des fonctions de base du modèle :
+//- message CREATE : requête de base de Sequelize => create. Requiert un objet contenant name et conversationAdminId
+//- message READ : requêtes brutes ci-dessous
+//- message UPDATE : requête de base de Sequelize => update. Requiert un objet contenant content (pour la modification du contenu) et/ou isModerated (pour la modération du message), ainsi que l'id du message modifié (pour la clause WHERE)
+//- message DELETE : requête de base de Sequelize => destroy. Requiert l'id du message modifié (pour la clause WHERE)
 
-//changer findConversationsForUser
-module.exports.findConversations = function (userId) {
+//READ toutes les conversations auxquelles participe un utilisateur (sur la base de son id)
+module.exports.findAllByUserId = function (userId) {
     return database.query(`SELECT DISTINCT conversation.id, conversation.name FROM conversation JOIN user_conversation ON user_conversation.conversation_id = conversation.id WHERE user_conversation.user_id = ${userId} ORDER BY conversation.name ASC;`, { type: QueryTypes.SELECT });
 };
