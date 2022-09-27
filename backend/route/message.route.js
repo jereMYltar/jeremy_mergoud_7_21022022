@@ -18,7 +18,7 @@ router.get('/actives/conversation/:id', messages.readAllActiveByConversationId);
 router.get('/latest/conversation/:id', messages.readLatestByConversationId);
 
 // UPDATE one message
-// router.put('/:id', messages.updateOne);
+router.put('/:id', messages.updateOne);
 
 // DELETE one message
 router.delete('/:id', messages.deleteOne);

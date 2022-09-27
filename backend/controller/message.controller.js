@@ -124,10 +124,27 @@ exports.readLatestByConversationId = (req, res) => {
     });
 };
 
-
-
-
-
+//UPDATE one message
+exports.updateOne = (req, res) => {
+    const messageId = req.params.id;
+    const messageUpdated = req.body.message;
+    Message.update(messageUpdated, {
+        where: {
+            id: messageId
+        }
+    })
+    .then(() => {
+        // Indicates that the message has been successfully updated
+        res.status(200).json({
+            message: 'Message mis à jour avec succès'
+        });
+    })
+    .catch(error => {
+        res.status(400).json({
+            error: error
+        });
+    });
+};
 
 //DELETE one message
 exports.deleteOne = (req, res) => {
