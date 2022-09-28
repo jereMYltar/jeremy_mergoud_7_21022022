@@ -14,24 +14,22 @@ exports.createOne = async (req, res) => {
         name: req.body.name,
         conversationAdminId: res.locals.userId,
     };
-    console.log(req.body);
     try {
         const newConversation = await Conversation.create(conversation);
         const newConsversationId = newConversation.dataValues.id;
         const userList = req.body.users;
-        userList.forEach(async (userId, newConsversationId) => {
-            await UserConversation.create({
+        for await (const userId of userList) {
+            UserConversation.create({
                 user_id: userId,
                 conversation_id: newConsversationId,
             })
-        });
+        };
         res.status(201).json({
             message: 'Conversation créée avec succès',
-            body: response.dataValues,
-            // conversation: response.dataValues,
+            body: newConversation.dataValues,
         });
     } catch (error) {
-        res.status(400).json({
+        res.status(408).json({
             errorMessage: error
         });
     }
