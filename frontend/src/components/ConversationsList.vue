@@ -79,8 +79,8 @@ export default {
         users: Array.from(this.selectedValue, (x) => x.id),
       };
       EventService.createConversation(payload)
-        .then((response) => {
-          console.log(response.data.body.id);
+        .then((newConversation) => {
+          this.conversations.unshift(newConversation.data.body);
         })
         .catch();
       this.selectedValue = [];

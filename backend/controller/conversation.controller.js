@@ -26,7 +26,10 @@ exports.createOne = async (req, res) => {
         };
         res.status(201).json({
             message: 'Conversation créée avec succès',
-            body: newConversation.dataValues,
+            body: {
+                id: newConsversationId,
+                name: req.body.name
+            }
         });
     } catch (error) {
         res.status(408).json({

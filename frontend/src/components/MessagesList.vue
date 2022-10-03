@@ -49,8 +49,8 @@ export default {
         })
         .catch();
     },
-    addMessage(message) {
-      this.messages.unshift(message);
+    addMessage(newMessage) {
+      this.messages.unshift(newMessage);
     },
     timeFormat(a) {
       return moment(a).locale("fr").format("LL à LTS");

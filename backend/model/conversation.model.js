@@ -39,6 +39,6 @@ module.exports.findAllByUserId = function (userId) {
     FROM conversation
     JOIN user_conversation ON user_conversation.conversation_id = conversation.id
     WHERE user_conversation.user_id = ${userId}
-    ORDER BY conversation.name ASC;
+    ORDER BY conversation.updatedAt DESC;
     `, { type: QueryTypes.SELECT });
 };
