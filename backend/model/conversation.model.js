@@ -27,12 +27,12 @@ const Conversation = database.define('conversation', {
 module.exports = Conversation;
 
 //définition des fonctions de base du modèle :
-//- message CREATE : requête de base de Sequelize => create. Requiert un objet contenant name et conversationAdminId
-//- message READ : requêtes brutes ci-dessous
-//- message UPDATE : requête de base de Sequelize => update. Requiert un objet contenant name et conversationAdminId, ainsi que l'id de la convesation modifié (pour la clause WHERE)
-//- message DELETE : requête de base de Sequelize => destroy. Requiert l'id de la conversation supprimée (pour la clause WHERE)
+//- CREATE - créer une conversation : requête de base de Sequelize => create. Requiert un objet contenant name et conversationAdminId
+//- READ - lire/récupérer une conversation : requêtes brutes ci-dessous
+//- UPDATE - mettre à jour une conversation : requête de base de Sequelize => update. Requiert un objet contenant name et conversationAdminId, ainsi que l'id de la convesation modifié (pour la clause WHERE)
+//- DELETE - supprimer une conversation : requête de base de Sequelize => destroy. Requiert l'id de la conversation supprimée (pour la clause WHERE)
 
-//READ toutes les conversations auxquelles participe un utilisateur (sur la base de son id)
+//READ : récupérer toutes les conversations auxquelles participe un utilisateur (sur la base de son id)
 module.exports.findAllByUserId = function (userId) {
     return database.query(`
     SELECT DISTINCT conversation.id, conversation.name

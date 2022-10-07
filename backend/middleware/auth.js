@@ -16,7 +16,6 @@ module.exports = (req, res, next) => {
                 res.status(404).json({ error : 'user not found.' })
             });
     } catch {
-        // throw new Error();
         res.status(401).json({ error : 'unauthorized request.' })
     }
 };

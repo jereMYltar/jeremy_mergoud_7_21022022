@@ -2,25 +2,25 @@ const express = require('express');
 const router = express.Router();
 const messages = require('../controller/message.controller');
 
-//CREATE one message
-router.post('/', messages.createOne)
+//CREATE : créer un message et renvoi le message enregistré en base
+router.post('/', messages.createOne);
 
-// READ one message from a conversation
+//READ : récupérer un message par son id
 router.get('/:id', messages.findOne);
 
-// READ all messages from a conversation
+//READ : récupérer tous les messages d'une conversation
 router.get('/conversation/:id', messages.readAllByConversationId);
 
-// READ all actives messages from a conversation
+//READ : récupérer tous les messages actifs d'une conversation
 router.get('/actives/conversation/:id', messages.readAllActiveByConversationId);
 
-// READ latest message from a conversation
+//READ : récupérer le dernier message d'une conversation au client
 router.get('/latest/conversation/:id', messages.readLatestByConversationId);
 
-// UPDATE one message
+//UPDATE : mettre à jour un message
 router.put('/:id', messages.updateOne);
 
-// DELETE one message
+//DELETE : supprimer un message
 router.delete('/:id', messages.deleteOne);
 
 module.exports = router;

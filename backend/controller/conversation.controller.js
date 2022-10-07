@@ -1,14 +1,7 @@
 const Conversation = require('../model/conversation.model');
 const UserConversation = require('../model/user_conversation.model');
 
-//définition des fonctions de base du modèle :
-//- message CREATE : requête de base de Sequelize => create. Requiert un objet contenant name et conversationAdminId
-//- message READ : requêtes brutes ci-dessous
-//      READ toutes les conversations auxquelles participe un utilisateur (sur la base de son id)
-//- message UPDATE : requête de base de Sequelize => update. Requiert un objet contenant content (pour la modification du contenu) et/ou isModerated (pour la modération du message), ainsi que l'id du message modifié (pour la clause WHERE)
-//- message DELETE : requête de base de Sequelize => destroy. Requiert l'id du message modifié (pour la clause WHERE)
-
-//CREATE one conversation
+//CREATE : créer une conversation
 exports.createOne = async (req, res) => {
     let conversation = {
         name: req.body.name,
@@ -25,24 +18,24 @@ exports.createOne = async (req, res) => {
             })
         };
         res.status(201).json({
-            message: 'Conversation créée avec succès',
+            customMessage: 'Conversation créée avec succès',
             body: {
                 id: newConsversationId,
                 name: req.body.name
             }
         });
     } catch (error) {
-        res.status(408).json({
+        res.status(400).json({
             errorMessage: error
         });
     }
 };
 
-//READ ALL conversations
+//READ : récupérer toutes les conversations
 exports.findAll = (req, res) => {
     Conversation.findAll()
     .then(conversations => {
-        // Send all messages from a conversation to Client
+        // Renvoie toutes les conversations au client
         res.status(200).json(
             conversations
         );
@@ -54,11 +47,11 @@ exports.findAll = (req, res) => {
     });
 };
 
-//READ ALL conversations in which a user participates
+//READ : récupérer toutes les conversations auxquelles participe un utilisateur
 exports.findAllByUserId = (req, res) => {
     Conversation.findAllByUserId(res.locals.userId)
     .then(conversations => {
-        // Send all messages from a conversation to Client
+        // Renvoie toutes les conversations récépérées au client
         res.status(200).json(
             conversations
         );
@@ -70,7 +63,7 @@ exports.findAllByUserId = (req, res) => {
     });
 };
 
-//UPDATE one conversation
+//UPDATE : mettre à jour une conversation
 exports.updateOne = (req, res) => {
     const conversationId = req.params.id;
     const conversationUpdated = req.body.conversation;
@@ -80,7 +73,6 @@ exports.updateOne = (req, res) => {
         }
     })
     .then(() => {
-        // Indicates that the conversation has been successfully updated
         res.status(200).json({
             message: 'Conversation mise à jour avec succès'
         });
@@ -92,7 +84,7 @@ exports.updateOne = (req, res) => {
     });
 };
 
-//DELETE one Conversation
+//DELETE : supprimer une Conversation
 exports.deleteOne = (req, res) => {
     Conversation.destroy({ where: {id: req.params.id}})
     .then(() => {

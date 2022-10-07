@@ -46,5 +46,5 @@ Conversation.belongsToMany(
 module.exports = UserConversation;
 
 //définition des fonctions de base du modèle :
-//- message CREATE : requête de base de Sequelize => create. Requiert un objet contenant user_id et conversation_id
-//- message DELETE : requête de base de Sequelize => destroy. Requiert l'id de la conversation ou du user supprimée (pour la clause WHERE)
+//- CREATE - créer une relation : requête de base de Sequelize => create. Requiert un objet contenant user_id et conversation_id
+//- DELETE - supprimer une relation  : requête de base de Sequelize => destroy. Requiert l'id de la conversation ou du user supprimée (pour la clause WHERE)

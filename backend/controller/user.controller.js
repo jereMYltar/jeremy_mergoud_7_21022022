@@ -1,7 +1,7 @@
 const User = require('../model/user.model');
 
 
-//CREATE one user
+//CREATE : créer un utilisateur
 exports.createOne = (req, res) => {
     const user = JSON.parse(req.body.user);
     User.create(user)
@@ -17,7 +17,7 @@ exports.createOne = (req, res) => {
         });
 };
 
-// READ all Users
+// READ : récupérer tous les utilisateurs
 exports.findAllUsers = (req, res) => {
     User.findAllUsers()
         .then(users => {
@@ -33,7 +33,7 @@ exports.findAllUsers = (req, res) => {
         });
 };
 
-//READ one user searched by id
+//READ : récupérer un utilisateur en fonction de son id
 exports.findOneById = (req, res) => {
     User.findOne({ where: {id: req.params.id}})
         .then(user => {
@@ -53,7 +53,7 @@ exports.findOneById = (req, res) => {
         });
 };
 
-//READ one user searched by email
+//READ : récupérer un utilisateur en fonction de son email
 exports.findOneByEmail = (req, res) => {
     User.findOne({ where: {email: req.body.email}})
         .then(user => {
@@ -73,7 +73,7 @@ exports.findOneByEmail = (req, res) => {
         });
 };
 
-//UPDATE one user
+//UPDATE : mettre à jour un utilisateur
 exports.updateOne = (req, res) => {
     const user = JSON.parse(req.body.user);
     User.update(user, {where: {id: req.params.id}})
@@ -89,7 +89,7 @@ exports.updateOne = (req, res) => {
         });
 };
 
-//DELETE one user
+//DELETE : supprimer un utilisateur
 exports.deleteOne = (req, res) => {
     User.destroy({ where: {id: req.params.id}})
     .then(() => {

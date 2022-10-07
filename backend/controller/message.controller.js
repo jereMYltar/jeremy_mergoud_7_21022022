@@ -1,17 +1,7 @@
 const Message = require('../model/message.model');
 const User = require('../model/user.model');
 
-//définition des fonctions de base du modèle :
-//- message CREATE : requête de base de Sequelize => create. Requiert un objet contenant conversation_id, user_id et content
-//- message READ : requêtes brutes ci-dessous
-//      READ un message par son id :findById
-//      READ tous les messages d'une conversation par l'id de celle-ci : findAllByConversationId
-//      READ tous les messages actifs (non modérés) d'une conversation par l'id de celle-ci : findAllActiveByConversationId
-//      READ le dernier message d'une conversation : findLatestByConversationId
-//- message UPDATE : requête de base de Sequelize => update. Requiert un objet contenant content (pour la modification du contenu) et/ou isModerated (pour la modération du message), ainsi que l'id du message modifié (pour la clause WHERE)
-//- message DELETE : requête de base de Sequelize => destroy. Requiert l'id du message modifié (pour la clause WHERE)
-
-//CREATE one message and return the registered message
+//CREATE : créer un message et renvoi le message enregistré en base
 exports.createOne = async (req, res) => {
     const message = req.body.message;
     message.user_id = res.locals.userId;
@@ -34,12 +24,12 @@ exports.createOne = async (req, res) => {
     }
 };
 
-//READ one message by its id
+//READ : récupérer un message par son id
 exports.findOne = (req, res) => {
     const messageId = req.params.id;
     Message.findOneById(messageId)
     .then(message => {
-        // Send all messages from a conversation to Client
+        // Renvoie tous les messages au client
         res.status(200).json(
             message
         );
@@ -51,7 +41,7 @@ exports.findOne = (req, res) => {
     });
 };
 
-//READ all messages from ONE conversation
+//READ : récupérer tous les messages d'une conversation
 exports.readAllByConversationId = (req, res) => {
     const conversationId = req.params.id;
     Message.findAllByConversationId(conversationId)
@@ -60,7 +50,7 @@ exports.readAllByConversationId = (req, res) => {
             message.isAuthor = message.user_id == res.locals.userId;
             delete message.user_id;
         });
-        // Send all messages from a conversation to Client
+        // Renvoie tous les messages d'une conversation au client
         res.status(200).json(
             messages
         );
@@ -72,7 +62,7 @@ exports.readAllByConversationId = (req, res) => {
     });
 };
 
-//READ all actives messages from ONE conversation
+//READ : récupérer tous les messages actifs d'une conversation
 exports.readAllActiveByConversationId = (req, res) => {
     const conversationId = req.params.id;
     Message.findAllActiveByConversationId(conversationId)
@@ -81,7 +71,7 @@ exports.readAllActiveByConversationId = (req, res) => {
             message.isAuthor = message.user_id == res.locals.userId;
             delete message.user_id;
         });
-        // Send all messages from a conversation to Client
+        // Renvoie tous les messages d'une conversation au client
         res.status(200).json(
             messages
         );
@@ -93,12 +83,12 @@ exports.readAllActiveByConversationId = (req, res) => {
     });
 };
 
-//READ latest message from ONE conversation
+//READ : récupérer le dernier message d'une conversation au client
 exports.readLatestByConversationId = (req, res) => {
     const conversationId = req.params.id;
     Message.findLatestByConversationId(conversationId)
     .then(message => {
-        // Send the latest message found from a conversation to Client
+        // Renvoie le dernier message d'une conversation au client
         res.status(200).json(
             message
         );
@@ -110,7 +100,7 @@ exports.readLatestByConversationId = (req, res) => {
     });
 };
 
-//UPDATE one message
+//UPDATE : mettre à jour un message
 exports.updateOne = (req, res) => {
     const messageId = req.params.id;
     const messageUpdated = req.body.message;
@@ -120,7 +110,6 @@ exports.updateOne = (req, res) => {
         }
     })
     .then(() => {
-        // Indicates that the message has been successfully updated
         res.status(200).json({
             message: 'Message mis à jour avec succès'
         });
@@ -132,7 +121,7 @@ exports.updateOne = (req, res) => {
     });
 };
 
-//DELETE one message
+//DELETE : supprimer un message
 exports.deleteOne = (req, res) => {
     Message.destroy({ where: {id: req.params.id}})
     .then(() => {

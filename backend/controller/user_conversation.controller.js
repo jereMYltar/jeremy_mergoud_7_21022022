@@ -1,10 +1,6 @@
 const UserConversation = require('../model/user_conversation.model');
 
-//définition des fonctions de base du modèle :
-//- message CREATE : requête de base de Sequelize => create. Requiert un objet contenant user_id et conversation_id
-//- message DELETE : requête de base de Sequelize => destroy. Requiert l'id de la conversation ou du user supprimée (pour la clause WHERE)
-
-//CREATE one user_conversation relation
+//CREATE : créer une relation user_conversation
 exports.createOne = (req, res) => {
     let conversation = {
         name: req.body.name,
@@ -28,7 +24,7 @@ exports.createOne = (req, res) => {
         });
 };
 
-//DELETE one Conversation
+//DELETE : supprimer une relation user_conversation
 exports.deleteOne = (req, res) => {
     UserConversation.destroy({ where: {id: req.params.id}})
     .then(() => {

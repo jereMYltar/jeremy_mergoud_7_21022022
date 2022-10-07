@@ -16,15 +16,14 @@ app.use(cors());
 //rate-limiter
 const rateLimit = require("express-rate-limit");
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  windowMs: 15 * 60 * 1000, // fenêtre de 15 minutes
+  max: 100, // limite chaque IP à 100 requêtes par fenêtre de temps windowMs
   message: 'Too many request. Try again after 15 minutes'
 });
 app.use(limiter);
 
 //auth
 const auth = require("./middleware/auth");
-// app.use(auth);
 
 //Implémentation des routes
 const userRoutes = require('./route/user.route');

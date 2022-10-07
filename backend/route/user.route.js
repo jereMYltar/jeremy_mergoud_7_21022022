@@ -2,22 +2,22 @@ const express = require('express');
 const router = express.Router();
 const users = require('../controller/user.controller.js');
 
-// Create one User
+//CREATE : créer un utilisateur
 router.post('/', users.createOne);
 
-// Retrieve all User
+// READ : récupérer tous les utilisateurs
 router.get('/all', users.findAllUsers);
 
-// Retrieve one User searched by id
+//READ : récupérer un utilisateur en fonction de son id
 router.get('/find/:id', users.findOneById);
 
-// Retrieve one User searched by id
+//READ : récupérer un utilisateur en fonction de son email
 router.get('/findEmail', users.findOneByEmail);
 
-// Update one User
+//UPDATE : mettre à jour un utilisateur
 router.put('/:id', users.updateOne);
 
-// Delete one User
+//DELETE : supprimer un utilisateur
 router.delete('/:id', users.deleteOne);
 
 module.exports = router;

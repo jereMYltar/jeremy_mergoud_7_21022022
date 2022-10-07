@@ -2,19 +2,19 @@ const express = require('express');
 const router = express.Router();
 const Conversation = require('../controller/conversation.controller');
 
-// CREATE one conversation
+//CREATE : créer une conversation
 router.post('/', Conversation.createOne)
 
-//READ all conversations
+//READ : récupérer toutes les conversations
 router.get('/', Conversation.findAll);
 
-//READ all conversations in which a user participates
+//READ : récupérer toutes les conversations auxquelles participe un utilisateur
 router.get('/user', Conversation.findAllByUserId);
 
-// UPDATE one conversation
+//UPDATE : mettre à jour une conversation
 router.put('/:id', Conversation.updateOne);
 
-// DELETE one conversation
+//DELETE : supprimer une Conversation
 router.delete('/:id', Conversation.deleteOne);
 
 module.exports = router;
