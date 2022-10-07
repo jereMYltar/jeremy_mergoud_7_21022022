@@ -74,7 +74,7 @@ exports.updateOne = (req, res) => {
     })
     .then(() => {
         res.status(200).json({
-            message: 'Conversation mise à jour avec succès'
+            customMessage: 'Conversation mise à jour avec succès'
         });
     })
     .catch(error => {
@@ -89,7 +89,7 @@ exports.deleteOne = (req, res) => {
     Conversation.destroy({ where: {id: req.params.id}})
     .then(() => {
         res.status(200).json({
-            message: 'Conversation supprimée avec succès'
+            customMessage: 'Conversation supprimée avec succès'
         });
     })
     .catch(error => {

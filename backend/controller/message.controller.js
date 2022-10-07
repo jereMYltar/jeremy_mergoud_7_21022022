@@ -13,7 +13,7 @@ exports.createOne = async (req, res) => {
         delete newMessage.dataValues.conversation_id;
         delete newMessage.dataValues.user_id;
         res.status(201).json({
-            message: 'Message créé avec succès',
+            customMessage: 'Message créé avec succès',
             body: newMessage.dataValues,
         });
     } catch (error) {
@@ -111,7 +111,7 @@ exports.updateOne = (req, res) => {
     })
     .then(() => {
         res.status(200).json({
-            message: 'Message mis à jour avec succès'
+            customMessage: 'Message mis à jour avec succès'
         });
     })
     .catch(error => {
@@ -126,7 +126,7 @@ exports.deleteOne = (req, res) => {
     Message.destroy({ where: {id: req.params.id}})
     .then(() => {
         res.status(200).json({
-            message: 'Message supprimé avec succès'
+            customMessage: 'Message supprimé avec succès'
         });
     })
     .catch(error => {

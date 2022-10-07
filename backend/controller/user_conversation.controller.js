@@ -12,7 +12,7 @@ exports.createOne = (req, res) => {
             console.log(req.body);
             // console.log(typeof response);
             res.status(201).json({
-                message: 'Conversation créée avec succès',
+                customMessage: 'Conversation créée avec succès',
                 body: response.dataValues,
                 // conversation: response.dataValues,
             });
@@ -29,7 +29,7 @@ exports.deleteOne = (req, res) => {
     UserConversation.destroy({ where: {id: req.params.id}})
     .then(() => {
         res.status(200).json({
-            message: 'Conversation supprimée avec succès'
+            customMessage: 'Conversation supprimée avec succès'
         });
     })
     .catch(error => {

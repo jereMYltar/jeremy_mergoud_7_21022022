@@ -12,7 +12,7 @@ exports.signup = (req, res, next) => {
             User.create(user)
                 .then(() => {
                     res.status(201).json({
-                        message: 'Utilisateur créé avec succès'
+                        customMessage: 'Utilisateur créé avec succès'
                     });
                 })
                 .catch(error => {
@@ -42,6 +42,7 @@ exports.login = (req, res, next) => {
                                 return res.status(403).json({ error: 'Requête non autorisée' })
                             }
                             res.status(200).json({
+                                customMessage: "Connexion réussie",
                                 token: jwt.sign(
                                     {userId: user.id,
                                     isAdmin: user.isAdmin},

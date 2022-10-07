@@ -7,7 +7,7 @@ exports.createOne = (req, res) => {
     User.create(user)
         .then(() => {
             res.status(201).json({
-                message: 'Utilisateur créé avec succès'
+                customMessage: 'Utilisateur créé avec succès'
             });
         })
         .catch(error => {
@@ -79,7 +79,7 @@ exports.updateOne = (req, res) => {
     User.update(user, {where: {id: req.params.id}})
         .then(() => {
             res.status(201).json({
-                message: 'Utilisateur mis à jour avec succès'
+                customMessage: 'Utilisateur mis à jour avec succès'
             });
         })
         .catch(error => {
@@ -94,7 +94,7 @@ exports.deleteOne = (req, res) => {
     User.destroy({ where: {id: req.params.id}})
     .then(() => {
         res.status(200).json({
-            message: 'Utilisateur supprimé avec succès'
+            customMessage: 'Utilisateur supprimé avec succès'
         });
     })
     .catch(error => {
