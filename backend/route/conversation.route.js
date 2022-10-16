@@ -11,6 +11,9 @@ router.get('/', Conversation.findAll);
 //READ : récupérer toutes les conversations auxquelles participe un utilisateur
 router.get('/user', Conversation.findAllByUserId);
 
+//READ : récupérer toutes les conversations génériques (auxquelles ne sont inscrits aucun utilisateur)
+router.get('/generic', Conversation.findGenericConv);
+
 //UPDATE : mettre à jour une conversation
 router.put('/:id', Conversation.updateOne);
 

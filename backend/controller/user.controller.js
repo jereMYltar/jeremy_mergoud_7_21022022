@@ -24,6 +24,7 @@ exports.findAllUsers = (req, res) => {
 	        // Send all users to Client
 	        res.status(200).json(
                 users
+                //utilisateurs: users <= transformer en objet et mettre une clef ?
             );
 	    })
         .catch(error => {

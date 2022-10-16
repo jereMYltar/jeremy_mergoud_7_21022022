@@ -51,7 +51,23 @@ exports.findAll = (req, res) => {
 exports.findAllByUserId = (req, res) => {
     Conversation.findAllByUserId(res.locals.userId)
     .then(conversations => {
-        // Renvoie toutes les conversations récépérées au client
+        // Renvoie toutes les conversations récupérées au client
+        res.status(200).json(
+            conversations
+        );
+    })
+    .catch(error => {
+        res.status(400).json({
+            error: error
+        });
+    });
+};
+
+//READ : récupérer toutes les conversations génériques (auxquelles ne sont inscrits aucun utilisateur)
+exports.findGenericConv = (req, res) => {
+    Conversation.findGenericConv()
+    .then(conversations => {
+        // Renvoie toutes les conversations récupérées au client
         res.status(200).json(
             conversations
         );

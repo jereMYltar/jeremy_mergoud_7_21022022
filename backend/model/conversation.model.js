@@ -42,3 +42,14 @@ module.exports.findAllByUserId = function (userId) {
     ORDER BY conversation.updatedAt DESC;
     `, { type: QueryTypes.SELECT });
 };
+
+//READ : récupérer toutes les conversations génériques (auxquelles ne sont inscrits aucun utilisateur)
+module.exports.findGenericConv = function () {
+    return database.query(`
+    SELECT DISTINCT conversation.id, conversation.name
+    FROM conversation
+    LEFT JOIN user_conversation ON user_conversation.conversation_id = conversation.id
+    WHERE user_conversation.conversation_id IS NULL
+    ORDER BY conversation.updatedAt DESC;
+    `, { type: QueryTypes.SELECT });
+};
