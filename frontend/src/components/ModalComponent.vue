@@ -25,77 +25,101 @@
   </transition>
 </template>
 
-<script>
-import { onMounted, onUnmounted, watch, ref } from "vue";
-export default {
-  props: {
-    open: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
+<script setup>
+import { onMounted, onUnmounted, watch, defineProps, defineEmits } from "vue";
+
+//props
+const props = defineProps({
+  open: {
+    type: Boolean,
+    required: true,
+    default: false,
   },
-  setup(props, ctx) {
-    const firstButton = ref(null);
-    const lastButton = ref(null);
+});
 
-    const close = () => {
-      ctx.emit("close");
-    };
+//emit
+const emit = defineEmits(["close"]);
 
-    const handleKeyUp = (event) => {
-      switch (true) {
-        case event.code === "Escape" && props.open:
-          close();
-          break;
-        default:
-          break;
-      }
-    };
-    const handleKeyDown = (event) => {
-      switch (true) {
-        case !event.shiftKey &&
-          event.code === "Tab" &&
-          props.open &&
-          lastButton.value === document.activeElement:
-          event.preventDefault();
-          firstButton.value.focus();
-          break;
-        case event.shiftKey &&
-          event.code === "Tab" &&
-          props.open &&
-          firstButton.value === document.activeElement:
-          event.preventDefault();
-          lastButton.value.focus();
-          break;
-        default:
-          break;
-      }
-    };
+//variables
+let firstButton = "";
+let lastButton = "";
 
-    watch(
-      () => props.open,
-      (isOpen) => {
-        if (isOpen) {
-          setTimeout(() => {
-            firstButton.value.focus();
-          }, 50);
-        }
-      }
-    );
-
-    onMounted(() => {
-      document.addEventListener("keydown", handleKeyDown);
-      document.addEventListener("keyup", handleKeyUp);
-    });
-    onUnmounted(() => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("keyup", handleKeyUp);
-    });
-
-    return { close, firstButton, lastButton };
-  },
+//functions
+const close = () => {
+  firstButton = "";
+  lastButton = "";
+  emit("close");
 };
+
+const captureFocus = () => {
+  const focusableElementsArray = [
+    "[href]",
+    "button:not([disabled])",
+    "input:not([disabled])",
+    "select:not([disabled])",
+    "textarea:not([disabled])",
+    "[tabindex]:not([tabindex='-1'])",
+  ];
+  const modal = document.getElementsByClassName("vue-modal-content");
+  const focusableElements = modal[0].querySelectorAll(focusableElementsArray);
+  firstButton = focusableElements[0];
+  lastButton = focusableElements[focusableElements.length - 1];
+  firstButton.focus();
+};
+
+const handleKeyUp = (event) => {
+  switch (true) {
+    case event.code === "Escape" && props.open:
+      close();
+      break;
+    default:
+      break;
+  }
+};
+
+const handleKeyDown = (event) => {
+  switch (true) {
+    case !event.shiftKey &&
+      event.code === "Tab" &&
+      props.open &&
+      lastButton === document.activeElement:
+      event.preventDefault();
+      firstButton.focus();
+      break;
+    case event.shiftKey &&
+      event.code === "Tab" &&
+      props.open &&
+      firstButton === document.activeElement:
+      event.preventDefault();
+      lastButton.focus();
+      break;
+    default:
+      break;
+  }
+};
+
+//watchers
+watch(
+  () => props.open,
+  (isOpen) => {
+    if (isOpen) {
+      setTimeout(() => {
+        captureFocus();
+      }, 50);
+    }
+  }
+);
+
+onMounted(() => {
+  document.addEventListener("keydown", handleKeyDown);
+  document.addEventListener("keyup", handleKeyUp);
+});
+onUnmounted(() => {
+  document.removeEventListener("keydown", handleKeyDown);
+  document.removeEventListener("keyup", handleKeyUp);
+});
+
+// return { close, firstButton, lastButton };
 </script>
 
 <style scoped>
@@ -131,6 +155,10 @@ export default {
   background-clip: padding-box;
   border-radius: 0.3rem;
   padding: 1rem;
+}
+
+.vue-modal-content /deep/ :focus {
+  border: solid 5px rgb(16, 161, 66);
 }
 
 .fade-enter-active,
