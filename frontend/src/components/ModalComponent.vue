@@ -1,21 +1,30 @@
 /* eslint-disable */
 <template>
+  <button @click="openModal">
+    <slot name="callButton"></slot>
+  </button>
   <transition name="fade">
-    <div class="vue-modal" @click.self="$emit('close')" v-show="open">
+    <div class="vue-modal" @click.self="closeModal" v-if="isOpen">
       <transition name="drop-in">
-        <div class="vue-modal-inner" v-show="open">
+        <div class="vue-modal-inner">
           <div class="vue-modal-content">
             <button
               type="button"
-              ref="firstButton"
+              ref="firstButton1"
               aria-label="Fermer"
               title="Fermer cette fenêtre modale"
-              @click="$emit('close')"
+              @click="closeModal"
+              v-if="props.global"
             >
               X
             </button>
-            <slot />
-            <button type="button" ref="lastButton" @click="$emit('close')">
+            <slot></slot>
+            <button
+              type="button"
+              ref="lastButton1"
+              @click="closeModal"
+              v-if="props.global"
+            >
               Annuler
             </button>
           </div>
@@ -26,30 +35,42 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, watch, defineProps, defineEmits } from "vue";
+import {
+  onMounted,
+  onUnmounted,
+  watch,
+  defineProps,
+  defineExpose,
+  ref,
+} from "vue";
 
 //props
 const props = defineProps({
-  open: {
+  global: {
     type: Boolean,
     required: true,
-    default: false,
+    default: true,
   },
 });
 
-//emit
-const emit = defineEmits(["close"]);
-
 //variables
-let firstButton = "";
-let lastButton = "";
+let isOpen = ref(false);
+let firstButton = ref("");
+let lastButton = ref("");
 
 //functions
-const close = () => {
-  firstButton = "";
-  lastButton = "";
-  emit("close");
+
+const openModal = () => {
+  isOpen.value = true;
 };
+
+const closeModal = () => {
+  isOpen.value = false;
+  firstButton.value = "";
+  lastButton.value = "";
+};
+
+defineExpose({ closeModal });
 
 const captureFocus = () => {
   const focusableElementsArray = [
@@ -62,15 +83,15 @@ const captureFocus = () => {
   ];
   const modal = document.getElementsByClassName("vue-modal-content");
   const focusableElements = modal[0].querySelectorAll(focusableElementsArray);
-  firstButton = focusableElements[0];
-  lastButton = focusableElements[focusableElements.length - 1];
-  firstButton.focus();
+  firstButton.value = focusableElements[0];
+  lastButton.value = focusableElements[focusableElements.length - 1];
+  firstButton.value.focus();
 };
 
 const handleKeyUp = (event) => {
   switch (true) {
-    case event.code === "Escape" && props.open:
-      close();
+    case event.code === "Escape" && isOpen.value:
+      closeModal();
       break;
     default:
       break;
@@ -81,17 +102,17 @@ const handleKeyDown = (event) => {
   switch (true) {
     case !event.shiftKey &&
       event.code === "Tab" &&
-      props.open &&
-      lastButton === document.activeElement:
+      isOpen.value &&
+      lastButton.value === document.activeElement:
       event.preventDefault();
-      firstButton.focus();
+      firstButton.value.focus();
       break;
     case event.shiftKey &&
       event.code === "Tab" &&
-      props.open &&
-      firstButton === document.activeElement:
+      isOpen.value &&
+      firstButton.value === document.activeElement:
       event.preventDefault();
-      lastButton.focus();
+      lastButton.value.focus();
       break;
     default:
       break;
@@ -99,16 +120,13 @@ const handleKeyDown = (event) => {
 };
 
 //watchers
-watch(
-  () => props.open,
-  (isOpen) => {
-    if (isOpen) {
-      setTimeout(() => {
-        captureFocus();
-      }, 50);
-    }
+watch(isOpen, (newValue) => {
+  if (newValue) {
+    setTimeout(() => {
+      captureFocus();
+    }, 50);
   }
-);
+});
 
 onMounted(() => {
   document.addEventListener("keydown", handleKeyDown);
@@ -118,8 +136,6 @@ onUnmounted(() => {
   document.removeEventListener("keydown", handleKeyDown);
   document.removeEventListener("keyup", handleKeyUp);
 });
-
-// return { close, firstButton, lastButton };
 </script>
 
 <style scoped>

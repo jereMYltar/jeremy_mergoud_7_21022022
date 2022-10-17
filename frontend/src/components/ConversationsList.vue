@@ -8,10 +8,10 @@
     >
       <h4>{{ conversation.name }}</h4>
     </button>
-    <button @click="isOpen = true" ref="modalButton">
-      Nouvelle conversation
-    </button>
-    <Modal :open="isOpen" @close="closeModal">
+    <Modal :global="true" ref="modalRef1">
+      <template #callButton>
+        <p>Nouvelle conversation</p>
+      </template>
       <h1>Créer une nouvelle conversation</h1>
       <p>Sélectionner les participants à cette conversation :</p>
       <p>Ici mon outil de choix de personnes</p>
@@ -56,17 +56,9 @@ export default {
     };
   },
   setup() {
-    const isOpen = ref(false);
     const modalButton = ref();
 
-    function closeModal() {
-      isOpen.value = false;
-      setTimeout(() => {
-        modalButton.value.focus();
-      }, 50);
-    }
-
-    return { isOpen, modalButton, closeModal };
+    return { modalButton };
   },
   methods: {
     showDetails(id) {
@@ -85,7 +77,7 @@ export default {
         .catch();
       this.selectedValue = [];
       document.getElementById("conversationName").value = "";
-      this.closeModal();
+      this.$refs.modalRef1.closeModal();
     },
   },
   created() {
