@@ -1,8 +1,5 @@
 <template>
-  <div
-    :key="props.messageData.id"
-    :class="['message', props.messageData.isAuthor ? 'written' : 'read']"
-  >
+  <div :class="['message', props.messageData.isAuthor ? 'written' : 'read']">
     <div>{{ props.messageData.author }}</div>
     <div v-if="props.messageData.createdAt != props.messageData.updatedAt">
       Message modifié le {{ timeFormat(props.messageData.updatedAt) }}
