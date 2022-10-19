@@ -41,7 +41,7 @@
 
 <script>
 import EventService from "@/services/EventService.js";
-import Modal from "@/components/ModalComponent.vue";
+import Modal from "@/components/modal/ModalComponent.vue";
 import { ref } from "vue";
 import Multiselect from "@vueform/multiselect";
 export default {

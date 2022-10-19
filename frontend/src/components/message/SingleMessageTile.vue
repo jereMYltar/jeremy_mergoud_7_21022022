@@ -12,12 +12,20 @@
       règles de bonne conduite de notre entreprise.
     </div>
     <div>Message posté le {{ timeFormat(props.messageData.createdAt) }}</div>
+    <Modal :global="false" ref="modalRef1" v-if="props.messageData.isAuthor">
+      <template #callButton>
+        <p>...</p>
+      </template>
+      <button>Modifier</button>
+      <button>Supprimer</button>
+    </Modal>
   </div>
 </template>
 
 <script setup>
 import defineProps from "vue";
 import moment from "moment";
+import Modal from "@/components/modal/ModalComponent.vue";
 
 //props
 const props = defineProps({
