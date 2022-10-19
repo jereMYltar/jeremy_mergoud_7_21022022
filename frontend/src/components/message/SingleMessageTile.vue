@@ -1,0 +1,57 @@
+<template>
+  <div
+    :key="props.messageData.id"
+    :class="['message', props.messageData.isAuthor ? 'written' : 'read']"
+  >
+    <div>{{ props.messageData.author }}</div>
+    <div v-if="props.messageData.createdAt != props.messageData.updatedAt">
+      Message modifié le {{ timeFormat(props.messageData.updatedAt) }}
+    </div>
+    <div v-if="!props.messageData.isModerated">
+      {{ props.messageData.content }}
+    </div>
+    <div v-if="props.messageData.isModerated">
+      Le contenu de ce message a été modéré en raison d'un non-respect des
+      règles de bonne conduite de notre entreprise.
+    </div>
+    <div>Message posté le {{ timeFormat(props.messageData.createdAt) }}</div>
+  </div>
+</template>
+
+<script setup>
+import defineProps from "vue";
+import moment from "moment";
+
+//props
+const props = defineProps({
+  messageData: {
+    type: Object,
+    required: true,
+  },
+});
+
+//variable
+
+//methods
+const timeFormat = (a) => {
+  return moment(a).locale("fr").format("LL à LTS");
+};
+</script>
+
+<style scoped>
+.message {
+  margin: 5px;
+  padding: 3px;
+  border: 1px grey solid;
+  border-radius: 3px;
+  width: 70%;
+}
+.written {
+  background-color: lightcyan;
+  align-self: flex-end;
+}
+.read {
+  background-color: lightgray;
+  align-self: flex-start;
+}
+</style>

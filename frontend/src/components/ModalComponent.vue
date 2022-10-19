@@ -83,9 +83,11 @@ const captureFocus = () => {
   ];
   const modal = document.getElementsByClassName("vue-modal-content");
   const focusableElements = modal[0].querySelectorAll(focusableElementsArray);
-  firstButton.value = focusableElements[0];
-  lastButton.value = focusableElements[focusableElements.length - 1];
-  firstButton.value.focus();
+  if (focusableElements.length > 0) {
+    firstButton.value = focusableElements[0];
+    lastButton.value = focusableElements[focusableElements.length - 1];
+    firstButton.value.focus();
+  }
 };
 
 const handleKeyUp = (event) => {
