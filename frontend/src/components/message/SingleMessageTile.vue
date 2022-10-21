@@ -1,6 +1,7 @@
 <template>
   <div :class="['message', props.messageData.isAuthor ? 'written' : 'read']">
-    <div>{{ props.messageData.author }}</div>
+    <div v-if="!props.messageData.isAuthor">{{ props.messageData.author }}</div>
+    <div v-if="props.messageData.isAuthor">Moi</div>
     <div v-if="props.messageData.createdAt != props.messageData.updatedAt">
       Message modifié le {{ timeFormat(props.messageData.updatedAt) }}
     </div>
@@ -12,20 +13,40 @@
       règles de bonne conduite de notre entreprise.
     </div>
     <div>Message posté le {{ timeFormat(props.messageData.createdAt) }}</div>
-    <Modal :global="false" ref="modalRef1" v-if="props.messageData.isAuthor">
+    <ModalComponent
+      :global="false"
+      ref="modalRef1"
+      v-if="props.messageData.isAuthor"
+    >
       <template #callButton>
         <p>...</p>
       </template>
-      <button>Modifier</button>
-      <button>Supprimer</button>
-    </Modal>
+      <ModalComponent :global="true">
+        <template #callButton>
+          <button>Modifier</button>
+        </template>
+        <h1>Voulez-vous modifier le contenu de ce message ?</h1>
+        <p>{{ props.messageData.content }}</p>
+      </ModalComponent>
+      <ModalComponent :global="true">
+        <template #callButton>
+          <button>Supprimer</button>
+        </template>
+        <h1>Supprimer le message ?</h1>
+        <p>
+          Vous vous apprêter à supprimer ce message. Cette action est
+          irreversible, voulez-vous continuer ?
+        </p>
+        <button>Oui</button>
+      </ModalComponent>
+    </ModalComponent>
   </div>
 </template>
 
 <script setup>
 import defineProps from "vue";
 import moment from "moment";
-import Modal from "@/components/modal/ModalComponent.vue";
+import ModalComponent from "@/components/modal/ModalComponent.vue";
 
 //props
 const props = defineProps({

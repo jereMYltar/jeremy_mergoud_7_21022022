@@ -35,14 +35,7 @@
 </template>
 
 <script setup>
-import {
-  onMounted,
-  onUnmounted,
-  watch,
-  defineProps,
-  defineExpose,
-  ref,
-} from "vue";
+import { watch, defineProps, defineExpose, ref } from "vue";
 
 //props
 const props = defineProps({
@@ -62,11 +55,15 @@ let lastButton = ref("");
 
 const openModal = () => {
   isOpen.value = true;
+  document.addEventListener("keydown", handleKeyDown);
+  document.addEventListener("keyup", handleKeyUp);
 };
 
 const closeModal = () => {
   isOpen.value = false;
   firstButton.value = "";
+  document.removeEventListener("keydown", handleKeyDown);
+  document.removeEventListener("keyup", handleKeyUp);
   lastButton.value = "";
 };
 
@@ -91,6 +88,7 @@ const captureFocus = () => {
 };
 
 const handleKeyUp = (event) => {
+  console.log("salut");
   switch (true) {
     case event.code === "Escape" && isOpen.value:
       closeModal();
@@ -128,15 +126,6 @@ watch(isOpen, (newValue) => {
       captureFocus();
     }, 50);
   }
-});
-
-onMounted(() => {
-  document.addEventListener("keydown", handleKeyDown);
-  document.addEventListener("keyup", handleKeyUp);
-});
-onUnmounted(() => {
-  document.removeEventListener("keydown", handleKeyDown);
-  document.removeEventListener("keyup", handleKeyUp);
 });
 </script>
 
