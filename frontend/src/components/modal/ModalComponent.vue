@@ -7,7 +7,7 @@
     <div class="vue-modal" @click.self="closeModal" v-if="isOpen">
       <transition name="drop-in">
         <div class="vue-modal-inner">
-          <div class="vue-modal-content">
+          <div class="vue-modal-content" :createdat="Date.now()">
             <button
               type="button"
               ref="firstButton1"
@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { watch, defineProps, defineExpose, ref } from "vue";
+import { watch, defineProps, defineExpose, ref, nextTick } from "vue";
 
 //props
 const props = defineProps({
@@ -48,13 +48,16 @@ const props = defineProps({
 
 //variables
 let isOpen = ref(false);
+let latestModal = ref();
 let firstButton = ref("");
 let lastButton = ref("");
 
 //functions
 
-const openModal = () => {
+const openModal = async () => {
   isOpen.value = true;
+  await nextTick();
+  latestModal.value = findLatestModal();
   document.addEventListener("keydown", handleKeyDown);
   document.addEventListener("keyup", handleKeyUp);
 };
@@ -69,6 +72,21 @@ const closeModal = () => {
 
 defineExpose({ closeModal });
 
+const findLatestModal = () => {
+  const modals = document.querySelectorAll("div.vue-modal-content");
+  let latestTimeStamp = 0;
+  modals.forEach((element) => {
+    const createdAt = element.getAttribute("createdat");
+    if (latestTimeStamp < createdAt) {
+      latestTimeStamp = createdAt;
+    }
+  });
+  const latestModal = document.querySelector(
+    ".vue-modal-content[createdat='" + latestTimeStamp + "']"
+  );
+  return latestModal;
+};
+
 const captureFocus = () => {
   const focusableElementsArray = [
     "[href]",
@@ -78,8 +96,11 @@ const captureFocus = () => {
     "textarea:not([disabled])",
     "[tabindex]:not([tabindex='-1'])",
   ];
-  const modal = document.getElementsByClassName("vue-modal-content");
-  const focusableElements = modal[0].querySelectorAll(focusableElementsArray);
+  // const modal = document.getElementsByClassName("vue-modal-content");
+  // const focusableElements = modal[0].querySelectorAll(focusableElementsArray);
+  const focusableElements = latestModal.value.querySelectorAll(
+    focusableElementsArray
+  );
   if (focusableElements.length > 0) {
     firstButton.value = focusableElements[0];
     lastButton.value = focusableElements[focusableElements.length - 1];

@@ -23,14 +23,14 @@
       </template>
       <ModalComponent :global="true">
         <template #callButton>
-          <button>Modifier</button>
+          <p>Modifier</p>
         </template>
         <h1>Voulez-vous modifier le contenu de ce message ?</h1>
         <p>{{ props.messageData.content }}</p>
       </ModalComponent>
       <ModalComponent :global="true">
         <template #callButton>
-          <button>Supprimer</button>
+          <p>Supprimer</p>
         </template>
         <h1>Supprimer le message ?</h1>
         <p>
