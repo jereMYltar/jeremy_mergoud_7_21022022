@@ -4,7 +4,7 @@ const UserConversation = require('../model/user_conversation.model');
 exports.createOne = (req, res) => {
     let conversation = {
         name: req.body.name,
-        conversationAdminId: res.locals.userId,
+        conversationAdminId: res.locals.user.id,
     };
     UserConversation.create(conversation)
         .then((response) => {

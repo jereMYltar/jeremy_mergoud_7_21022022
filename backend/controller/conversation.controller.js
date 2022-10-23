@@ -5,7 +5,7 @@ const UserConversation = require('../model/user_conversation.model');
 exports.createOne = async (req, res) => {
     let conversation = {
         name: req.body.name,
-        conversationAdminId: res.locals.userId,
+        conversationAdminId: res.locals.user.id,
     };
     try {
         const newConversation = await Conversation.create(conversation);
@@ -49,7 +49,7 @@ exports.findAll = (req, res) => {
 
 //READ : récupérer toutes les conversations auxquelles participe un utilisateur
 exports.findAllByUserId = (req, res) => {
-    Conversation.findAllByUserId(res.locals.userId)
+    Conversation.findAllByUserId(res.locals.user.id)
     .then(conversations => {
         // Renvoie toutes les conversations récupérées au client
         res.status(200).json(

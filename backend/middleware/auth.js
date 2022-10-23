@@ -9,8 +9,7 @@ module.exports = (req, res, next) => {
         const userId = decodedToken.userId;
         User.findOne({ where: {id: userId}})
             .then((user) => {
-                // res.locals.user = user;
-                res.locals.userId = userId;
+                res.locals.user = user.dataValues;
                 next();
             })
             .catch(() => {

@@ -4,7 +4,7 @@ const User = require('../model/user.model');
 //CREATE : créer un message et renvoi le message enregistré en base
 exports.createOne = async (req, res) => {
     const message = req.body.message;
-    message.user_id = res.locals.userId;
+    message.user_id = res.locals.user.id;
     try {
         const newMessage = await Message.create(message)
         const user = await User.findNameById(newMessage.dataValues.user_id)
@@ -47,7 +47,7 @@ exports.readAllByConversationId = (req, res) => {
     Message.findAllByConversationId(conversationId)
     .then(messages => {
         messages.forEach(message => {
-            message.isAuthor = message.user_id == res.locals.userId;
+            message.isAuthor = message.user_id == res.locals.user.id;
             delete message.user_id;
         });
         // Renvoie tous les messages d'une conversation au client
@@ -68,7 +68,7 @@ exports.readAllActiveByConversationId = (req, res) => {
     Message.findAllActiveByConversationId(conversationId)
     .then(messages => {
         messages.forEach(message => {
-            message.isAuthor = message.user_id == res.locals.userId;
+            message.isAuthor = message.user_id == res.locals.user.id;
             delete message.user_id;
         });
         // Renvoie tous les messages d'une conversation au client
