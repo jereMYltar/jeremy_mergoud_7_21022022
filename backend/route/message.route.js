@@ -24,7 +24,7 @@ router.put('/:id', messages.updateOne);
 router.put('/moderate/:id', messages.moderateOne);
 
 //UPDATE : rétablir un message modéré
-router.put('/unmoderate/:id', messages.unmoderateOne);
+router.put('/restoreOne/:id', messages.unmoderateOne);
 
 //DELETE : supprimer un message
 router.delete('/:id', messages.deleteOne);

@@ -50,24 +50,35 @@ apiUsers.interceptors.response.use(
   });
 
 export default {
+  //login
   login(payload) {
     return apiUsers.post("/connection/login", payload);
   },
+  //sigup
   signUp(payload) {
     return apiUsers.post("/connection/signup", payload);
   },
+  //conversation
   createConversation(payload) {
     return apiUsers.post("/conversation/", payload)
   },
   getAllConversationsForCurrentUser() {
     return apiUsers.get("/conversation/user");
   },
+  //message
   getAllMessagesByConversationId(payload) {
     return apiUsers.get(`/message/conversation/${payload}`)
   },
   sendMessage(payload) {
     return apiUsers.post("/message/", payload);
   },
+  moderateMessage(payload) {
+    return apiUsers.put("/message/moderate/:id", payload);
+  },
+  restoreMessage(payload) {
+    return apiUsers.put("/message/restore/:id", payload);
+  },
+  //user
   getAllUsers() {
     return apiUsers.get("/user/all");
   },

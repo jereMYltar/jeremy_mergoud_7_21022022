@@ -142,7 +142,7 @@ exports.moderateOne = (req, res) => {
 };
 
 //UPDATE : restaurer un message modéré
-exports.unmoderateOne = (req, res) => {
+exports.restoreOne = (req, res) => {
     const messageId = req.params.id;
     Message.update({isModerated: false}, {
         where: {
