@@ -8,7 +8,8 @@ module.exports = (req, res, next) => {
         const decodedToken = jwt.verify(token, `${env.JWT_SALT}`);
         const userId = decodedToken.userId;
         User.findOne({ where: {id: userId}})
-            .then(() => {
+            .then((user) => {
+                // res.locals.user = user;
                 res.locals.userId = userId;
                 next();
             })
