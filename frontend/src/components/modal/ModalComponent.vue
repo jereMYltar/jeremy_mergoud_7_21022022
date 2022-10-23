@@ -4,10 +4,15 @@
     <slot name="callButton"></slot>
   </button>
   <transition name="fade">
-    <div class="vue-modal" @click.self="closeModal" v-if="isOpen">
+    <div
+      class="vue-modal"
+      @click.self="closeModal"
+      v-if="isOpen"
+      :createdat="Date.now()"
+    >
       <transition name="drop-in">
         <div class="vue-modal-inner">
-          <div class="vue-modal-content" :createdat="Date.now()">
+          <div class="vue-modal-content">
             <button
               type="button"
               ref="firstButton1"
@@ -35,7 +40,7 @@
 </template>
 
 <script setup>
-import { watch, defineProps, defineExpose, ref, nextTick } from "vue";
+import { defineProps, defineExpose, ref, nextTick } from "vue";
 
 //props
 const props = defineProps({
@@ -51,6 +56,7 @@ let isOpen = ref(false);
 let latestModal = ref();
 let firstButton = ref("");
 let lastButton = ref("");
+let callButton = ref("");
 
 //functions
 
@@ -58,22 +64,27 @@ const openModal = async () => {
   isOpen.value = true;
   await nextTick();
   latestModal.value = findLatestModal();
-  document.addEventListener("keydown", handleKeyDown);
-  document.addEventListener("keyup", handleKeyUp);
+  callButton.value = defineCallButton();
+  captureFocus();
+  latestModal.value.addEventListener("keydown", handleKeyDown, false);
+  latestModal.value.addEventListener("keyup", handleKeyUp, false);
 };
 
 const closeModal = () => {
-  isOpen.value = false;
+  callButton.value.focus();
+  latestModal.value.removeEventListener("keydown", handleKeyDown);
+  latestModal.value.removeEventListener("keyup", handleKeyUp);
+  latestModal.value = "";
   firstButton.value = "";
-  document.removeEventListener("keydown", handleKeyDown);
-  document.removeEventListener("keyup", handleKeyUp);
   lastButton.value = "";
+  callButton.value = "";
+  isOpen.value = false;
 };
 
 defineExpose({ closeModal });
 
 const findLatestModal = () => {
-  const modals = document.querySelectorAll("div.vue-modal-content");
+  const modals = document.querySelectorAll("div.vue-modal");
   let latestTimeStamp = 0;
   modals.forEach((element) => {
     const createdAt = element.getAttribute("createdat");
@@ -82,9 +93,13 @@ const findLatestModal = () => {
     }
   });
   const latestModal = document.querySelector(
-    ".vue-modal-content[createdat='" + latestTimeStamp + "']"
+    ".vue-modal[createdat='" + latestTimeStamp + "']"
   );
   return latestModal;
+};
+
+const defineCallButton = () => {
+  return latestModal.value.previousSibling;
 };
 
 const captureFocus = () => {
@@ -96,8 +111,6 @@ const captureFocus = () => {
     "textarea:not([disabled])",
     "[tabindex]:not([tabindex='-1'])",
   ];
-  // const modal = document.getElementsByClassName("vue-modal-content");
-  // const focusableElements = modal[0].querySelectorAll(focusableElementsArray);
   const focusableElements = latestModal.value.querySelectorAll(
     focusableElementsArray
   );
@@ -109,7 +122,7 @@ const captureFocus = () => {
 };
 
 const handleKeyUp = (event) => {
-  console.log("salut");
+  event.stopPropagation();
   switch (true) {
     case event.code === "Escape" && isOpen.value:
       closeModal();
@@ -120,6 +133,7 @@ const handleKeyUp = (event) => {
 };
 
 const handleKeyDown = (event) => {
+  event.stopPropagation();
   switch (true) {
     case !event.shiftKey &&
       event.code === "Tab" &&
@@ -141,13 +155,8 @@ const handleKeyDown = (event) => {
 };
 
 //watchers
-watch(isOpen, (newValue) => {
-  if (newValue) {
-    setTimeout(() => {
-      captureFocus();
-    }, 50);
-  }
-});
+// watch(variableASurveiller, (newValue[, oldValue]) => {
+// });
 </script>
 
 <style scoped>
