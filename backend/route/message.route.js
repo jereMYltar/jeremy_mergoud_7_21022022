@@ -20,6 +20,12 @@ router.get('/latest/conversation/:id', messages.readLatestByConversationId);
 //UPDATE : mettre à jour un message
 router.put('/:id', messages.updateOne);
 
+//UPDATE : modérer un message
+router.put('/moderate/:id', messages.moderateOne);
+
+//UPDATE : rétablir un message modéré
+router.put('/unmoderate/:id', messages.unmoderateOne);
+
 //DELETE : supprimer un message
 router.delete('/:id', messages.deleteOne);
 

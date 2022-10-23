@@ -121,6 +121,46 @@ exports.updateOne = (req, res) => {
     });
 };
 
+//UPDATE : modérer un message
+exports.moderateOne = (req, res) => {
+    const messageId = req.params.id;
+    Message.update({isModerated: true}, {
+        where: {
+            id: messageId
+        }
+    })
+    .then(() => {
+        res.status(200).json({
+            customMessage: 'Message modéré avec succès'
+        });
+    })
+    .catch(error => {
+        res.status(400).json({
+            error: error
+        });
+    });
+};
+
+//UPDATE : restaurer un message modéré
+exports.unmoderateOne = (req, res) => {
+    const messageId = req.params.id;
+    Message.update({isModerated: false}, {
+        where: {
+            id: messageId
+        }
+    })
+    .then(() => {
+        res.status(200).json({
+            customMessage: 'Message rétabli avec succès'
+        });
+    })
+    .catch(error => {
+        res.status(400).json({
+            error: error
+        });
+    });
+};
+
 //DELETE : supprimer un message
 exports.deleteOne = (req, res) => {
     Message.destroy({ where: {id: req.params.id}})
