@@ -54,6 +54,26 @@ exports.findOneById = (req, res) => {
         });
 };
 
+//READ : récupérer une quantité d'information llimité d'un utilisateur en fonction de son id
+exports.findOneLimitedById = (req, res) => {
+    User.findOneLimitedById(req.params.id)
+        .then(user => {
+            // Send user found to Client
+	        if (!!user) {
+                res.status(200).json(
+                    user
+                );
+            } else {
+                throw 'La ressource demandée n\'existe pas';
+            };
+        })
+        .catch(error => {
+            res.status(400).json({
+                error: error
+            });
+        });
+};
+
 //READ : récupérer un utilisateur en fonction de son email
 exports.findOneByEmail = (req, res) => {
     User.findOne({ where: {email: req.body.email}})

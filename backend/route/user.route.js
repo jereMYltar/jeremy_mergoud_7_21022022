@@ -11,6 +11,9 @@ router.get('/all', users.findAllUsers);
 //READ : récupérer un utilisateur en fonction de son id
 router.get('/find/:id', users.findOneById);
 
+//READ : récupérer une quantité d'information llimité d'un utilisateur en fonction de son id
+router.get('/findLimited/:id', users.findOneLimitedById);
+
 //READ : récupérer un utilisateur en fonction de son email
 router.get('/findEmail', users.findOneByEmail);
 

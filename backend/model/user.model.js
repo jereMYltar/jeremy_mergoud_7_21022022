@@ -61,6 +61,17 @@ module.exports.findAllUsers = function () {
     `, { type: QueryTypes.SELECT });
 };
 
+//READ : récupérer un nombre limité d'éléments d'un utilisateur par son id
+module.exports.findOneLimitedById = function (id) {
+    return database.query(`
+    SELECT id,
+        isAdmin,
+        accountDeleted
+    FROM user
+    WHERE id = ${id}
+    `, { type: QueryTypes.SELECT });
+};
+
 //READ : récupérer le nom de l'utilisateur à partir de son id
 module.exports.findNameById = function (id) {
     return database.query(`
