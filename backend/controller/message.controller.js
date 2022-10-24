@@ -102,11 +102,10 @@ exports.readLatestByConversationId = (req, res) => {
 
 //UPDATE : mettre à jour un message
 exports.updateOne = (req, res) => {
-    const messageId = req.params.id;
     const messageUpdated = req.body.message;
     Message.update(messageUpdated, {
         where: {
-            id: messageId
+            id: res.locals.message.id,
         }
     })
     .then(() => {
@@ -123,10 +122,10 @@ exports.updateOne = (req, res) => {
 
 //UPDATE : modérer un message
 exports.moderateOne = (req, res) => {
-    const messageId = req.params.id;
+    console.log(res.locals);
     Message.update({isModerated: true}, {
         where: {
-            id: messageId
+            id: res.locals.message.id
         }
     })
     .then(() => {
@@ -143,10 +142,10 @@ exports.moderateOne = (req, res) => {
 
 //UPDATE : restaurer un message modéré
 exports.restoreOne = (req, res) => {
-    const messageId = req.params.id;
+    console.log(res.locals);
     Message.update({isModerated: false}, {
         where: {
-            id: messageId
+            id: res.locals.message.id
         }
     })
     .then(() => {
@@ -163,7 +162,9 @@ exports.restoreOne = (req, res) => {
 
 //DELETE : supprimer un message
 exports.deleteOne = (req, res) => {
-    Message.destroy({ where: {id: req.params.id}})
+    Message.destroy({ where: {
+        id: res.locals.message.id
+    }})
     .then(() => {
         res.status(200).json({
             customMessage: 'Message supprimé avec succès'

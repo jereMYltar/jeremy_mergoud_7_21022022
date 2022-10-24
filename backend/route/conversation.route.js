@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Conversation = require('../controller/conversation.controller');
+const isConversationAdmin = require('../middleware/isConversationAdmin');
 
 //CREATE : créer une conversation
 router.post('/', Conversation.createOne)
@@ -15,9 +16,9 @@ router.get('/user', Conversation.findAllByUserId);
 router.get('/generic', Conversation.findGenericConv);
 
 //UPDATE : mettre à jour une conversation
-router.put('/:id', Conversation.updateOne);
+router.put('/:id', isConversationAdmin, Conversation.updateOne);
 
 //DELETE : supprimer une Conversation
-router.delete('/:id', Conversation.deleteOne);
+router.delete('/:id', isConversationAdmin, Conversation.deleteOne);
 
 module.exports = router;

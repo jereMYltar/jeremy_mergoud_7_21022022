@@ -81,11 +81,10 @@ exports.findGenericConv = (req, res) => {
 
 //UPDATE : mettre à jour une conversation
 exports.updateOne = (req, res) => {
-    const conversationId = req.params.id;
     const conversationUpdated = req.body.conversation;
     Conversation.update(conversationUpdated, {
         where: {
-            id: conversationId
+            id: res.locals.conversation.id
         }
     })
     .then(() => {
@@ -102,7 +101,7 @@ exports.updateOne = (req, res) => {
 
 //DELETE : supprimer une Conversation
 exports.deleteOne = (req, res) => {
-    Conversation.destroy({ where: {id: req.params.id}})
+    Conversation.destroy({ where: {id: res.locals.conversation.id}})
     .then(() => {
         res.status(200).json({
             customMessage: 'Conversation supprimée avec succès'

@@ -37,6 +37,10 @@ const User = database.define('user', {
     isAdmin: {
         type: DataTypes.BOOLEAN,
         defaultValue: 0
+    },
+    accountDeleted: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 0
     }
 },
 {

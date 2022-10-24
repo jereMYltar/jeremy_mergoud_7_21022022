@@ -17,6 +17,10 @@ const Conversation = database.define('conversation', {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: 0,
+    },
+    isClosed: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 0
     }
 },
 {

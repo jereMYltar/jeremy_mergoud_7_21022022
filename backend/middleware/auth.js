@@ -7,9 +7,13 @@ module.exports = (req, res, next) => {
         const token = req.headers.authorization.split(' ')[1];
         const decodedToken = jwt.verify(token, `${env.JWT_SALT}`);
         const userId = decodedToken.userId;
-        User.findOneLimitedById(userId)
+        User.findOne({ where: {id: userId}})
             .then((user) => {
-                res.locals.user = user[0];
+                res.locals.user = {
+                    id: user.dataValues.id,
+                    isAdmin: user.dataValues.isAdmin,
+                    accountDeleted: user.dataValues.accountDeleted,
+                };
                 next();
             })
             .catch(() => {
