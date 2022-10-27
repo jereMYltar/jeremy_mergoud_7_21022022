@@ -47,7 +47,7 @@ export default {
       let payload = {
         message: {
           conversation_id: this.id,
-          user_id: 0,
+          messageOwnerId: 0,
           content: this.message,
         },
       };

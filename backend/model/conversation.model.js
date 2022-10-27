@@ -13,7 +13,7 @@ const Conversation = database.define('conversation', {
         type: DataTypes.STRING(80),
         allowNull: false
     },
-    conversationAdminId: {
+    conversationOwnerId: {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: 0,
@@ -31,9 +31,9 @@ const Conversation = database.define('conversation', {
 module.exports = Conversation;
 
 //définition des fonctions de base du modèle :
-//- CREATE - créer une conversation : requête de base de Sequelize => create. Requiert un objet contenant name et conversationAdminId
+//- CREATE - créer une conversation : requête de base de Sequelize => create. Requiert un objet contenant name et conversationOwnerId
 //- READ - lire/récupérer une conversation : requêtes brutes ci-dessous
-//- UPDATE - mettre à jour une conversation : requête de base de Sequelize => update. Requiert un objet contenant name et conversationAdminId, ainsi que l'id de la convesation modifié (pour la clause WHERE)
+//- UPDATE - mettre à jour une conversation : requête de base de Sequelize => update. Requiert un objet contenant name et conversationOwnerId, ainsi que l'id de la convesation modifié (pour la clause WHERE)
 //- DELETE - supprimer une conversation : requête de base de Sequelize => destroy. Requiert l'id de la conversation supprimée (pour la clause WHERE)
 
 //READ : récupérer toutes les conversations auxquelles participe un utilisateur (sur la base de son id)

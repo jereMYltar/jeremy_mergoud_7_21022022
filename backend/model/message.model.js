@@ -13,7 +13,7 @@ const Message = database.define('message', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    user_id: {
+    messageOwnerId: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
@@ -34,7 +34,7 @@ const Message = database.define('message', {
 module.exports = Message;
 
 //définition des fonctions de base du modèle :
-//- CREATE - créer un message : requête de base de Sequelize => create. Requiert un objet contenant conversation_id, user_id et content
+//- CREATE - créer un message : requête de base de Sequelize => create. Requiert un objet contenant conversation_id, messageOwnerId et content
 //- READ - lire/récupérer un message : requêtes brutes ci-dessous
 //- UPDATE - mettre à jour un message : requête de base de Sequelize => update. Requiert un objet contenant content (pour la modification du contenu) et/ou isModerated (pour la modération du message), ainsi que l'id du message modifié (pour la clause WHERE)
 //- DELETE - supprimer un message : requête de base de Sequelize => destroy. Requiert l'id du message supprimé (pour la clause WHERE)
@@ -48,9 +48,9 @@ module.exports.findOneById = function (messageId) {
         message.createdAt AS createdAt,
         message.updatedAt AS updatedAt,
         message.isModerated as isModerated,
-        message.user_id AS user_id
+        message.messageOwnerId AS messageOwnerId
     FROM message
-    JOIN user ON message.user_id=user.id
+    JOIN user ON message.messageOwnerId=user.id
     WHERE message.id=${messageId} ;
     `, { type: QueryTypes.SELECT });
 };
@@ -63,9 +63,9 @@ module.exports.findAllByConversationId = function (conversationId) {
         message.createdAt AS createdAt,
         message.updatedAt AS updatedAt,
         message.isModerated as isModerated,
-        message.user_id AS user_id
+        message.messageOwnerId AS messageOwnerId
     FROM message
-    JOIN user ON message.user_id=user.id
+    JOIN user ON message.messageOwnerId=user.id
     WHERE message.conversation_id=${conversationId}
     ORDER BY createdAt DESC;
     `, { type: QueryTypes.SELECT });
@@ -79,9 +79,9 @@ module.exports.findAllActiveByConversationId = function (conversationId) {
         message.createdAt AS createdAt,
         message.updatedAt AS updatedAt,
         message.isModerated as isModerated,
-        message.user_id AS user_id
+        message.messageOwnerId AS messageOwnerId
     FROM message
-    JOIN user ON message.user_id=user.id
+    JOIN user ON message.messageOwnerId=user.id
     WHERE message.conversation_id=${conversationId} AND !message.isModerated;
     `, { type: QueryTypes.SELECT });
 };
@@ -94,9 +94,9 @@ module.exports.findLatestByConversationId = function (conversationId) {
         message.createdAt AS createdAt,
         message.updatedAt AS updatedAt,
         message.isModerated as isModerated,
-        message.user_id AS user_id
+        message.messageOwnerId AS messageOwnerId
     FROM message
-    JOIN user ON message.user_id=user.id
+    JOIN user ON message.messageOwnerId=user.id
     WHERE message.conversation_id=${conversationId}
     ORDER BY message.id DESC LIMIT 0,1 ;
     `, { type: QueryTypes.SELECT });

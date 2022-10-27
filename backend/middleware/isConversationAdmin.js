@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
         const conversationId = req.params.id;
         Conversation.findOne({ where: {id: conversationId}})
             .then((conversation) => {
-                if (conversation.conversationAdminId == userId) {
+                if (conversation.conversationOwnerId == userId) {
                     res.locals.conversation = conversation.dataValues;
                     next();
                 } else {

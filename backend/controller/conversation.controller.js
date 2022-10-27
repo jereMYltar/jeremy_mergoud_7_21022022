@@ -5,7 +5,7 @@ const UserConversation = require('../model/user_conversation.model');
 exports.createOne = async (req, res) => {
     let conversation = {
         name: req.body.name,
-        conversationAdminId: res.locals.user.id,
+        conversationOwnerId: res.locals.user.id,
     };
     try {
         const newConversation = await Conversation.create(conversation);

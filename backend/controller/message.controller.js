@@ -4,14 +4,14 @@ const User = require('../model/user.model');
 //CREATE : créer un message et renvoi le message enregistré en base
 exports.createOne = async (req, res) => {
     const message = req.body.message;
-    message.user_id = res.locals.user.id;
+    message.messageOwnerId = res.locals.user.id;
     try {
         const newMessage = await Message.create(message)
-        const user = await User.findNameById(newMessage.dataValues.user_id)
+        const user = await User.findNameById(newMessage.dataValues.messageOwnerId)
         newMessage.dataValues.author = user[0].name;
         newMessage.dataValues.isAuthor = true;
         delete newMessage.dataValues.conversation_id;
-        delete newMessage.dataValues.user_id;
+        delete newMessage.dataValues.messageOwnerId;
         res.status(201).json({
             customMessage: 'Message créé avec succès',
             body: newMessage.dataValues,
@@ -47,8 +47,8 @@ exports.readAllByConversationId = (req, res) => {
     Message.findAllByConversationId(conversationId)
     .then(messages => {
         messages.forEach(message => {
-            message.isAuthor = message.user_id == res.locals.user.id;
-            delete message.user_id;
+            message.isAuthor = message.messageOwnerId == res.locals.user.id;
+            delete message.messageOwnerId;
         });
         // Renvoie tous les messages d'une conversation au client
         res.status(200).json(
@@ -68,8 +68,8 @@ exports.readAllActiveByConversationId = (req, res) => {
     Message.findAllActiveByConversationId(conversationId)
     .then(messages => {
         messages.forEach(message => {
-            message.isAuthor = message.user_id == res.locals.user.id;
-            delete message.user_id;
+            message.isAuthor = message.messageOwnerId == res.locals.user.id;
+            delete message.messageOwnerId;
         });
         // Renvoie tous les messages d'une conversation au client
         res.status(200).json(
