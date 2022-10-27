@@ -9,12 +9,16 @@ module.exports = (req, res, next) => {
         const userId = decodedToken.userId;
         User.findOne({ where: {id: userId}})
             .then((user) => {
-                res.locals.user = {
-                    id: user.dataValues.id,
-                    isAdmin: user.dataValues.isAdmin,
-                    accountDeleted: user.dataValues.accountDeleted,
-                };
-                next();
+                if (user.dataValues.accountDeleted) {
+                    throw "Ce compte a été supprimé. Veuillez contacter votre administrateur."
+                } else {
+                    res.locals.user = {
+                        id: user.dataValues.id,
+                        isAdmin: user.dataValues.isAdmin,
+                        accountDeleted: user.dataValues.accountDeleted,
+                    };
+                    next();
+                }
             })
             .catch(() => {
                 res.status(404).json({ error : 'user not found.' })

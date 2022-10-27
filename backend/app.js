@@ -22,18 +22,18 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-//auth
-const auth = require("./middleware/auth");
+//test pour savoir si l'utilisateur est connecté
+const isConnected = require("./middleware/isConnected");
 
 //Implémentation des routes
 const userRoutes = require('./route/user.route');
-app.use('/api/user', auth, userRoutes);
+app.use('/api/user', isConnected, userRoutes);
 const connectionRoutes = require('./route/connection.route');
 app.use('/api/connection', connectionRoutes);
 const messageRoutes = require('./route/message.route');
-app.use('/api/message', auth, messageRoutes);
+app.use('/api/message', isConnected, messageRoutes);
 const conversationRoutes = require('./route/conversation.route');
-app.use('/api/conversation', auth, conversationRoutes);
+app.use('/api/conversation', isConnected, conversationRoutes);
 
 
 module.exports = app;
