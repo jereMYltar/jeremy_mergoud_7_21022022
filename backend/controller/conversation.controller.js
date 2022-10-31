@@ -99,6 +99,46 @@ exports.updateOne = (req, res) => {
     });
 };
 
+//UPDATE : clôturer une conversation
+exports.closeOne = (req, res) => {
+    console.log(res.locals);
+    Conversation.update({isClosed: true}, {
+        where: {
+            id: res.locals.conversation.id
+        }
+    })
+    .then(() => {
+        res.status(200).json({
+            customMessage: 'Conversation clôturée avec succès'
+        });
+    })
+    .catch(error => {
+        res.status(400).json({
+            error: error
+        });
+    });
+};
+
+//UPDATE : rouvrir une conversation clôturée
+exports.reopenOne = (req, res) => {
+    console.log(res.locals);
+    Conversation.update({isClosed: false}, {
+        where: {
+            id: res.locals.conversation.id
+        }
+    })
+    .then(() => {
+        res.status(200).json({
+            customMessage: 'Conversation rétablie avec succès'
+        });
+    })
+    .catch(error => {
+        res.status(400).json({
+            error: error
+        });
+    });
+};
+
 //DELETE : supprimer une Conversation
 exports.deleteOne = (req, res) => {
     Conversation.destroy({ where: {id: res.locals.conversation.id}})
