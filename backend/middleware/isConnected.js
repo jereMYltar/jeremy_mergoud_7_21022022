@@ -12,11 +12,7 @@ module.exports = (req, res, next) => {
                 if (user.dataValues.accountDeleted) {
                     throw "Ce compte a été supprimé. Veuillez contacter votre administrateur."
                 } else {
-                    res.locals.user = {
-                        id: user.dataValues.id,
-                        isAdmin: user.dataValues.isAdmin,
-                        accountDeleted: user.dataValues.accountDeleted,
-                    };
+                    res.locals.user = user.dataValues;
                     next();
                 }
             })

@@ -22,16 +22,20 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-//test pour savoir si l'utilisateur est connecté
+//middleware pour savoir si l'utilisateur est connecté
 const isConnected = require("./middleware/isConnected");
 
 //Implémentation des routes
-const userRoutes = require('./route/user.route');
-app.use('/api/user', isConnected, userRoutes);
+//connexion
 const connectionRoutes = require('./route/connection.route');
 app.use('/api/connection', connectionRoutes);
+//utilisateurs
+const userRoutes = require('./route/user.route');
+app.use('/api/user', isConnected, userRoutes);
+//messages
 const messageRoutes = require('./route/message.route');
 app.use('/api/message', isConnected, messageRoutes);
+//conversations
 const conversationRoutes = require('./route/conversation.route');
 app.use('/api/conversation', isConnected, conversationRoutes);
 

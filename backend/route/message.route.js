@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Message = require('../controller/message.controller');
-const isMessageAuthor = require('../middleware/isMessageAuthor');
+//test pour savoir si l'utilisateur a le droit d'action sur le message
+const isMessageOwnerOrAdmin = require("./middleware/isMessageOwnerOrAdmin");
 
 //CREATE : créer un message et renvoi le message enregistré en base
 router.post('/', Message.createOne);
@@ -19,15 +20,15 @@ router.get('/actives/conversation/:id', Message.readAllActiveByConversationId);
 router.get('/latest/conversation/:id', Message.readLatestByConversationId);
 
 //UPDATE : mettre à jour un message
-router.put('/:id', isMessageAuthor, Message.updateOne);
+router.put('/:id', isMessageOwnerOrAdmin, Message.updateOne);
 
 //UPDATE : modérer un message
-router.put('/moderate/:id', isMessageAuthor, Message.moderateOne);
+router.put('/moderate/:id', isMessageOwnerOrAdmin, Message.moderateOne);
 
 //UPDATE : rétablir un message modéré
-router.put('/restore/:id', isMessageAuthor, Message.restoreOne);
+router.put('/restore/:id', isMessageOwnerOrAdmin, Message.restoreOne);
 
 //DELETE : supprimer un message
-router.delete('/:id', isMessageAuthor, Message.deleteOne);
+router.delete('/:id', isMessageOwnerOrAdmin, Message.deleteOne);
 
 module.exports = router;

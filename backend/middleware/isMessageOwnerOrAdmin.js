@@ -2,11 +2,11 @@ const Message = require('../model/message.model');
 
 module.exports = (req, res, next) => {
     try {
-        const userId = res.locals.user.id;
+        const user = res.locals.user;
         const messageId = req.params.id;
         Message.findOne({ where: {id: messageId}})
             .then((message) => {
-                if (message.messageOwnerId == userId) {
+                if (message.messageOwnerId == user.id || user.isAdmin) {
                     res.locals.message = message.dataValues;
                     next();
                 } else {
