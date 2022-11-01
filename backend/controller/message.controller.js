@@ -3,18 +3,24 @@ const User = require('../model/user.model');
 
 //CREATE : créer un message et renvoi le message enregistré en base
 exports.createOne = async (req, res) => {
-    const message = req.body.message;
-    message.messageOwnerId = res.locals.user.id;
+    let message = {
+        messageOwnerId: res.locals.user.id,
+        content: req.body.message.content,
+        conversation_id: req.body.message.conversation_id,
+        isModerated: 0,
+        isGlobal: 0,
+    };
+    console.log();
     try {
-        const newMessage = await Message.create(message)
-        const user = await User.findNameById(newMessage.dataValues.messageOwnerId)
-        newMessage.dataValues.author = user[0].name;
-        newMessage.dataValues.isAuthor = true;
-        delete newMessage.dataValues.conversation_id;
-        delete newMessage.dataValues.messageOwnerId;
+        const messageCreated = await Message.create(message);
+        const newMessage = messageCreated.dataValues;
+        newMessage.author = res.locals.user.firstName.concat(" ", res.locals.user.lastName);
+        newMessage.isAuthor = true;
+        delete newMessage.conversation_id;
+        delete newMessage.messageOwnerId;
         res.status(201).json({
             customMessage: 'Message créé avec succès',
-            body: newMessage.dataValues,
+            body: newMessage,
         });
     } catch (error) {
         res.status(400).json({

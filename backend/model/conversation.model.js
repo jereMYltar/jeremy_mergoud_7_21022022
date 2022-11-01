@@ -21,7 +21,12 @@ const Conversation = database.define('conversation', {
     isClosed: {
         type: DataTypes.BOOLEAN,
         defaultValue: 0
-    }
+    },
+    isGlobal: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 0
+    },
+    
 },
 {
     freezeTableName: true,

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../controller/user.controller.js');
 //test pour savoir si l'utilisateur a le droit d'action sur le compte
-const isAccountOwnerOrAdmin = require("./middleware/isAccountOwnerOrAdmin");
+const isAccountOwnerOrAdmin = require("../middleware/isAccountOwnerOrAdmin");
 
 //CREATE : créer un utilisateur
 router.post('/', User.createOne);

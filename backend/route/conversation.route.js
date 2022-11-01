@@ -2,15 +2,18 @@ const express = require('express');
 const router = express.Router();
 const Conversation = require('../controller/conversation.controller');
 //test pour savoir si l'utilisateur a le droit d'action sur la conversation
-const isConversationOwnerOrAdmin = require("./middleware/isConversationOwnerOrAdmin");
+const isConversationOwnerOrAdmin = require("../middleware/isConversationOwnerOrAdmin");
 //test pour savoir si l'utilisateur a le droit d'action sur la conversation en tant qu'admin
-const isAdmin = require("./middleware/isAdmin");
+const isAdmin = require("../middleware/isAdmin");
 
 //CREATE : créer une conversation
 router.post('/', Conversation.createOne)
 
+//CREATE : créer une conversation globale
+router.post('/', isAdmin, Conversation.createGlobalOne)
+
 //READ : récupérer toutes les conversations
-router.get('/', isAdmin,Conversation.findAll);
+router.get('/', isAdmin, Conversation.findAll);
 
 //READ : récupérer toutes les conversations auxquelles participe un utilisateur
 router.get('/user', Conversation.findAllByUserId);

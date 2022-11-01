@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Message = require('../controller/message.controller');
 //test pour savoir si l'utilisateur a le droit d'action sur le message
-const isMessageOwnerOrAdmin = require("./middleware/isMessageOwnerOrAdmin");
+const isMessageOwnerOrAdmin = require("../middleware/isMessageOwnerOrAdmin");
 
 //CREATE : créer un message et renvoi le message enregistré en base
 router.post('/', Message.createOne);

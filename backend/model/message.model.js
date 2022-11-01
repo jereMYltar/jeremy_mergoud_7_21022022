@@ -24,7 +24,11 @@ const Message = database.define('message', {
     isModerated: {
         type: DataTypes.BOOLEAN,
         defaultValue: 0
-    }
+    },
+    isGlobal: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 0
+    },
 },
 {
     freezeTableName: true,
