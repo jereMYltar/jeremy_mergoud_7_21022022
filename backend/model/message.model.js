@@ -90,27 +90,27 @@ module.exports.findAllActiveByConversationId = function (conversationId) {
     `, { type: QueryTypes.SELECT });
 };
 //READ : récupérer les messages (tous, ou les non modérés ou les modérés) d'une conversation par l'id de celle-ci
-module.exports.findAllByConversationId = function (conversationId, details=false, isModerated = false) {
-    const sql = `SELECT message.id AS id,
-        CONCAT(user.firstName, ' ', user.lastName) AS 'author',
-        message.content AS 'content',
-        message.createdAt AS createdAt,
-        message.updatedAt AS updatedAt,
-        message.isModerated as isModerated,
-        message.messageOwnerId AS messageOwnerId
-    FROM message
-    JOIN user ON message.messageOwnerId=user.id
-    WHERE message.conversation_id=${conversationId}`
-    if (details) {
-        if (isModerated) {
-            sql += ` AND message.isModerated`
-        } else {
-            sql += ` AND !message.isModerated`
-        }
-    }
-    sql += `;`
-    return database.query(sql, { type: QueryTypes.SELECT });
-};
+// module.exports.findAllByConversationId = function (conversationId, details=false, isModerated = false) {
+//     const sql = `SELECT message.id AS id,
+//         CONCAT(user.firstName, ' ', user.lastName) AS 'author',
+//         message.content AS 'content',
+//         message.createdAt AS createdAt,
+//         message.updatedAt AS updatedAt,
+//         message.isModerated as isModerated,
+//         message.messageOwnerId AS messageOwnerId
+//     FROM message
+//     JOIN user ON message.messageOwnerId=user.id
+//     WHERE message.conversation_id=${conversationId}`
+//     if (details) {
+//         if (isModerated) {
+//             sql += ` AND message.isModerated`
+//         } else {
+//             sql += ` AND !message.isModerated`
+//         }
+//     }
+//     sql += `;`
+//     return database.query(sql, { type: QueryTypes.SELECT });
+// };
 //READ : récupérer le dernier message d'une conversation
 module.exports.findLatestByConversationId = function (conversationId) {
     return database.query(`

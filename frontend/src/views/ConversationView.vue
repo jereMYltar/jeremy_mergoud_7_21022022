@@ -1,7 +1,7 @@
 <template>
   <div class="main1 container">
     <ConversationsList @detailsExpended="showConversationDetails" />
-    <MessagesList :id="conversationId" />
+    <MessagesList :conversationId="conversationId" />
     <button @click="logOut">Se déconnecter</button>
   </div>
 </template>

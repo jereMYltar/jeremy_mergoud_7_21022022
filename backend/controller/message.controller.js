@@ -5,12 +5,11 @@ const User = require('../model/user.model');
 exports.createOne = async (req, res) => {
     let message = {
         messageOwnerId: res.locals.user.id,
-        content: req.body.message.content,
-        conversation_id: req.body.message.conversation_id,
+        content: req.body.content,
+        conversation_id: req.params.id,
         isModerated: 0,
         isGlobal: 0,
     };
-    console.log();
     try {
         const messageCreated = await Message.create(message);
         const newMessage = messageCreated.dataValues;
@@ -128,7 +127,6 @@ exports.updateOne = (req, res) => {
 
 //UPDATE : modérer un message
 exports.moderateOne = (req, res) => {
-    console.log(res.locals);
     Message.update({isModerated: true}, {
         where: {
             id: res.locals.message.id
@@ -148,7 +146,6 @@ exports.moderateOne = (req, res) => {
 
 //UPDATE : restaurer un message modéré
 exports.restoreOne = (req, res) => {
-    console.log(res.locals);
     Message.update({isModerated: false}, {
         where: {
             id: res.locals.message.id

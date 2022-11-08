@@ -7,7 +7,7 @@ const isMessageOwnerOrAdmin = require("../middleware/isMessageOwnerOrAdmin");
 const isConversationMemberOrAdmin = require("../middleware/isConversationMemberOrAdmin");
 
 //CREATE : créer un message dans une conversation et renvoi le message enregistré en base
-router.post('/', isConversationMemberOrAdmin, Message.createOne);
+router.post('/conversation/:id', isConversationMemberOrAdmin, Message.createOne);
 
 //READ : récupérer un message par son id
 router.get('/:id', isMessageOwnerOrAdmin, Message.findOne);

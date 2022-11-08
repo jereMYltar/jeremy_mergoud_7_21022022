@@ -135,7 +135,6 @@ exports.updateOne = (req, res) => {
 
 //UPDATE : clôturer une conversation
 exports.closeOne = (req, res) => {
-    console.log(res.locals);
     Conversation.update({isClosed: true}, {
         where: {
             id: res.locals.conversation.id
@@ -155,7 +154,6 @@ exports.closeOne = (req, res) => {
 
 //UPDATE : rouvrir une conversation clôturée
 exports.reopenOne = (req, res) => {
-    console.log(res.locals);
     Conversation.update({isClosed: false}, {
         where: {
             id: res.locals.conversation.id

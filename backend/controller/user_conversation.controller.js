@@ -8,13 +8,9 @@ exports.createOne = (req, res) => {
     };
     UserConversation.create(conversation)
         .then((response) => {
-            console.log(response.dataValues.id);
-            console.log(req.body);
-            // console.log(typeof response);
             res.status(201).json({
                 customMessage: 'Conversation créée avec succès',
                 body: response.dataValues,
-                // conversation: response.dataValues,
             });
         })
         .catch(error => {

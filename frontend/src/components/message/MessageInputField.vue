@@ -25,7 +25,7 @@ import { Form, Field, ErrorMessage } from "vee-validate";
 export default {
   name: "MessageEntry",
   props: {
-    id: {
+    conversationId: {
       type: Number,
       default: 0,
       required: false,
@@ -45,13 +45,9 @@ export default {
   methods: {
     sendMessage() {
       let payload = {
-        message: {
-          conversation_id: this.id,
-          messageOwnerId: 0,
-          content: this.message,
-        },
+        content: this.message,
       };
-      EventService.sendMessage(this.id, payload)
+      EventService.sendMessage(this.conversationId, payload)
         .then((response) => {
           this.$emit("messageSend", response.data.body);
           this.message = "";
