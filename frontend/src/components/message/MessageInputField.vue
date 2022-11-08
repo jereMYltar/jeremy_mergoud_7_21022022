@@ -51,7 +51,7 @@ export default {
           content: this.message,
         },
       };
-      EventService.sendMessage(payload)
+      EventService.sendMessage(this.id, payload)
         .then((response) => {
           this.$emit("messageSend", response.data.body);
           this.message = "";

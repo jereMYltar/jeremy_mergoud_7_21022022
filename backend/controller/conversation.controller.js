@@ -7,7 +7,7 @@ exports.createOne = async (req, res) => {
         name: req.body.name,
         conversationOwnerId: res.locals.user.id,
         isClosed: 0,
-        isGlobal: 0,
+        isPublic: 0,
     };
     try {
         const newConversation = await Conversation.create(conversation);
@@ -33,13 +33,13 @@ exports.createOne = async (req, res) => {
     }
 };
 
-//CREATE : créer une conversation globale
-exports.createGlobalOne = async (req, res) => {
+//CREATE : créer une conversation publique
+exports.createPublicOne = async (req, res) => {
     let conversation = {
         name: req.body.name,
         conversationOwnerId: res.locals.user.id,
         isClosed: 0,
-        isGlobal: 1,
+        isPublic: 1,
     };
     try {
         const newConversation = await Conversation.create(conversation);

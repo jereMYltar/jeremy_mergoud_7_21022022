@@ -22,7 +22,7 @@ const Conversation = database.define('conversation', {
         type: DataTypes.BOOLEAN,
         defaultValue: 0
     },
-    isGlobal: {
+    isPublic: {
         type: DataTypes.BOOLEAN,
         defaultValue: 0
     },

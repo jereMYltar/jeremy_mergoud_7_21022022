@@ -8,6 +8,7 @@ module.exports = (req, res, next) => {
             .then((message) => {
                 if (message.messageOwnerId == user.id || user.isAdmin) {
                     res.locals.message = message.dataValues;
+                    res.locals.message.hasOwnershipRights = true;
                     next();
                 } else {
                     res.status(401).json({ error : 'Requête non autorisée.' });

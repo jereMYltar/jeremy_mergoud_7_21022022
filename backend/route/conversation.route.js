@@ -9,8 +9,8 @@ const isAdmin = require("../middleware/isAdmin");
 //CREATE : créer une conversation
 router.post('/', Conversation.createOne)
 
-//CREATE : créer une conversation globale
-router.post('/', isAdmin, Conversation.createGlobalOne)
+//CREATE : créer une conversation publique
+router.post('/', isAdmin, Conversation.createPublicOne)
 
 //READ : récupérer toutes les conversations
 router.get('/', isAdmin, Conversation.findAll);

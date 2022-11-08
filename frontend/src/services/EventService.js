@@ -69,14 +69,14 @@ export default {
   getAllMessagesByConversationId(payload) {
     return apiUsers.get(`/message/conversation/${payload}`)
   },
-  sendMessage(payload) {
-    return apiUsers.post("/message/", payload);
+  sendMessage(conversationId, payload) {
+    return apiUsers.post(`/message/conversation/${conversationId}`, payload);
   },
   moderateMessage(payload) {
-    return apiUsers.put("/message/moderate/:id", payload);
+    return apiUsers.put(`/message/moderate/${payload}`);
   },
   restoreMessage(payload) {
-    return apiUsers.put("/message/restore/:id", payload);
+    return apiUsers.put(`/message/restore/${payload}`);
   },
   //user
   getAllUsers() {
