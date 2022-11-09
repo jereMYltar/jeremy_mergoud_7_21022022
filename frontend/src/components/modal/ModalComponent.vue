@@ -194,7 +194,7 @@ const handleKeyDown = (event) => {
   padding: 1rem;
 }
 
-.vue-modal-content /deep/ :focus {
+.vue-modal-content :deep(:focus) {
   border: solid 5px rgb(16, 161, 66);
 }
 
