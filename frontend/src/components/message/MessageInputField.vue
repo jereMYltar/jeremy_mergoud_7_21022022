@@ -13,6 +13,10 @@
         class="textInput"
       />
       <ErrorMessage name="message" class="errorMessage" />
+      <p>
+        <label for="isGlobal">Message global ? </label>
+        <input type="checkbox" id="isGlobal" v-model="isGlobal" />
+      </p>
       <input class="basicButton" type="submit" value="Envoyer" />
     </Form>
   </div>
@@ -34,6 +38,7 @@ export default {
   data() {
     return {
       message: "",
+      isGlobal: "",
     };
   },
   components: {
@@ -46,6 +51,7 @@ export default {
     sendMessage() {
       let payload = {
         content: this.message,
+        isGlobal: this.isGlobal,
       };
       EventService.sendMessage(this.conversationId, payload)
         .then((response) => {

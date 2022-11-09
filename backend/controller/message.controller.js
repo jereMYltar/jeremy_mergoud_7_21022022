@@ -8,7 +8,7 @@ exports.createOne = async (req, res) => {
         content: req.body.content,
         conversation_id: req.params.id,
         isModerated: 0,
-        isGlobal: 0,
+        isGlobal: req.body.isGlobal,
     };
     try {
         const messageCreated = await Message.create(message);

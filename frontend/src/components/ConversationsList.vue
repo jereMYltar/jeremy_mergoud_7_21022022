@@ -23,7 +23,7 @@
           </p>
           <p>
             <label for="isPublic">Conversation publique :</label>
-            <input type="checkbox" v-model="isPublic" />
+            <input type="checkbox" id="isPublic" v-model="isPublic" />
           </p>
           <multiselect
             v-model="selectedValue"
