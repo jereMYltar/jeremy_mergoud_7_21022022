@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       message: "",
-      isGlobal: "",
+      isGlobal: false,
     };
   },
   components: {

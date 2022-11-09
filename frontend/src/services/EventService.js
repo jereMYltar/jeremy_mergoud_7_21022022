@@ -63,7 +63,7 @@ export default {
     return apiUsers.post("/conversation/", payload)
   },
   getAllConversationsForCurrentUser() {
-    return apiUsers.get("/conversation/user");
+    return apiUsers.get("/conversation/");
   },
   //message
   getAllMessagesByConversationId(payload) {

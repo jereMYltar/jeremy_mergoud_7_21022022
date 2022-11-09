@@ -47,62 +47,24 @@ exports.findOne = (req, res) => {
 };
 
 //READ : récupérer tous les messages d'une conversation
-exports.readAllByConversationId = (req, res) => {
-    const conversationId = req.params.id;
-    Message.findAllByConversationId(conversationId)
-    .then(messages => {
-        messages.forEach(message => {
-            message.isAuthor = message.messageOwnerId == res.locals.user.id;
-            delete message.messageOwnerId;
-        });
-        // Renvoie tous les messages d'une conversation au client
+exports.readAllByConversationId = async (req, res) => {
+    try {
+        const conversationId = req.params.id;
+        let messages = await Message.findAllByConversationId(conversationId);
+        const userId = res.locals.user.id;
+        const isAdmin = res.locals.user.isAdmin;
+        for (let message of messages) {
+            message.hasRightsOn = (isAdmin || message.messageOwnerId == userId);
+            message.isAuthor = message.messageOwnerId == userId;
+        };
         res.status(200).json(
             messages
         );
-    })
-    .catch(error => {
+    } catch (error) {
         res.status(400).json({
             error: error
         });
-    });
-};
-
-//READ : récupérer tous les messages actifs d'une conversation
-exports.readAllActiveByConversationId = (req, res) => {
-    const conversationId = req.params.id;
-    Message.findAllActiveByConversationId(conversationId)
-    .then(messages => {
-        messages.forEach(message => {
-            message.isAuthor = message.messageOwnerId == res.locals.user.id;
-            delete message.messageOwnerId;
-        });
-        // Renvoie tous les messages d'une conversation au client
-        res.status(200).json(
-            messages
-        );
-    })
-    .catch(error => {
-        res.status(400).json({
-            error: error
-        });
-    });
-};
-
-//READ : récupérer le dernier message d'une conversation au client
-exports.readLatestByConversationId = (req, res) => {
-    const conversationId = req.params.id;
-    Message.findLatestByConversationId(conversationId)
-    .then(message => {
-        // Renvoie le dernier message d'une conversation au client
-        res.status(200).json(
-            message
-        );
-    })
-    .catch(error => {
-        res.status(400).json({
-            error: error
-        });
-    });
+    }
 };
 
 //UPDATE : mettre à jour un message

@@ -9,6 +9,7 @@ exports.createOne = async (req, res) => {
         isClosed: 0,
         isPublic: req.body.isPublic,
     };
+    console.log(conversation);
     try {
         const newConversation = await Conversation.create(conversation);
         const newConsversationId = newConversation.dataValues.id;
@@ -33,52 +34,23 @@ exports.createOne = async (req, res) => {
     }
 };
 
-//READ : récupérer toutes les conversations
-exports.findAll = (req, res) => {
-    Conversation.findAll()
-    .then(conversations => {
-        // Renvoie toutes les conversations au client
-        res.status(200).json(
-            conversations
-        );
-    })
-    .catch(error => {
-        res.status(400).json({
-            error: error
-        });
-    });
-};
-
 //READ : récupérer toutes les conversations auxquelles participe un utilisateur
-exports.findAllByUserId = (req, res) => {
-    Conversation.findAllByUserId(res.locals.user.id)
-    .then(conversations => {
-        // Renvoie toutes les conversations récupérées au client
+exports.findAllAllowed = async (req, res) => {
+    try {
+        let conversations = await Conversation.findAllAllowed(res.locals.user.isAdmin, res.locals.user.id);
+        const userId = res.locals.user.id;
+        const isAdmin = res.locals.user.isAdmin;
+        for (let conversation of conversations) {
+            conversation.hasRightsOn = (isAdmin || conversation.conversationOwnerId == userId);
+        };
         res.status(200).json(
             conversations
         );
-    })
-    .catch(error => {
+    } catch (error) {
         res.status(400).json({
             error: error
         });
-    });
-};
-
-//READ : récupérer toutes les conversations génériques (auxquelles ne sont inscrits aucun utilisateur)
-exports.findGenericConv = (req, res) => {
-    Conversation.findGenericConv()
-    .then(conversations => {
-        // Renvoie toutes les conversations récupérées au client
-        res.status(200).json(
-            conversations
-        );
-    })
-    .catch(error => {
-        res.status(400).json({
-            error: error
-        });
-    });
+    }
 };
 
 //UPDATE : mettre à jour une conversation

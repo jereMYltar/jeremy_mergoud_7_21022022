@@ -1,5 +1,11 @@
 <template>
-  <div :class="['message', props.messageData.isAuthor ? 'written' : 'read']">
+  <div
+    :class="[
+      'message',
+      props.messageData.isAuthor ? 'written' : 'read',
+      props.messageData.isGlobal ? 'global' : '',
+    ]"
+  >
     <div v-if="!props.messageData.isAuthor">{{ props.messageData.author }}</div>
     <div v-if="props.messageData.isAuthor">Moi</div>
     <div v-if="props.messageData.createdAt != props.messageData.updatedAt">
@@ -16,7 +22,7 @@
     <ModalComponent
       :global="false"
       ref="modalRef1"
-      v-if="props.messageData.isAuthor"
+      v-if="props.messageData.hasRightsOn"
     >
       <template #callButton>
         <p>...</p>
@@ -79,5 +85,10 @@ const timeFormat = (a) => {
 .read {
   background-color: lightgray;
   align-self: flex-start;
+}
+
+.global {
+  background-color: lemonchiffon;
+  width: 100%;
 }
 </style>

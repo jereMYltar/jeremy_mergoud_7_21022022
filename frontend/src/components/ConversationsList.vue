@@ -7,6 +7,7 @@
       @click="showDetails(conversation.id)"
     >
       <h4>{{ conversation.name }}</h4>
+      <button v-if="conversation.hasRightsOn" @click.stop="warn">...</button>
     </button>
     <Modal :global="true" ref="modalRef1">
       <template #callButton>
@@ -48,7 +49,6 @@
 <script>
 import EventService from "@/services/EventService.js";
 import Modal from "@/components/modal/ModalComponent.vue";
-import { ref } from "vue";
 import Multiselect from "@vueform/multiselect";
 export default {
   name: "ConversationList",
@@ -59,15 +59,13 @@ export default {
       conversations: "",
       selectedValue: [],
       users: [],
-      isPublic: "",
+      isPublic: false,
     };
   },
-  setup() {
-    const modalButton = ref();
-
-    return { modalButton };
-  },
   methods: {
+    warn() {
+      alert("ça fonctionne");
+    },
     showDetails(id) {
       this.$emit("detailsExpended", id);
     },

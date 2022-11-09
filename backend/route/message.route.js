@@ -15,12 +15,6 @@ router.get('/:id', isMessageOwnerOrAdmin, Message.findOne);
 //READ : récupérer tous les messages d'une conversation
 router.get('/conversation/:id', isConversationMemberOrAdmin, Message.readAllByConversationId);
 
-//READ : récupérer tous les messages actifs d'une conversation
-router.get('/actives/conversation/:id', isConversationMemberOrAdmin, Message.readAllActiveByConversationId);
-
-//READ : récupérer le dernier message d'une conversation au client
-router.get('/latest/conversation/:id', isConversationMemberOrAdmin, Message.readLatestByConversationId);
-
 //UPDATE : mettre à jour un message
 router.put('/:id', isMessageOwnerOrAdmin, Message.updateOne);
 

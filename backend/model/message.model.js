@@ -63,11 +63,12 @@ module.exports.findAllByConversationId = function (conversationId) {
     return database.query(`
     SELECT message.id AS id,
         CONCAT(user.firstName, ' ', user.lastName) AS 'author',
-        message.content AS 'content',
-        message.createdAt AS createdAt,
-        message.updatedAt AS updatedAt,
-        message.isModerated as isModerated,
-        message.messageOwnerId AS messageOwnerId
+        message.content,
+        message.createdAt,
+        message.updatedAt,
+        message.isModerated,
+        message.messageOwnerId,
+        message.isGlobal
     FROM message
     JOIN user ON message.messageOwnerId=user.id
     WHERE message.conversation_id=${conversationId}

@@ -42,23 +42,21 @@ module.exports = Conversation;
 //- DELETE - supprimer une conversation : requête de base de Sequelize => destroy. Requiert l'id de la conversation supprimée (pour la clause WHERE)
 
 //READ : récupérer toutes les conversations auxquelles participe un utilisateur (sur la base de son id)
-module.exports.findAllByUserId = function (userId) {
-    return database.query(`
-    SELECT DISTINCT conversation.id, conversation.name
-    FROM conversation
-    JOIN user_conversation ON user_conversation.conversation_id = conversation.id
-    WHERE user_conversation.user_id = ${userId}
-    ORDER BY conversation.updatedAt DESC;
-    `, { type: QueryTypes.SELECT });
-};
-
-//READ : récupérer toutes les conversations génériques (auxquelles ne sont inscrits aucun utilisateur)
-module.exports.findGenericConv = function () {
-    return database.query(`
-    SELECT DISTINCT conversation.id, conversation.name
+module.exports.findAllAllowed = function (isAdmin, userId) {
+    let sql = `
+    SELECT DISTINCT
+        conversation.id,
+        conversation.name,
+        conversation.conversationOwnerId,
+        conversation.isClosed,
+        conversation.isPublic
     FROM conversation
     LEFT JOIN user_conversation ON user_conversation.conversation_id = conversation.id
-    WHERE user_conversation.conversation_id IS NULL
-    ORDER BY conversation.updatedAt DESC;
-    `, { type: QueryTypes.SELECT });
+    `;
+    if (!isAdmin) {
+        sql += `WHERE conversation.isPublic = true OR user_conversation.user_id = ${userId}
+        `;
+    };
+    sql += `ORDER BY conversation.updatedAt DESC;`;
+    return database.query(sql, { type: QueryTypes.SELECT });
 };

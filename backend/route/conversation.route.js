@@ -5,18 +5,14 @@ const Conversation = require('../controller/conversation.controller');
 const isConversationOwnerOrAdmin = require("../middleware/isConversationOwnerOrAdmin");
 //test pour savoir si l'utilisateur a le droit d'action sur la conversation en tant qu'admin
 const isAdmin = require("../middleware/isAdmin");
+//test pour savoir si l'utilisateur a le droit de créer une conversation publique
+const canCreatePublicConversation = require("../middleware/canCreatePublicConversation");
 
 //CREATE : créer une conversation
-router.post('/', Conversation.createOne);
+router.post('/', canCreatePublicConversation, Conversation.createOne);
 
-//READ : récupérer toutes les conversations
-router.get('/', isAdmin, Conversation.findAll);
-
-//READ : récupérer toutes les conversations auxquelles participe un utilisateur
-router.get('/user', Conversation.findAllByUserId);
-
-//READ : récupérer toutes les conversations génériques (auxquelles ne sont inscrits aucun utilisateur)
-router.get('/generic', Conversation.findGenericConv);
+//READ : récupérer toutes les conversations auxquel l'utilisateur a accès
+router.get('/', Conversation.findAllAllowed);
 
 //UPDATE : mettre à jour une conversation
 router.put('/:id', isConversationOwnerOrAdmin, Conversation.updateOne);

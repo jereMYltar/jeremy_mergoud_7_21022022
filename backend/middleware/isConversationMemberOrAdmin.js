@@ -1,27 +1,28 @@
 const UserConversation = require('../model/user_conversation.model');
+const Conversation = require('../model/conversation.model');
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
     try {
         const user = res.locals.user;
         const conversationId = req.params.id;
-        if (user.isAdmin) {
+        const conversation = await Conversation.findOne({ where: {id: conversationId}});
+        if (user.isAdmin || conversation.isPublic) {
+            res.locals.conversation = conversation.dataValues;
             next();
         } else {
-            UserConversation.findOne({
+            const userConversation = await UserConversation.findOne({
                 where: {
                     user_id: user.id,
                     conversation_id: conversationId,
                 }
             })
-            .then(() => {
-                next();
-            })
-            .catch(() => {
-                res.status(401).json({ error : 'Requête non autorisée.' });
-            });
+            next();
         }
-    } catch {
-        res.status(401).json({ error : 'Requête non autorisée.' });
+    } catch (error) {
+        res.status(401).json({
+            error : error,
+            customMessage: 'Requête non autorisée.',
+        });
     }
 };
 
