@@ -7,10 +7,7 @@ const isConversationOwnerOrAdmin = require("../middleware/isConversationOwnerOrA
 const isAdmin = require("../middleware/isAdmin");
 
 //CREATE : créer une conversation
-router.post('/', Conversation.createOne)
-
-//CREATE : créer une conversation publique
-router.post('/', isAdmin, Conversation.createPublicOne)
+router.post('/', Conversation.createOne);
 
 //READ : récupérer toutes les conversations
 router.get('/', isAdmin, Conversation.findAll);

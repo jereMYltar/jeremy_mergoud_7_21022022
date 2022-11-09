@@ -7,39 +7,7 @@ exports.createOne = async (req, res) => {
         name: req.body.name,
         conversationOwnerId: res.locals.user.id,
         isClosed: 0,
-        isPublic: 0,
-    };
-    try {
-        const newConversation = await Conversation.create(conversation);
-        const newConsversationId = newConversation.dataValues.id;
-        const userList = req.body.users;
-        for await (const userId of userList) {
-            UserConversation.create({
-                user_id: userId,
-                conversation_id: newConsversationId,
-            })
-        };
-        res.status(201).json({
-            customMessage: 'Conversation créée avec succès',
-            body: {
-                id: newConsversationId,
-                name: req.body.name
-            }
-        });
-    } catch (error) {
-        res.status(400).json({
-            errorMessage: error
-        });
-    }
-};
-
-//CREATE : créer une conversation publique
-exports.createPublicOne = async (req, res) => {
-    let conversation = {
-        name: req.body.name,
-        conversationOwnerId: res.locals.user.id,
-        isClosed: 0,
-        isPublic: 1,
+        isPublic: req.body.isPublic,
     };
     try {
         const newConversation = await Conversation.create(conversation);

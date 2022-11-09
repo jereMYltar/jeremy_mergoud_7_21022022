@@ -17,8 +17,14 @@
       <p>Ici mon outil de choix de personnes</p>
       <form>
         <div>
-          <label for="conversationName">Nom de la conversation : </label>
-          <input type="text" id="conversationName" />
+          <p>
+            <label for="conversationName">Nom de la conversation : </label>
+            <input type="text" id="conversationName" />
+          </p>
+          <p>
+            <label for="isPublic">Conversation publique :</label>
+            <input type="checkbox" v-model="isPublic" />
+          </p>
           <multiselect
             v-model="selectedValue"
             :options="users"
@@ -53,6 +59,7 @@ export default {
       conversations: "",
       selectedValue: [],
       users: [],
+      isPublic: "",
     };
   },
   setup() {
@@ -69,6 +76,7 @@ export default {
       const payload = {
         name: document.getElementById("conversationName").value,
         users: Array.from(this.selectedValue, (x) => x.id),
+        isPublic: this.isPublic,
       };
       EventService.createConversation(payload)
         .then((newConversation) => {
