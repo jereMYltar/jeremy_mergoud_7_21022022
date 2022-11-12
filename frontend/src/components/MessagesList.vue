@@ -6,8 +6,8 @@
       :messageData="message"
     />
     <MessageInputField
-      v-if="conversationId > 0"
-      :conversationId="this.conversationId"
+      v-if="conversation.id > 0"
+      :conversation="this.conversation"
       @messageSend="addMessage"
     />
   </div>
@@ -24,9 +24,11 @@ export default {
     SingleMessageTile,
   },
   props: {
-    conversationId: {
-      type: Number,
-      default: 0,
+    conversation: {
+      type: Object,
+      default: () => ({
+        id: 0,
+      }),
       required: false,
     },
   },
@@ -48,9 +50,9 @@ export default {
     },
   },
   watch: {
-    conversationId(newValue) {
-      if (newValue) {
-        this.loadMessagesByConversationId(newValue);
+    conversation(newConversation) {
+      if (newConversation != {}) {
+        this.loadMessagesByConversationId(newConversation.id);
       }
     },
   },

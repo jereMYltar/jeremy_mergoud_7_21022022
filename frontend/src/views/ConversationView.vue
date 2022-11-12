@@ -1,7 +1,7 @@
 <template>
   <div class="main1 container">
     <ConversationsList @detailsExpended="showConversationDetails" />
-    <MessagesList :conversationId="conversationId" />
+    <MessagesList :conversation="conversation" />
     <button @click="logOut">Se déconnecter</button>
   </div>
 </template>
@@ -18,12 +18,14 @@ export default {
   },
   data() {
     return {
-      conversationId: 0,
+      conversation: {
+        id: 0,
+      },
     };
   },
   methods: {
-    showConversationDetails(id) {
-      this.conversationId = id;
+    showConversationDetails(conversation) {
+      this.conversation = conversation;
     },
     logOut() {
       sessionStorage.clear();

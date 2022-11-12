@@ -4,7 +4,7 @@
       v-for="conversation in conversations"
       :key="conversation.id"
       :conversation="conversation"
-      @click="showDetails(conversation.id)"
+      @click="showDetails(conversation)"
     >
       <h4>{{ conversation.name }}</h4>
       <button v-if="conversation.hasRightsOn" @click.stop="warn">...</button>
@@ -66,8 +66,9 @@ export default {
     warn() {
       alert("ça fonctionne");
     },
-    showDetails(id) {
-      this.$emit("detailsExpended", id);
+
+    showDetails(payload) {
+      this.$emit("detailsExpended", payload);
     },
 
     createConversation() {

@@ -13,7 +13,7 @@
         class="textInput"
       />
       <ErrorMessage name="message" class="errorMessage" />
-      <p>
+      <p v-if="this.conversation.hasRightsOn">
         <label for="isGlobal">Message global ? </label>
         <input type="checkbox" id="isGlobal" v-model="isGlobal" />
       </p>
@@ -29,9 +29,11 @@ import { Form, Field, ErrorMessage } from "vee-validate";
 export default {
   name: "MessageEntry",
   props: {
-    conversationId: {
-      type: Number,
-      default: 0,
+    conversation: {
+      type: Object,
+      default: () => ({
+        id: 0,
+      }),
       required: false,
     },
   },
@@ -53,7 +55,7 @@ export default {
         content: this.message,
         isGlobal: this.isGlobal,
       };
-      EventService.sendMessage(this.conversationId, payload)
+      EventService.sendMessage(this.conversation.id, payload)
         .then((response) => {
           this.$emit("messageSend", response.data.body);
           this.message = "";
