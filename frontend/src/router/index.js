@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import LoginView from "@/views/LoginView.vue";
-import ConversationView from "@/views/ConversationView.vue";
+import ExchangesView from "@/views/ExchangesView.vue";
 import SignUpView from "@/views/SignUpView.vue";
 import NotFound from "@/views/NotFoundView.vue";
 import NetworkError from "@/views/NetworkErrorView.vue";
@@ -24,9 +24,9 @@ const routes = [
     component: SignUpView,
   },
   {
-    path: "/conversation",
-    name: "Conversation",
-    component: ConversationView,
+    path: "/exchanges",
+    name: "Exchanges",
+    component: ExchangesView,
   },
   {
     path: "/404/:resource",
