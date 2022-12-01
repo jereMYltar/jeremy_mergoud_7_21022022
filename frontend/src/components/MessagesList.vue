@@ -6,7 +6,7 @@
       :messageData="message"
     />
     <MessageInputField
-      v-if="conversation.id > 0"
+      v-if="this.conversation.id > 0"
       :conversation="this.conversation"
       @messageSend="addMessage"
     />

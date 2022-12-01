@@ -48,7 +48,8 @@ exports.login = (req, res, next) => {
                                     isAdmin: user.isAdmin},
                                     env.JWT_SALT,
                                     {expiresIn: '12h'}
-                                )
+                                ),
+                                isAdmin: user.isAdmin,
                             })
                         }
                     )

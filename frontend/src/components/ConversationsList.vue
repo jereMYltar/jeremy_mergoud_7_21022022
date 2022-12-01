@@ -22,7 +22,7 @@
             <label for="conversationName">Nom de la conversation : </label>
             <input type="text" id="conversationName" />
           </p>
-          <p>
+          <p v-if="this.isAdmin">
             <label for="isPublic">Conversation publique :</label>
             <input type="checkbox" id="isPublic" v-model="isPublic" />
           </p>
@@ -36,6 +36,7 @@
             label="name"
             valueProp="id"
             :object="true"
+            v-if="!this.isPublic"
           ></multiselect>
         </div>
         <button @click.prevent="createConversation">
@@ -61,6 +62,13 @@ export default {
       users: [],
       isPublic: false,
     };
+  },
+  props: {
+    isAdmin: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
   },
   methods: {
     warn() {
