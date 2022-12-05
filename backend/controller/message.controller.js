@@ -15,8 +15,8 @@ exports.createOne = async (req, res) => {
         const newMessage = messageCreated.dataValues;
         newMessage.author = res.locals.user.firstName.concat(" ", res.locals.user.lastName);
         newMessage.isAuthor = true;
+        newMessage.hasRightsOn = true;
         delete newMessage.conversation_id;
-        delete newMessage.messageOwnerId;
         res.status(201).json({
             customMessage: 'Message créé avec succès',
             body: newMessage,

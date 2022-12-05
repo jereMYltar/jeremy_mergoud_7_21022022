@@ -1,7 +1,7 @@
 <template>
   <div class="main1 container">
     <h1 class="titre1">Votre message</h1>
-    <Form @submit="sendMessage" class="container" name="connectionForm">
+    <Form @submit="createMessage" class="container" name="connectionForm">
       <label for="message" class="text">Votre message</label>
       <Field
         v-model="message"
@@ -13,7 +13,7 @@
         class="textInput"
       />
       <ErrorMessage name="message" class="errorMessage" />
-      <p v-if="this.conversation.hasRightsOn">
+      <p v-if="conversationsStore.activeConversation.hasRightsOn">
         <label for="isGlobal">Message global ? </label>
         <input type="checkbox" id="isGlobal" v-model="isGlobal" />
       </p>
@@ -22,51 +22,41 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import EventService from "@/services/EventService.js";
 import { Form, Field, ErrorMessage } from "vee-validate";
+import { ref } from "vue";
+import { useConversationsStore } from "@/store/conversationsStore";
+import { useMessagesStore } from "@/store/messagesStore";
 
-export default {
-  name: "MessageEntry",
-  props: {
-    conversation: {
-      type: Object,
-      default: () => ({
-        id: 0,
-      }),
-      required: false,
-    },
-  },
-  data() {
-    return {
-      message: "",
-      isGlobal: false,
-    };
-  },
-  components: {
-    Form,
-    Field,
-    ErrorMessage,
-  },
-  emits: ["messageSend"],
-  methods: {
-    sendMessage() {
-      let payload = {
-        content: this.message,
-        isGlobal: this.isGlobal,
-      };
-      EventService.sendMessage(this.conversation.id, payload)
-        .then((response) => {
-          this.$emit("messageSend", response.data.body);
-          this.message = "";
-          window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: "smooth",
-          });
-        })
-        .catch();
-    },
-  },
-};
+const conversationsStore = useConversationsStore();
+const messagesStore = useMessagesStore();
+const message = ref("");
+const isGlobal = ref(false);
+
+async function createMessage() {
+  let payload = {
+    content: message.value,
+    isGlobal: isGlobal.value,
+  };
+  try {
+    let newMessage = await EventService.sendMessage(
+      conversationsStore.activeConversation.id,
+      payload
+    );
+    console.log(newMessage);
+    newMessage = newMessage.data.body;
+    messagesStore.messages.unshift(newMessage);
+    message.value = "";
+    isGlobal.value = false;
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  } catch (error) {
+    console.error(error);
+    return "Problème serveur";
+  }
+}
 </script>
