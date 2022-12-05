@@ -55,14 +55,19 @@ module.exports = User;
 //- UPDATE - mettre à jour un utilisateur : requête de base de Sequelize => update. Requiert un objet contenant content (pour la modification du contenu) et/ou isModerated (pour la modération du message), ainsi que l'id du message modifié (pour la clause WHERE)
 //- DELETE - supprimer un utilisateur : requête de base de Sequelize => destroy. Requiert l'id du message supprimé (pour la clause WHERE)
 
-//READ : récupérer la liste des utilisateurs
-module.exports.findAllUsers = function () {
-    return database.query(`
+//READ : récupérer la liste de tous les utilisateurs en excluant ou non l'utilsateur courant
+module.exports.findAllUsers = function (id) {
+    let sql  = `
     SELECT CONCAT(user.firstName, ' ', user.lastName) AS 'name',
         id
-    FROM user
-    ORDER BY name ASC;
-    `, { type: QueryTypes.SELECT });
+    FROM user`;
+    if (id) {
+        sql += `
+        WHERE id != ${id}`
+    }
+    sql += `
+    ORDER BY name ASC;`
+    return database.query(sql, { type: QueryTypes.SELECT });
 };
 
 //READ : récupérer un nombre limité d'éléments d'un utilisateur par son id

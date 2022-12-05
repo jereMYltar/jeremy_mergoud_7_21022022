@@ -17,9 +17,32 @@ exports.createOne = (req, res) => {
         });
 };
 
+// READ : récupére l'information d'utilisateur admin ou non de l'utilisateur courant
+exports.findOneByToken = (req, res) => {
+    res.status(200).json(
+        res.locals.user.isAdmin
+    );
+};
+
 // READ : récupérer tous les utilisateurs
 exports.findAllUsers = (req, res) => {
     User.findAllUsers()
+        .then(users => {
+	        // Send all users to Client
+	        res.status(200).json(
+                users
+                //utilisateurs: users <= transformer en objet et mettre une clef ?
+            );
+	    })
+        .catch(error => {
+            res.status(400).json({
+                error: error
+            });
+        });
+};
+// READ : récupérer tous les utilisateurs différents de l'utilisateur courant
+exports.findAllOtherUsers = (req, res) => {
+    User.findAllUsers(res.locals.user.id)
         .then(users => {
 	        // Send all users to Client
 	        res.status(200).json(
@@ -54,7 +77,7 @@ exports.findOneById = (req, res) => {
         });
 };
 
-//READ : récupérer une quantité d'information llimité d'un utilisateur en fonction de son id
+//READ : récupérer une quantité d'information limité d'un utilisateur en fonction de son id
 exports.findOneLimitedById = (req, res) => {
     User.findOneLimitedById(req.params.id)
         .then(user => {

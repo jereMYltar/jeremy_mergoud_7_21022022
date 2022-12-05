@@ -1,14 +1,17 @@
 import { defineStore } from "pinia";
 
 export const useUsersStore = defineStore("users", {
-    state: () => ({
-        users: [],
-        activeUser: null,
-    }),
-    getters: {
-
+  state: () => ({
+    users: [],
+    activeUser: {},
+  }),
+  getters: {},
+  actions: {
+    storeIsActiveUserAdmin(payload) {
+      this.activeUser.isAdmin = payload;
     },
-    actions: {
-
+    addUsers(payload) {
+      this.users = payload;
     },
+  },
 });

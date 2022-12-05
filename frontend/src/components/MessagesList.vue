@@ -1,62 +1,35 @@
 <template>
   <div class="main1 container">
     <SingleMessageTile
-      v-for="message in messages"
+      v-for="message in messagesStore.messages"
       :key="message.id"
       :messageData="message"
     />
-    <MessageInputField
-      v-if="this.conversation.id > 0"
-      :conversation="this.conversation"
-      @messageSend="addMessage"
-    />
+    <MessageInputField />
   </div>
 </template>
 
-<script>
+<script setup>
 import EventService from "@/services/EventService.js";
 import MessageInputField from "@/components/message/MessageInputField.vue";
 import SingleMessageTile from "@/components/message/SingleMessageTile.vue";
-export default {
-  name: "MessagesList",
-  components: {
-    MessageInputField,
-    SingleMessageTile,
-  },
-  props: {
-    conversation: {
-      type: Object,
-      default: () => ({
-        id: 0,
-      }),
-      required: false,
-    },
-  },
-  data() {
-    return {
-      messages: [],
-    };
-  },
-  methods: {
-    loadMessagesByConversationId(id) {
-      EventService.getAllMessagesByConversationId(id)
-        .then((response) => {
-          this.messages = response.data;
-        })
-        .catch();
-    },
-    addMessage(newMessage) {
-      this.messages.unshift(newMessage);
-    },
-  },
-  watch: {
-    conversation(newConversation) {
-      if (newConversation != {}) {
-        this.loadMessagesByConversationId(newConversation.id);
-      }
-    },
-  },
-};
+import { useConversationsStore } from "@/store/conversationsStore";
+import { useMessagesStore } from "@/store/messagesStore";
+
+const conversationsStore = useConversationsStore();
+const messagesStore = useMessagesStore();
+
+conversationsStore.$subscribe(async () => {
+  try {
+    let messageList = await EventService.getAllMessagesByConversationId(
+      conversationsStore.activeConversation.id
+    );
+    messagesStore.addMessages(messageList.data);
+  } catch (error) {
+    console.error(error);
+    return "Problème serveur";
+  }
+});
 </script>
 
 <style scoped></style>

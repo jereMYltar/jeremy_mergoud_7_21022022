@@ -9,23 +9,25 @@ exports.createOne = async (req, res) => {
         isClosed: 0,
         isPublic: req.body.isPublic,
     };
-    console.log(conversation);
     try {
-        const newConversation = await Conversation.create(conversation);
-        const newConsversationId = newConversation.dataValues.id;
-        const userList = req.body.users;
-        for await (const userId of userList) {
-            UserConversation.create({
-                user_id: userId,
-                conversation_id: newConsversationId,
-            })
-        };
+        let newConversation = await Conversation.create(conversation);
+        newConversation = newConversation.dataValues;
+        delete newConversation.createdAt;
+        delete newConversation.updatedAt;
+        newConversation.hasRightsOn = true;
+        if (!conversation.isPublic) {
+            const userList = req.body.users;
+            userList.push(res.locals.user.id);
+            for await (const userId of userList) {
+                UserConversation.create({
+                    user_id: userId,
+                    conversation_id: newConversation.id,
+                })
+            };;
+        }
         res.status(201).json({
             customMessage: 'Conversation créée avec succès',
-            body: {
-                id: newConsversationId,
-                name: req.body.name
-            }
+            body: newConversation,
         });
     } catch (error) {
         res.status(400).json({
@@ -112,17 +114,16 @@ exports.reopenOne = (req, res) => {
 };
 
 //DELETE : supprimer une Conversation
-exports.deleteOne = (req, res) => {
-    Conversation.destroy({ where: {id: res.locals.conversation.id}})
-    .then(() => {
+exports.deleteOne = async (req, res) => {
+    try {
+        await Conversation.destroy({ where: {id: res.locals.conversation.id}});
+        await UserConversation.destroy({ where: {id: res.locals.conversation.id}});
         res.status(200).json({
             customMessage: 'Conversation supprimée avec succès'
-        });
-    })
-    .catch(error => {
+        });      
+    } catch (error) {
         res.status(400).json({
             error: error
-        });
-    });
+        });        
+    }
 };
-

@@ -38,64 +38,59 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import EventService from "@/services/EventService.js";
 import { Form, Field, ErrorMessage } from "vee-validate";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useUsersStore } from "@/store/usersStore";
 
-export default {
-  data() {
-    return {
-      email: "",
-      password: "",
+const email = ref("");
+const password = ref("");
+const router = useRouter();
+const usersStore = useUsersStore();
+
+async function login() {
+  try {
+    let payload = {
+      email: email.value,
+      password: password.value,
     };
-  },
-  components: {
-    Form,
-    Field,
-    ErrorMessage,
-  },
-  methods: {
-    login() {
-      let payload = {
-        email: this.email,
-        password: this.password,
-      };
-      // EventService.post("/connection/login", payload)
-      EventService.login(payload)
-        .then((response) => {
-          sessionStorage.setItem("token", response.data.token);
-          this.$router.push({
-            name: "Conversation",
-          });
-        })
-        .catch();
-    },
-    validateEmail(value) {
-      // if the field is empty
-      if (!value) {
-        return "Ce champs est requis";
-      }
-      // if the field is not a valid email
-      const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-      if (!regex.test(value)) {
-        return "Ce champ doit contenir une adresse email valide";
-      }
-      // All is good
-      return true;
-    },
-    validatePassword(value) {
-      // if the field is empty
-      if (!value) {
-        return "Ce champs est requis";
-      }
-      // if the field is not a valid email
-      // const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-      // if (!regex.test(value)) {
-      //   return "This field must be a valid email";
-      // }
-      // All is good
-      return true;
-    },
-  },
-};
+    let response = await EventService.login(payload);
+    usersStore.storeIsActiveUserAdmin(response.data.isAdmin);
+    sessionStorage.setItem("token", response.data.token);
+    router.push({
+      name: "Exchanges",
+    });
+  } catch (error) {
+    console.error(error);
+    return "Mot de passe ou identifiant invalide";
+  }
+}
+function validateEmail(value) {
+  // if the field is empty
+  if (!value) {
+    return "Ce champs est requis";
+  }
+  // if the field is not a valid email
+  const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+  if (!regex.test(value)) {
+    return "Ce champ doit contenir une adresse email valide";
+  }
+  // All is good
+  return true;
+}
+function validatePassword(value) {
+  // if the field is empty
+  if (!value) {
+    return "Ce champs est requis";
+  }
+  // if the field is not a valid email
+  const regex = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})/g;
+  if (!regex.test(value)) {
+    return "Votre mot de passe doit contenir entre 8 et 64 caractères, avec au moins un lettre en minuscule, une en majuscule, un chiffre et un caractère spécial";
+  }
+  // All is good
+  return true;
+}
 </script>

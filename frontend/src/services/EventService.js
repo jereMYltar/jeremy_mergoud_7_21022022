@@ -79,9 +79,12 @@ export default {
     return apiUsers.put(`/message/restore/${payload}`);
   },
   //user
-  getAllUsers() {
-    return apiUsers.get("/user/all");
+  getAllOtherUsers() {
+    return apiUsers.get("/user/other");
   },
+  getAdminInfoForCurrentUser() {
+    return apiUsers.get("/user/");
+  }
 };
 
 // export default apiUsers

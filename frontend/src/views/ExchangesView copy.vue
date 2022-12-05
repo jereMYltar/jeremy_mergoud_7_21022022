@@ -1,9 +1,10 @@
 <template>
   <div class="main1 container">
-    <ConversationsList />
-    <MessagesList
-      v-if="JSON.stringify(conversationsStore.activeConversation) !== '{}'"
+    <ConversationsList
+      @detailsExpended="showConversationDetails"
+      :isAdmin="isAdmin"
     />
+    <MessagesList :conversation="conversation" />
     <button @click="logOut">Se déconnecter</button>
   </div>
 </template>
@@ -12,7 +13,7 @@
 import EventService from "@/services/EventService.js";
 import ConversationsList from "@/components/ConversationsList.vue";
 import MessagesList from "@/components/MessagesList.vue";
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useConversationsStore } from "@/store/conversationsStore";
 import { useUsersStore } from "@/store/usersStore";
@@ -21,6 +22,14 @@ const router = useRouter();
 const conversationsStore = useConversationsStore();
 const usersStore = useUsersStore();
 
+const conversation = ref({
+  id: 0,
+});
+let isAdmin = sessionStorage.getItem("isAdmin") == "true";
+
+function showConversationDetails(newConversation) {
+  conversation.value = newConversation;
+}
 function logOut() {
   sessionStorage.clear();
   router.push({
@@ -36,8 +45,6 @@ onMounted(async () => {
     }
     let conversations = await EventService.getAllConversationsForCurrentUser();
     conversationsStore.addConversations(conversations.data);
-    let users = await EventService.getAllOtherUsers();
-    usersStore.addUsers(users.data);
   } catch (error) {
     console.error(error);
     return "Problème serveur";
