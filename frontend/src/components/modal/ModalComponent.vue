@@ -95,6 +95,7 @@ const findLatestModal = () => {
   const latestModal = document.querySelector(
     ".vue-modal[createdat='" + latestTimeStamp + "']"
   );
+  console.log(latestModal, latestTimeStamp);
   return latestModal;
 };
 

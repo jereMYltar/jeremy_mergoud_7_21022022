@@ -1,9 +1,7 @@
 <template>
   <div class="main1 container">
     <ConversationsList />
-    <MessagesList
-      v-if="JSON.stringify(conversationsStore.activeConversation) !== '{}'"
-    />
+    <MessagesList v-if="conversationsStore.activeConversation" />
     <button @click="logOut">Se déconnecter</button>
   </div>
 </template>
@@ -30,7 +28,7 @@ function logOut() {
 
 onMounted(async () => {
   try {
-    if (JSON.stringify(usersStore.activeUser) === "{}") {
+    if (!usersStore.activeUser) {
       let response = await EventService.getAdminInfoForCurrentUser();
       usersStore.storeIsActiveUserAdmin(response.data);
     }

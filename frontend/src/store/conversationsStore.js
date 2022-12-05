@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 export const useConversationsStore = defineStore("conversations", {
   state: () => ({
     conversations: [],
-    activeConversation: {},
+    activeConversation: null,
   }),
   getters: {},
   actions: {
