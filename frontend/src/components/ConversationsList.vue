@@ -54,9 +54,11 @@ import Multiselect from "@vueform/multiselect";
 import { ref } from "vue";
 import { useConversationsStore } from "@/store/conversationsStore";
 import { useUsersStore } from "@/store/usersStore";
+import { useMessagesStore } from "@/store/messagesStore";
 
 const conversationsStore = useConversationsStore();
 const usersStore = useUsersStore();
+const messagesStore = useMessagesStore();
 
 const isPublic = ref(false);
 const selectedUsers = ref([]);
@@ -90,6 +92,20 @@ async function createConversation() {
     return "Problème serveur";
   }
 }
+
+conversationsStore.$subscribe(async () => {
+  if (conversationsStore.activeConversation) {
+    try {
+      let messageList = await EventService.getAllMessagesByConversationId(
+        conversationsStore.activeConversation.id
+      );
+      messagesStore.addMessages(messageList.data);
+    } catch (error) {
+      console.error(error);
+      return "Problème serveur";
+    }
+  }
+});
 </script>
 
 <style src="@vueform/multiselect/themes/default.css"></style>

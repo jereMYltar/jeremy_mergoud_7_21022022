@@ -8,3 +8,7 @@
     </h2>
   </div>
 </template>
+
+<script setup>
+// import { EveventService } from "../services/EventService";
+</script>

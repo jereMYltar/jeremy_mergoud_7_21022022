@@ -43,16 +43,18 @@
           Vous vous apprêter à supprimer ce message. Cette action est
           irreversible, voulez-vous continuer ?
         </p>
-        <button>Oui</button>
+        <button @click.stop="deleteMessage(props.messageData)">Oui</button>
       </ModalComponent>
     </ModalComponent>
   </div>
 </template>
 
 <script setup>
+import EventService from "@/services/EventService.js";
 import defineProps from "vue";
 import moment from "moment";
 import ModalComponent from "@/components/modal/ModalComponent.vue";
+import { useMessagesStore } from "@/store/messagesStore";
 
 //props
 const props = defineProps({
@@ -63,11 +65,22 @@ const props = defineProps({
 });
 
 //variable
+const messagesStore = useMessagesStore();
 
 //methods
 const timeFormat = (a) => {
   return moment(a).locale("fr").format("LL à LTS");
 };
+
+async function deleteMessage(message) {
+  try {
+    messagesStore.deleteMessage(message);
+    await EventService.deleteMessage(message.id);
+  } catch (error) {
+    console.error(error);
+    return "Problème serveur";
+  }
+}
 </script>
 
 <style scoped>

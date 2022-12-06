@@ -12,10 +12,17 @@ module.exports = async (req, res, next) => {
             res.locals.user = user.dataValues;
             next();
         } else {
-            throw "Ce compte a été supprimé. Veuillez contacter votre administrateur."
+            throw {
+                status: 401,
+                customMessage: "Ce compte a été supprimé. Veuillez contacter votre administrateur.",
+            };
         }
-    } catch {
-        res.status(401).json({ error : 'unauthorized request.' })
+    } catch(error) {
+        if (error = "TokenExpiredError: jwt expired") {
+            res.status(498).json({ customMessage : error })
+        } else {
+            res.status(error.status).json({ customMessage : error.customMessage })
+        }
     }
 };
 

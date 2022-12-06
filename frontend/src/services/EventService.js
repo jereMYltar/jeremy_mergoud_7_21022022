@@ -43,6 +43,11 @@ apiUsers.interceptors.response.use(
         router.push({
           name: "404Resource",
         });
+      } else if (error.response.status == 498) {
+        alert("Votre connexion a expiré. Veuillez vous authentifier à nouveau.")
+        router.push({
+          name: "Login",
+        });
       } else {
         router.push({ name: "NetworkError" });
       }
@@ -77,6 +82,9 @@ export default {
   },
   restoreMessage(payload) {
     return apiUsers.put(`/message/restore/${payload}`);
+  },
+  deleteMessage(payload) {
+    return apiUsers.delete(`/message/${payload}`);
   },
   //user
   getAllOtherUsers() {
