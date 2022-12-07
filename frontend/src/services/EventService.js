@@ -45,6 +45,7 @@ apiUsers.interceptors.response.use(
         });
       } else if (error.response.status == 498) {
         alert("Votre connexion a expiré. Veuillez vous authentifier à nouveau.")
+        sessionStorage.clear();
         router.push({
           name: "Login",
         });
