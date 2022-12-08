@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineExpose, ref, nextTick } from "vue";
+import { defineProps, defineExpose, ref, nextTick, watch } from "vue";
 
 //props
 const props = defineProps({
@@ -48,6 +48,9 @@ const props = defineProps({
     type: Boolean,
     required: true,
     default: true,
+  },
+  toClose: {
+    default: false,
   },
 });
 
@@ -156,8 +159,14 @@ const handleKeyDown = (event) => {
 };
 
 //watchers
-// watch(variableASurveiller, (newValue[, oldValue]) => {
-// });
+watch(
+  () => props.toClose,
+  (newValue) => {
+    if (newValue) {
+      closeModal();
+    }
+  }
+);
 </script>
 
 <style scoped>

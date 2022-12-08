@@ -21,20 +21,23 @@
     <div>Message posté le {{ timeFormat(props.messageData.createdAt) }}</div>
     <ModalComponent
       :global="false"
+      :toClose="toClose"
       ref="modalRef1"
       v-if="props.messageData.hasRightsOn"
     >
       <template #callButton>
         <p>...</p>
       </template>
-      <ModalComponent :global="true">
+      <ModalComponent :global="true" :toClose="toClose">
         <template #callButton>
           <p>Modifier</p>
         </template>
-        <h1>Voulez-vous modifier le contenu de ce message ?</h1>
-        <p>{{ props.messageData.content }}</p>
+        <MessageInputField
+          :messageData="props.messageData"
+          @close="closeAllModals"
+        />
       </ModalComponent>
-      <ModalComponent :global="true">
+      <ModalComponent :global="true" :toClose="toClose">
         <template #callButton>
           <p>Supprimer</p>
         </template>
@@ -51,9 +54,10 @@
 
 <script setup>
 import EventService from "@/services/EventService.js";
-import defineProps from "vue";
+import { defineProps, ref, nextTick } from "vue";
 import moment from "moment";
 import ModalComponent from "@/components/modal/ModalComponent.vue";
+import MessageInputField from "@/components/message/MessageInputField.vue";
 import { useMessagesStore } from "@/store/messagesStore";
 
 //props
@@ -65,6 +69,7 @@ const props = defineProps({
 });
 
 //variable
+const toClose = ref(false);
 const messagesStore = useMessagesStore();
 
 //methods
@@ -80,6 +85,12 @@ async function deleteMessage(message) {
     console.error(error);
     return "Problème serveur";
   }
+}
+
+async function closeAllModals() {
+  toClose.value = true;
+  await nextTick();
+  toClose.value = false;
 }
 </script>
 

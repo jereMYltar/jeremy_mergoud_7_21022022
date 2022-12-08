@@ -69,15 +69,19 @@ exports.readAllByConversationId = async (req, res) => {
 
 //UPDATE : mettre à jour un message
 exports.updateOne = (req, res) => {
-    const messageUpdated = req.body.message;
-    Message.update(messageUpdated, {
+    const updatedMessage = req.body;
+    console.log(res.locals);
+    console.log(req.body);
+    Message.update(updatedMessage, {
         where: {
             id: res.locals.message.id,
         }
     })
     .then(() => {
+        updatedMessage.id = res.locals.message.id;
         res.status(200).json({
-            customMessage: 'Message mis à jour avec succès'
+            customMessage: 'Message mis à jour avec succès',
+            body: updatedMessage
         });
     })
     .catch(error => {

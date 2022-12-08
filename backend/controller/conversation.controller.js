@@ -1,5 +1,6 @@
 const Conversation = require('../model/conversation.model');
 const UserConversation = require('../model/user_conversation.model');
+const Message = require('../model/message.model');
 
 //CREATE : créer une conversation
 exports.createOne = async (req, res) => {
@@ -113,11 +114,12 @@ exports.reopenOne = (req, res) => {
     });
 };
 
-//DELETE : supprimer une Conversation
+//DELETE : supprimer une Conversation, tous ses messages, ainsi que toutes les relations user-conversation
 exports.deleteOne = async (req, res) => {
     try {
         await Conversation.destroy({ where: {id: res.locals.conversation.id}});
-        await UserConversation.destroy({ where: {id: res.locals.conversation.id}});
+        await Message.destroy({ where: {conversation_id: res.locals.conversation.id}});
+        await UserConversation.destroy({ where: {conversation_id: res.locals.conversation.id}});
         res.status(200).json({
             customMessage: 'Conversation supprimée avec succès'
         });      

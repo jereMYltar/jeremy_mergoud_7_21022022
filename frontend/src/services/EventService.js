@@ -66,17 +66,20 @@ export default {
   },
   //conversation
   createConversation(payload) {
-    return apiUsers.post("/conversation/", payload)
+    return apiUsers.post("/conversation/", payload);
   },
   getAllConversationsForCurrentUser() {
     return apiUsers.get("/conversation/");
   },
   //message
   getAllMessagesByConversationId(payload) {
-    return apiUsers.get(`/message/conversation/${payload}`)
+    return apiUsers.get(`/message/conversation/${payload}`);
   },
   sendMessage(conversationId, payload) {
     return apiUsers.post(`/message/conversation/${conversationId}`, payload);
+  },
+  updateMessage(messageId, payload) {
+    return apiUsers.put(`/message/${messageId}`, payload);
   },
   moderateMessage(payload) {
     return apiUsers.put(`/message/moderate/${payload}`);

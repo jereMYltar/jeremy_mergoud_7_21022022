@@ -11,8 +11,17 @@ export const useMessagesStore = defineStore("messages", () => {
     messages.value = payload;
   }
   function deleteMessage(message) {
-    const index = messages.value.indexOf(message);
+    const index = messages.value.findIndex((elt) => elt.id == message.id);
     messages.value.splice(index, 1);
   }
-  return { messages, activeMessage, addMessages, deleteMessage };
+  function updateMessage(payload) {
+    const index = messages.value.findIndex(
+      (message) => message.id == payload.id
+    );
+    delete payload.id;
+    for (const key in payload) {
+      messages.value[index][key] = payload[key];
+    }
+  }
+  return { messages, activeMessage, addMessages, deleteMessage, updateMessage };
 });

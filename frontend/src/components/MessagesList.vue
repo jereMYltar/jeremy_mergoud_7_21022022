@@ -5,7 +5,8 @@
       :key="message.id"
       :messageData="message"
     />
-    <MessageInputField />
+    <!-- <MessageInputField :messageData="{ content: '', isGlobal: false }" /> -->
+    <MessageInputField :messageData="{}" />
   </div>
 </template>
 
