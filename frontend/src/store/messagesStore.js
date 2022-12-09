@@ -10,8 +10,8 @@ export const useMessagesStore = defineStore("messages", () => {
   function addMessages(payload) {
     messages.value = payload;
   }
-  function deleteMessage(message) {
-    const index = messages.value.findIndex((elt) => elt.id == message.id);
+  function deleteMessage(messageId) {
+    const index = messages.value.findIndex((elt) => elt.id == messageId);
     messages.value.splice(index, 1);
   }
   function updateMessage(payload) {

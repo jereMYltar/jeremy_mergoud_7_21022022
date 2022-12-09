@@ -81,11 +81,8 @@ export default {
   updateMessage(messageId, payload) {
     return apiUsers.put(`/message/${messageId}`, payload);
   },
-  moderateMessage(payload) {
-    return apiUsers.put(`/message/moderate/${payload}`);
-  },
-  restoreMessage(payload) {
-    return apiUsers.put(`/message/restore/${payload}`);
+  moderateMessage(messageId, payload, conversationId) {
+    return apiUsers.put(`/message/${messageId}/${conversationId}`, payload);
   },
   deleteMessage(payload) {
     return apiUsers.delete(`/message/${payload}`);

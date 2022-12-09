@@ -79,7 +79,6 @@ async function createConversation() {
     users: Array.from(selectedUsers.value, (x) => x.id),
     isPublic: isPublic.value,
   };
-  console.log(payload);
   try {
     let newConversation = await EventService.createConversation(payload);
     conversationsStore.conversations.unshift(newConversation.data.body);

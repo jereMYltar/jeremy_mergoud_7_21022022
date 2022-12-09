@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
         const messageId = req.params.messageId;
         Message.findOne({ where: {id: messageId}})
             .then((message) => {
-                if (message.messageOwnerId == user.id || user.isAdmin) {
+                if (message.messageOwnerId == user.id) {
                     res.locals.message = message.dataValues;
                     res.locals.message.hasOwnershipRights = true;
                     next();

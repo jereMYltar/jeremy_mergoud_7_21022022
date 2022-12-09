@@ -10,6 +10,7 @@ exports.createOne = async (req, res) => {
     isModerated: 0,
     isGlobal: req.body.isGlobal,
   };
+  console.log(message);
   try {
     const messageCreated = await Message.create(message);
     const newMessage = messageCreated.dataValues;
@@ -71,10 +72,10 @@ exports.updateOne = async (req, res) => {
   try {
     await Message.update(req.body, {
       where: {
-        id: res.locals.message.id,
+        id: req.params.messageId,
       }
     })
-    const updatedMessage = await Message.findOneById(res.locals.message.id);
+    const updatedMessage = await Message.findOneById(req.params.messageId);
     let response = req.body;
     response.id = updatedMessage[0].id;
     response.updatedAt = updatedMessage[0].updatedAt;
@@ -83,7 +84,7 @@ exports.updateOne = async (req, res) => {
       body: response
     });  
   } catch (error) {
-    res.status(400).json({
+    res.status(444).json({
       error: error
     });
   }

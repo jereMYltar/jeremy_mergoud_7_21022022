@@ -57,7 +57,9 @@ const message = ref(
   Object.keys(props.messageData).length == 0 ? "" : props.messageData.content
 );
 const isGlobal = ref(
-  Object.keys(props.messageData).length == 0 ? "" : !!props.messageData.isGlobal
+  Object.keys(props.messageData).length == 0
+    ? false
+    : !!props.messageData.isGlobal
 );
 
 //methods
@@ -80,7 +82,6 @@ async function saveMessage() {
         conversationsStore.activeConversation.id,
         payload
       );
-      console.log(newMessage);
       newMessage = newMessage.data.body;
       messagesStore.messages.unshift(newMessage);
       message.value = "";

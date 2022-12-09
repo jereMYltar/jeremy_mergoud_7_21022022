@@ -23,12 +23,19 @@
       :global="false"
       :toClose="toClose"
       ref="modalRef1"
-      v-if="props.messageData.hasRightsOn"
+      v-if="
+        props.messageData.hasRightsOn ||
+        conversationsStore.activeConversation.hasRightsOn
+      "
     >
       <template #callButton>
         <p>...</p>
       </template>
-      <ModalComponent :global="true" :toClose="toClose">
+      <ModalComponent
+        :global="true"
+        :toClose="toClose"
+        v-if="props.messageData.isAuthor"
+      >
         <template #callButton>
           <p>Modifier</p>
         </template>
@@ -37,17 +44,22 @@
           @close="closeAllModals"
         />
       </ModalComponent>
-      <ModalComponent :global="true" :toClose="toClose">
-        <template #callButton>
-          <p>Supprimer</p>
-        </template>
-        <h1>Supprimer le message ?</h1>
-        <p>
-          Vous vous apprêter à supprimer ce message. Cette action est
-          irreversible, voulez-vous continuer ?
-        </p>
-        <button @click.stop="deleteMessage(props.messageData)">Oui</button>
-      </ModalComponent>
+      <button
+        @click.stop="moderateMessage(props.messageData)"
+        v-if="
+          conversationsStore.activeConversation.hasRightsOn &&
+          !props.messageData.isAuthor
+        "
+      >
+        <span v-if="props.messageData.isModerated">Rétablir</span>
+        <span v-if="!props.messageData.isModerated">Modérer</span>
+      </button>
+      <button
+        @click.stop="deleteMessage(props.messageData.id)"
+        v-if="props.messageData.isAuthor"
+      >
+        Supprimer
+      </button>
     </ModalComponent>
   </div>
 </template>
@@ -59,6 +71,7 @@ import moment from "moment";
 import ModalComponent from "@/components/modal/ModalComponent.vue";
 import MessageInputField from "@/components/message/MessageInputField.vue";
 import { useMessagesStore } from "@/store/messagesStore";
+import { useConversationsStore } from "@/store/conversationsStore";
 
 //props
 const props = defineProps({
@@ -71,16 +84,43 @@ const props = defineProps({
 //variable
 const toClose = ref(false);
 const messagesStore = useMessagesStore();
+const conversationsStore = useConversationsStore();
 
 //methods
 const timeFormat = (a) => {
   return moment(a).locale("fr").format("LL à LTS");
 };
 
-async function deleteMessage(message) {
+async function deleteMessage(id) {
+  if (
+    window.confirm(`Vous vous apprêter à supprimer ce message.
+    Cette action est irreversible, voulez-vous continuer ?`)
+  ) {
+    try {
+      messagesStore.deleteMessage(id);
+      await EventService.deleteMessage(id);
+    } catch (error) {
+      console.error(error);
+      return "Problème serveur";
+    }
+  } else {
+    closeAllModals();
+  }
+}
+
+async function moderateMessage(message) {
+  let payload = message.isModerated
+    ? { isModerated: false }
+    : { isModerated: true };
   try {
-    messagesStore.deleteMessage(message);
-    await EventService.deleteMessage(message.id);
+    let updatedMessage = await EventService.moderateMessage(
+      message.id,
+      payload,
+      conversationsStore.activeConversation.id
+    );
+    updatedMessage = updatedMessage.data.body;
+    messagesStore.updateMessage(updatedMessage);
+    closeAllModals();
   } catch (error) {
     console.error(error);
     return "Problème serveur";
