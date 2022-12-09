@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
             next();
         } else {
             throw {
-                status: 401,
+                status: 491,
                 customMessage: "Ce compte a été supprimé. Veuillez contacter votre administrateur.",
             };
         }

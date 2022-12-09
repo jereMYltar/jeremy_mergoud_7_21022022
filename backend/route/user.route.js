@@ -18,18 +18,18 @@ router.get('/other', isConnected, User.findAllOtherUsers);
 router.get('/all', User.findAllUsers);
 
 //READ : récupérer un utilisateur en fonction de son id
-router.get('/find/:id', User.findOneById);
+router.get('/find/:userId', User.findOneById);
 
 //READ : récupérer une quantité d'information limité d'un utilisateur en fonction de son id
-router.get('/findLimited/:id', User.findOneLimitedById);
+router.get('/findLimited/:userId', User.findOneLimitedById);
 
 //READ : récupérer un utilisateur en fonction de son email
 router.get('/findEmail', User.findOneByEmail);
 
 //UPDATE : mettre à jour un utilisateur
-router.put('/:id', isAccountOwnerOrAdmin, User.updateOne);
+router.put('/:userId', isAccountOwnerOrAdmin, User.updateOne);
 
 //DELETE : supprimer un utilisateur
-router.delete('/:id', isAccountOwnerOrAdmin, User.deleteOne);
+router.delete('/:userId', isAccountOwnerOrAdmin, User.deleteOne);
 
 module.exports = router;

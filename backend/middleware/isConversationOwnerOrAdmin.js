@@ -3,7 +3,7 @@ const Conversation = require('../model/conversation.model');
 module.exports = async (req, res, next) => {
     try {
         const user = res.locals.user;
-        const conversationId = req.params.id;
+        const conversationId = req.params.conversationId;
         const conversation = await Conversation.findOne({ where: {id: conversationId}})
         if (user.isAdmin || conversation.conversationOwnerId == user.id) {
             res.locals.conversation = conversation.dataValues;

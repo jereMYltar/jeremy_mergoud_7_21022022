@@ -6,7 +6,7 @@ exports.createOne = async (req, res) => {
   let message = {
     messageOwnerId: res.locals.user.id,
     content: req.body.content,
-    conversation_id: req.params.id,
+    conversation_id: req.params.conversationId,
     isModerated: 0,
     isGlobal: req.body.isGlobal,
   };
@@ -30,7 +30,7 @@ exports.createOne = async (req, res) => {
 
 //READ : récupérer un message par son id
 exports.findOne = (req, res) => {
-  const messageId = req.params.id;
+  const messageId = req.params.messageId;
   Message.findOneById(messageId)
   .then(message => {
     // Renvoie tous les messages au client
@@ -48,7 +48,7 @@ exports.findOne = (req, res) => {
 //READ : récupérer tous les messages d'une conversation
 exports.readAllByConversationId = async (req, res) => {
   try {
-    const conversationId = req.params.id;
+    const conversationId = req.params.conversationId;
     let messages = await Message.findAllByConversationId(conversationId);
     const userId = res.locals.user.id;
     const isAdmin = res.locals.user.isAdmin;
@@ -69,19 +69,18 @@ exports.readAllByConversationId = async (req, res) => {
 //UPDATE : mettre à jour un message
 exports.updateOne = async (req, res) => {
   try {
-    const updatedMessage = req.body;
-    console.log(res.locals);
-    console.log(req.body);
-    const response = await Message.update(updatedMessage, {
+    await Message.update(req.body, {
       where: {
         id: res.locals.message.id,
       }
     })
-    updatedMessage.id = response.id;
-    updatedMessage.updatedAt = response.updatedAt;
+    const updatedMessage = await Message.findOneById(res.locals.message.id);
+    let response = req.body;
+    response.id = updatedMessage[0].id;
+    response.updatedAt = updatedMessage[0].updatedAt;
     res.status(200).json({
       customMessage: 'Message mis à jour avec succès',
-      body: updatedMessage
+      body: response
     });  
   } catch (error) {
     res.status(400).json({

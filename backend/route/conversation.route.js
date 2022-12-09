@@ -15,15 +15,15 @@ router.post('/', canCreatePublicConversation, Conversation.createOne);
 router.get('/', Conversation.findAllAllowed);
 
 //UPDATE : mettre à jour une conversation
-router.put('/:id', isConversationOwnerOrAdmin, Conversation.updateOne);
+router.put('/:conversationId', isConversationOwnerOrAdmin, Conversation.updateOne);
 
 //UPDATE : clôturer une conversation
-router.put('/close/:id', isConversationOwnerOrAdmin, Conversation.closeOne);
+router.put('/close/:conversationId', isConversationOwnerOrAdmin, Conversation.closeOne);
 
 //UPDATE : rouvrir une conversation
-router.put('/reopen/:id', isConversationOwnerOrAdmin, Conversation.reopenOne);
+router.put('/reopen/:conversationId', isConversationOwnerOrAdmin, Conversation.reopenOne);
 
 //DELETE : supprimer une Conversation
-router.delete('/:id', isConversationOwnerOrAdmin, Conversation.deleteOne);
+router.delete('/:conversationId', isConversationOwnerOrAdmin, Conversation.deleteOne);
 
 module.exports = router;

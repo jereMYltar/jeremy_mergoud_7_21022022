@@ -59,7 +59,7 @@ exports.findAllOtherUsers = (req, res) => {
 
 //READ : récupérer un utilisateur en fonction de son id
 exports.findOneById = (req, res) => {
-    User.findOne({ where: {id: req.params.id}})
+    User.findOne({ where: {id: req.params.userId}})
         .then(user => {
             // Send user found to Client
 	        if (!!user) {
@@ -79,7 +79,7 @@ exports.findOneById = (req, res) => {
 
 //READ : récupérer une quantité d'information limité d'un utilisateur en fonction de son id
 exports.findOneLimitedById = (req, res) => {
-    User.findOneLimitedById(req.params.id)
+    User.findOneLimitedById(req.params.userId)
         .then(user => {
             // Send user found to Client
 	        if (!!user) {
@@ -120,7 +120,7 @@ exports.findOneByEmail = (req, res) => {
 //UPDATE : mettre à jour un utilisateur
 exports.updateOne = (req, res) => {
     const user = JSON.parse(req.body.user);
-    User.update(user, {where: {id: req.params.id}})
+    User.update(user, {where: {id: req.params.userId}})
         .then(() => {
             res.status(201).json({
                 customMessage: 'Utilisateur mis à jour avec succès'
@@ -135,7 +135,7 @@ exports.updateOne = (req, res) => {
 
 //DELETE : supprimer un utilisateur
 exports.deleteOne = (req, res) => {
-    User.destroy({ where: {id: req.params.id}})
+    User.destroy({ where: {id: req.params.userId}})
     .then(() => {
         res.status(200).json({
             customMessage: 'Utilisateur supprimé avec succès'
