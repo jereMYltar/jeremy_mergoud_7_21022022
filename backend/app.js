@@ -23,7 +23,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 //middleware pour savoir si l'utilisateur est connecté
-const isConnected = require("./middleware/isConnected");
+const isConnected = require("./policies/isConnected");
 
 //Implémentation des routes
 //connexion

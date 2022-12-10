@@ -2,16 +2,16 @@ const express = require('express');
 const router = express.Router();
 const Message = require('../controller/message.controller');
 //test pour savoir si l'utilisateur a le droit d'action sur le message
-const isMessageOwner = require("../middleware/isMessageOwner");
+const isMessageOwner = require("../policies/isMessageOwner");
 //test pour savoir si l'utilisateur a le droit de publier un message dans la conversation
-const isConversationMemberOrAdmin = require("../middleware/isConversationMemberOrAdmin");
+const isConversationMemberOrAdmin = require("../policies/isConversationMemberOrAdmin");
 //test pour savoir si l'utilisateur a le droit d'action sur la conversation
-const isConversationOwnerOrAdmin = require("../middleware/isConversationOwnerOrAdmin");
+const isConversationOwnerOrAdmin = require("../policies/isConversationOwnerOrAdmin");
 //test pour savoir si la conversation est ouverte
-const isOpenConversation = require("../middleware/isOpenConversation");
+const isConversationOpen = require("../policies/isConversationOpen");
 
 //CREATE : créer un message dans une conversation et renvoi le message enregistré en base
-router.post("/conversation/:conversationId", isConversationMemberOrAdmin, Message.createOne);
+router.post("/conversation/:conversationId", isConversationMemberOrAdmin, isConversationOpen,  Message.createOne);
 
 //READ : récupérer un message par son id
 router.get("/:messageId", isMessageOwner, Message.findOne);
