@@ -10,7 +10,6 @@ exports.createOne = async (req, res) => {
     isModerated: 0,
     isGlobal: req.body.isGlobal,
   };
-  console.log(message);
   try {
     const messageCreated = await Message.create(message);
     const newMessage = messageCreated.dataValues;

@@ -6,7 +6,10 @@
       :messageData="message"
     />
     <!-- <MessageInputField :messageData="{ content: '', isGlobal: false }" /> -->
-    <MessageInputField :messageData="{}" />
+    <MessageInputField
+      :messageData="{}"
+      v-if="!conversationsStore.activeConversation.isClosed"
+    />
   </div>
 </template>
 
@@ -14,8 +17,10 @@
 import MessageInputField from "@/components/message/MessageInputField.vue";
 import SingleMessageTile from "@/components/message/SingleMessageTile.vue";
 import { useMessagesStore } from "@/store/messagesStore";
+import { useConversationsStore } from "@/store/conversationsStore";
 
 const messagesStore = useMessagesStore();
+const conversationsStore = useConversationsStore();
 </script>
 
 <style scoped></style>

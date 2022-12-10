@@ -6,11 +6,11 @@ module.exports = async (req, res, next) => {
         const user = res.locals.user;
         const conversationId = req.params.conversationId;
         const conversation = await Conversation.findOne({ where: {id: conversationId}});
-        if (user.isAdmin || conversation.isPublic) {
-            res.locals.conversation = conversation.dataValues;
+        res.locals.conversation = conversation.dataValues;
+        if (user.isAdmin || conversation.dataValues.isPublic) {
             next();
         } else {
-            const userConversation = await UserConversation.findOne({
+            await UserConversation.findOne({
                 where: {
                     user_id: user.id,
                     conversation_id: conversationId,

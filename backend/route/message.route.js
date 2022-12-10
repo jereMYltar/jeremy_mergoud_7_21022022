@@ -7,6 +7,8 @@ const isMessageOwner = require("../middleware/isMessageOwner");
 const isConversationMemberOrAdmin = require("../middleware/isConversationMemberOrAdmin");
 //test pour savoir si l'utilisateur a le droit d'action sur la conversation
 const isConversationOwnerOrAdmin = require("../middleware/isConversationOwnerOrAdmin");
+//test pour savoir si la conversation est ouverte
+const isOpenConversation = require("../middleware/isOpenConversation");
 
 //CREATE : créer un message dans une conversation et renvoi le message enregistré en base
 router.post("/conversation/:conversationId", isConversationMemberOrAdmin, Message.createOne);
