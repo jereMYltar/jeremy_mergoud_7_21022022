@@ -94,8 +94,8 @@ async function deleteMessage(id) {
     Cette action est irreversible, voulez-vous continuer ?`)
   ) {
     try {
-      messagesStore.deleteMessage(id);
       await EventService.deleteMessage(id);
+      messagesStore.deleteMessage(id);
     } catch (error) {
       console.error(error);
       return "Problème serveur";

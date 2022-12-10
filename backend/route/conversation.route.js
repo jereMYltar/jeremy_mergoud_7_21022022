@@ -17,12 +17,6 @@ router.get('/', Conversation.findAllAllowed);
 //UPDATE : mettre à jour une conversation
 router.put('/:conversationId', isConversationOwnerOrAdmin, Conversation.updateOne);
 
-//UPDATE : clôturer une conversation
-router.put('/close/:conversationId', isConversationOwnerOrAdmin, Conversation.closeOne);
-
-//UPDATE : rouvrir une conversation
-router.put('/reopen/:conversationId', isConversationOwnerOrAdmin, Conversation.reopenOne);
-
 //DELETE : supprimer une Conversation
 router.delete('/:conversationId', isConversationOwnerOrAdmin, Conversation.deleteOne);
 

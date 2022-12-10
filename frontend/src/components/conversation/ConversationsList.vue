@@ -22,16 +22,12 @@ const messagesStore = useMessagesStore();
 
 //methodes
 conversationsStore.$subscribe(async () => {
-  console.log("changement détecté dans conversationsStore");
   if (conversationsStore.activeConversation) {
     try {
-      console.log("step 1");
       let messageList = await EventService.getAllMessagesByConversationId(
         conversationsStore.activeConversation.id
       );
-      console.log("step 2 : ", messageList);
       messagesStore.addMessages(messageList.data);
-      console.log("step 3");
     } catch (error) {
       console.error(error);
       return "Problème serveur";

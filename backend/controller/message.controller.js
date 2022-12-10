@@ -83,7 +83,7 @@ exports.updateOne = async (req, res) => {
       body: response
     });  
   } catch (error) {
-    res.status(444).json({
+    res.status(401).json({
       error: error
     });
   }

@@ -57,61 +57,24 @@ exports.findAllAllowed = async (req, res) => {
 };
 
 //UPDATE : mettre à jour une conversation
-exports.updateOne = (req, res) => {
-    const conversationUpdated = req.body.conversation;
-    Conversation.update(conversationUpdated, {
-        where: {
-            id: res.locals.conversation.id
-        }
-    })
-    .then(() => {
-        res.status(200).json({
-            customMessage: 'Conversation mise à jour avec succès'
-        });
-    })
-    .catch(error => {
-        res.status(400).json({
+exports.updateOne = async (req, res) => {
+    try {
+        console.log(req.params.conversationId);
+        await Conversation.update(req.body, {
+            where: {
+              id: req.params.conversationId,
+            }
+          })
+          const updatedConversation = await Conversation.findOneById(req.params.conversationId);
+          res.status(200).json({
+            customMessage: 'Conversation mise à jour avec succès',
+            body: updatedConversation[0]
+          });  
+    } catch (error) {
+        res.status(486).json({
             error: error
-        });
-    });
-};
-
-//UPDATE : clôturer une conversation
-exports.closeOne = (req, res) => {
-    Conversation.update({isClosed: true}, {
-        where: {
-            id: res.locals.conversation.id
-        }
-    })
-    .then(() => {
-        res.status(200).json({
-            customMessage: 'Conversation clôturée avec succès'
-        });
-    })
-    .catch(error => {
-        res.status(400).json({
-            error: error
-        });
-    });
-};
-
-//UPDATE : rouvrir une conversation clôturée
-exports.reopenOne = (req, res) => {
-    Conversation.update({isClosed: false}, {
-        where: {
-            id: res.locals.conversation.id
-        }
-    })
-    .then(() => {
-        res.status(200).json({
-            customMessage: 'Conversation rétablie avec succès'
-        });
-    })
-    .catch(error => {
-        res.status(400).json({
-            error: error
-        });
-    });
+          });
+    }
 };
 
 //DELETE : supprimer une Conversation, tous ses messages, ainsi que toutes les relations user-conversation

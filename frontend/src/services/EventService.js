@@ -71,9 +71,15 @@ export default {
   getAllConversationsForCurrentUser() {
     return apiUsers.get("/conversation/");
   },
+  updateConversation(conversationId, payload) {
+    return apiUsers.put(`/conversation/${conversationId}`, payload);
+  },
+  deleteConversation(conversationId) {
+    return apiUsers.delete(`/conversation/${conversationId}`);
+  },
   //message
-  getAllMessagesByConversationId(payload) {
-    return apiUsers.get(`/message/conversation/${payload}`);
+  getAllMessagesByConversationId(conversationId) {
+    return apiUsers.get(`/message/conversation/${conversationId}`);
   },
   sendMessage(conversationId, payload) {
     return apiUsers.post(`/message/conversation/${conversationId}`, payload);

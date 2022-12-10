@@ -49,7 +49,8 @@ module.exports.findAllAllowed = function (isAdmin, userId) {
         conversation.name,
         conversation.conversationOwnerId,
         conversation.isClosed,
-        conversation.isPublic
+        conversation.isPublic,
+        conversation.updatedAt
     FROM conversation
     LEFT JOIN user_conversation ON user_conversation.conversation_id = conversation.id
     `;
@@ -59,4 +60,18 @@ module.exports.findAllAllowed = function (isAdmin, userId) {
     };
     sql += `ORDER BY conversation.updatedAt DESC;`;
     return database.query(sql, { type: QueryTypes.SELECT });
+};
+//READ : récupérer une conversation par son id :
+module.exports.findOneById = function (conversationId) {
+    return database.query(`
+    SELECT
+        conversation.id,
+        conversation.name,
+        conversation.conversationOwnerId,
+        conversation.isClosed,
+        conversation.isPublic,
+        conversation.updatedAt
+    FROM conversation
+    WHERE id=${conversationId} ;
+    `, { type: QueryTypes.SELECT });
 };
