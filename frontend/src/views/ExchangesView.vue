@@ -8,8 +8,8 @@
 
 <script setup>
 import EventService from "@/services/EventService.js";
-import ConversationsList from "@/components/ConversationsList.vue";
-import MessagesList from "@/components/MessagesList.vue";
+import ConversationsList from "@/components/conversation/ConversationsList.vue";
+import MessagesList from "@/components/message/MessagesList.vue";
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useConversationsStore } from "@/store/conversationsStore";
