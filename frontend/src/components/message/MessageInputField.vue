@@ -22,13 +22,13 @@
         class="basicButton"
         type="submit"
         value="Envoyer"
-        v-if="Object.keys(props.messageData).length == 0"
+        v-if="Object.keys(props.message).length == 0"
       />
       <input
         class="basicButton"
         type="submit"
         value="Modifier"
-        v-if="Object.keys(props.messageData).length > 0"
+        v-if="Object.keys(props.message).length > 0"
       />
     </Form>
   </div>
@@ -43,7 +43,7 @@ import { useMessagesStore } from "@/store/messagesStore";
 
 //props
 const props = defineProps({
-  messageData: {
+  message: {
     type: Object,
     required: true,
   },
@@ -54,12 +54,10 @@ const emit = defineEmits(["close"]);
 const conversationsStore = useConversationsStore();
 const messagesStore = useMessagesStore();
 const message = ref(
-  Object.keys(props.messageData).length == 0 ? "" : props.messageData.content
+  Object.keys(props.message).length == 0 ? "" : props.message.content
 );
 const isGlobal = ref(
-  Object.keys(props.messageData).length == 0
-    ? false
-    : !!props.messageData.isGlobal
+  Object.keys(props.message).length == 0 ? false : !!props.message.isGlobal
 );
 
 //methods
@@ -76,7 +74,7 @@ async function saveMessage() {
     content: message.value,
     isGlobal: isGlobal.value,
   };
-  if (Object.keys(props.messageData).length == 0) {
+  if (Object.keys(props.message).length == 0) {
     try {
       let newMessage = await EventService.sendMessage(
         conversationsStore.activeConversation.id,
@@ -98,7 +96,7 @@ async function saveMessage() {
   } else {
     try {
       let updatedMessage = await EventService.updateMessage(
-        props.messageData.id,
+        props.message.id,
         payload
       );
       updatedMessage = updatedMessage.data.body;
