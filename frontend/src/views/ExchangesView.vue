@@ -10,7 +10,7 @@
 import EventService from "@/services/EventService.js";
 import ConversationsList from "@/components/conversation/ConversationsList.vue";
 import MessagesList from "@/components/message/MessagesList.vue";
-import { onMounted } from "vue";
+import { onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 import { useConversationsStore } from "@/store/conversationsStore";
 import { useUsersStore } from "@/store/usersStore";
@@ -26,7 +26,7 @@ function logOut() {
   });
 }
 
-onMounted(async () => {
+onBeforeMount(async () => {
   try {
     if (!usersStore.activeUser) {
       let response = await EventService.getAdminInfoForCurrentUser();

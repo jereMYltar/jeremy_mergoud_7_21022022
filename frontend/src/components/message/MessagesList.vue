@@ -3,11 +3,11 @@
     <SingleMessageTile
       v-for="message in messagesStore.messages"
       :key="message.id"
-      :messageData="message"
+      :message="message"
     />
     <!-- <MessageInputField :messageData="{ content: '', isGlobal: false }" /> -->
     <MessageInputField
-      :messageData="{}"
+      :message="{}"
       v-if="!conversationsStore.activeConversation.isClosed"
     />
   </div>

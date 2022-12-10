@@ -2,29 +2,29 @@
   <div
     :class="[
       'message',
-      props.messageData.isAuthor ? 'written' : 'read',
-      props.messageData.isGlobal ? 'global' : '',
+      props.message.isAuthor ? 'written' : 'read',
+      props.message.isGlobal ? 'global' : '',
     ]"
   >
-    <div v-if="!props.messageData.isAuthor">{{ props.messageData.author }}</div>
-    <div v-if="props.messageData.isAuthor">Moi</div>
-    <div v-if="props.messageData.createdAt != props.messageData.updatedAt">
-      Message modifié le {{ timeFormat(props.messageData.updatedAt) }}
+    <div v-if="!props.message.isAuthor">{{ props.message.author }}</div>
+    <div v-if="props.message.isAuthor">Moi</div>
+    <div v-if="props.message.createdAt != props.message.updatedAt">
+      Message modifié le {{ timeFormat(props.message.updatedAt) }}
     </div>
-    <div v-if="!props.messageData.isModerated">
-      {{ props.messageData.content }}
+    <div v-if="!props.message.isModerated">
+      {{ props.message.content }}
     </div>
-    <div v-if="props.messageData.isModerated">
+    <div v-if="props.message.isModerated">
       Le contenu de ce message a été modéré en raison d'un non-respect des
       règles de bonne conduite de notre entreprise.
     </div>
-    <div>Message posté le {{ timeFormat(props.messageData.createdAt) }}</div>
+    <div>Message posté le {{ timeFormat(props.message.createdAt) }}</div>
     <ModalComponent
       :global="false"
       :toClose="toClose"
       ref="modalRef1"
       v-if="
-        props.messageData.hasRightsOn ||
+        props.message.hasRightsOn ||
         conversationsStore.activeConversation.hasRightsOn
       "
     >
@@ -34,29 +34,26 @@
       <ModalComponent
         :global="true"
         :toClose="toClose"
-        v-if="props.messageData.isAuthor"
+        v-if="props.message.isAuthor"
       >
         <template #callButton>
           <p>Modifier</p>
         </template>
-        <MessageInputField
-          :messageData="props.messageData"
-          @close="closeAllModals"
-        />
+        <MessageInputField :message="props.message" @close="closeAllModals" />
       </ModalComponent>
       <button
-        @click.stop="moderateMessage(props.messageData)"
+        @click.stop="moderateMessage(props.message)"
         v-if="
           conversationsStore.activeConversation.hasRightsOn &&
-          !props.messageData.isAuthor
+          !props.message.isAuthor
         "
       >
-        <span v-if="props.messageData.isModerated">Rétablir</span>
-        <span v-if="!props.messageData.isModerated">Modérer</span>
+        <span v-if="props.message.isModerated">Rétablir</span>
+        <span v-if="!props.message.isModerated">Modérer</span>
       </button>
       <button
-        @click.stop="deleteMessage(props.messageData.id)"
-        v-if="props.messageData.isAuthor"
+        @click.stop="deleteMessage(props.message.id)"
+        v-if="props.message.isAuthor"
       >
         Supprimer
       </button>
@@ -75,7 +72,7 @@ import { useConversationsStore } from "@/store/conversationsStore";
 
 //props
 const props = defineProps({
-  messageData: {
+  message: {
     type: Object,
     required: true,
   },
