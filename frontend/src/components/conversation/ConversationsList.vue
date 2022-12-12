@@ -6,7 +6,7 @@
       :conversation="conversation"
     >
     </SingleConversationTile>
-    <ConversationInputField />
+    <ConversationInputField :conversation="{}" />
   </div>
 </template>
 

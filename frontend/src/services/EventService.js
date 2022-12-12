@@ -77,6 +77,10 @@ export default {
   deleteConversation(conversationId) {
     return apiUsers.delete(`/conversation/${conversationId}`);
   },
+  //user_conversation
+  getConversationMembers(conversationId) {
+    return apiUsers.get(`/user_conversation/${conversationId}`);
+  },
   //message
   getAllMessagesByConversationId(conversationId) {
     return apiUsers.get(`/message/conversation/${conversationId}`);

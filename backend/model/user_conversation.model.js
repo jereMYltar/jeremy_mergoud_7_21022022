@@ -47,4 +47,11 @@ module.exports = UserConversation;
 
 //définition des fonctions de base du modèle :
 //- CREATE - créer une relation : requête de base de Sequelize => create. Requiert un objet contenant user_id et conversation_id
-//- DELETE - supprimer une relation  : requête de base de Sequelize => destroy. Requiert l'id de la conversation ou du user supprimée (pour la clause WHERE)
+//- READ - lire/récupérer une relation utilisateur-conversation : requête brute ci-dessous
+//- DELETE - supprimer toutes les relations d'une conversation : requête de base de Sequelize => destroy. Requiert l'id de la conversation supprimée (pour la clause WHERE)
+
+//READ : récupérer toutes les conversations auxquelles participe un utilisateur (sur la base de son id)
+module.exports.findAllMembersByConversationId = function (conversationId) {
+    let sql = `SELECT user_id FROM user_conversation WHERE conversation_id = ${conversationId}`;
+    return database.query(sql, { type: QueryTypes.SELECT });
+};

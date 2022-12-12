@@ -1,19 +1,19 @@
 <template>
   <div class="main1 container">
     <h1 class="titre1">Votre message</h1>
-    <Form @submit="saveMessage" class="container" name="connectionForm">
+    <Form @submit="saveMessage" class="container">
       <label for="message" class="text">Votre message</label>
       <Field
-        v-model="message"
-        id="message"
-        name="message"
+        v-model="messageContent"
+        id="messageContent"
+        name="messageContent"
         type="text"
         maxlength="1000"
-        placeholder="Votre message"
+        placeholder="Votre messageContent"
         class="textInput"
         :rules="isNotEmpty"
       />
-      <ErrorMessage name="message" class="errorMessage" />
+      <ErrorMessage name="messageContent" class="errorMessage" />
       <p v-if="conversationsStore.activeConversation.hasRightsOn">
         <label for="isGlobal">Message global ? </label>
         <input type="checkbox" id="isGlobal" v-model="isGlobal" />
@@ -53,7 +53,7 @@ const emit = defineEmits(["close"]);
 //variables
 const conversationsStore = useConversationsStore();
 const messagesStore = useMessagesStore();
-const message = ref(
+const messageContent = ref(
   Object.keys(props.message).length == 0 ? "" : props.message.content
 );
 const isGlobal = ref(
@@ -62,7 +62,7 @@ const isGlobal = ref(
 
 //methods
 function isNotEmpty() {
-  if (!message.value) {
+  if (!messageContent.value) {
     return "Vous devez saisir un message !";
   } else {
     return true;
@@ -71,7 +71,7 @@ function isNotEmpty() {
 
 async function saveMessage() {
   let payload = {
-    content: message.value,
+    content: messageContent.value,
     isGlobal: isGlobal.value,
   };
   if (Object.keys(props.message).length == 0) {
@@ -82,7 +82,7 @@ async function saveMessage() {
       );
       newMessage = newMessage.data.body;
       messagesStore.messages.unshift(newMessage);
-      message.value = "";
+      messageContent.value = "";
       isGlobal.value = false;
       window.scrollTo({
         top: 0,
