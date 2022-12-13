@@ -16,7 +16,7 @@
           <p>Modifier</p>
         </template>
         <ConversationInputField
-          :existingConversation="0"
+          :existingConversation="1"
           @close="closeAllModals"
         />
       </ModalComponent>

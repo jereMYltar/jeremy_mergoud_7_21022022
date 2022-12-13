@@ -53,7 +53,12 @@
         <label for="isPublic">Conversation publique :</label>
         <input type="checkbox" id="isPublic" v-model="isPublic" />
       </div>
-      <div v-if="props.existingConversation && props.conversation.hasRightsOn">
+      <div
+        v-if="
+          props.existingConversation &&
+          conversationsStore.activeConversation.hasRightsOn
+        "
+      >
         <label for="isClosed">Conversation close :</label>
         <input type="checkbox" id="isClosed" v-model="isClosed" />
       </div>
@@ -136,32 +141,11 @@ const usersStore = useUsersStore();
 const modalRef1 = ref();
 const memberListFieldRef = ref();
 const ownerFieldRef = ref();
-const selectedOwner = ref(
-  props.existingConversation
-    ? [{
-        id: usersStore.activeUser.id,
-        name: usersStore.activeUser.name,
-      }]
-    : [conversationsStore.activeConversation.owner]
-);
-const selectedUsers = ref(
-  props.existingConversation
-    ? null
-    : conversationsStore.activeConversation.members
-);
-const conversationName = ref(
-  props.existingConversation ? "" : conversationsStore.activeConversation.name
-);
-const isPublic = ref(
-  props.existingConversation
-    ? false
-    : conversationsStore.activeConversation.isPublic
-);
-const isClosed = ref(
-  props.existingConversation
-    ? false
-    : conversationsStore.activeConversation.isClosed
-);
+const selectedOwner = ref([]);
+const selectedUsers = ref(null);
+const conversationName = ref("");
+const isPublic = ref(false);
+const isClosed = ref(false);
 
 //computed
 const charactersLeftInConversationName = computed(() => {
@@ -241,12 +225,19 @@ async function createConversation() {
 
 onMounted(async () => {
   console.log(props.existingConversation);
+  if (props.existingConversation) {
+    selectedOwner.value = [conversationsStore.activeConversation.owner];
+    selectedUsers.value = conversationsStore.activeConversation.members;
+    conversationName.value = conversationsStore.activeConversation.name;
+    isPublic.value = conversationsStore.activeConversation.isPublic;
+    isClosed.value = conversationsStore.activeConversation.isClosed;
+  }
   try {
-    if (props.existingConversation) {
-      selectedUsers.value = await EventService.getConversationMembers(
-        props.conversation.id
-      );
-    }
+    // if (props.existingConversation) {
+    //   selectedUsers.value = await EventService.getConversationMembers(
+    //     props.conversation.id
+    //   );
+    // }
   } catch (error) {
     console.error(error);
     return "Problème serveur";

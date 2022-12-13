@@ -41,7 +41,7 @@
 <script setup>
 import EventService from "@/services/EventService.js";
 import { Form, Field, ErrorMessage } from "vee-validate";
-import { ref } from "vue";
+import { ref, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { useUsersStore } from "@/store/usersStore";
 
@@ -59,6 +59,7 @@ async function login() {
     let response = await EventService.login(payload);
     usersStore.storeActiveUser(response.data.activeUser);
     sessionStorage.setItem("token", response.data.token);
+    await nextTick();
     router.push({
       name: "Exchanges",
     });
