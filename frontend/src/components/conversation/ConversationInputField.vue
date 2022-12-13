@@ -7,59 +7,95 @@
     <p>Sélectionner les participants à cette conversation :</p>
     <p>Ici mon outil de choix de personnes</p>
     <Form @submit="createConversation" class="container" name="connectionForm">
-      <label for="conversationName">Nom de la conversation : </label>
-      <Field
-        v-model="conversationName"
-        id="conversationName"
-        name="conversationName"
-        type="text"
-        maxlength="80"
-        placeholder="Le nom de votre conversation"
-        class="textInput"
-        :rules="isNotEmpty"
-      />
       <div>
-        Nombre de caractères restants : {{ caractersLeftInConversationName }}
+        <label for="conversationName">Nom de la conversation : </label>
+        <Field
+          v-model="conversationName"
+          id="conversationName"
+          name="conversationName"
+          type="text"
+          maxlength="80"
+          placeholder="Le nom de votre conversation"
+          class="textInput"
+          :rules="isNotEmpty"
+        />
+        <div>
+          Nombre de caractères restants : {{ charactersLeftInConversationName }}
+        </div>
+        <ErrorMessage name="conversationName" class="errorMessage" />
       </div>
-      <ErrorMessage name="conversationName" class="errorMessage" />
-      <p v-if="usersStore.activeUser.isAdmin">
+      <div>
+        <Field
+          name="ownerField"
+          ref="ownerFieldRef"
+          :rules="hasOwner"
+          :value="selectedOwner"
+        >
+          <label for="ownerList">Gestionnaire de la conversation : </label>
+          <Multiselect
+            id="ownerList"
+            label="name"
+            mode="tags"
+            placeholder="Sélectionner un gestionnaire"
+            valueProp="id"
+            v-model="selectedOwner"
+            @focusout="triggerOwnerFieldAudit"
+            :close-on-select="true"
+            :object="true"
+            :options="usersStore.users"
+            :searchable="false"
+          />
+          <ErrorMessage name="ownerField" class="errorMessage" />
+        </Field>
+      </div>
+      <div v-if="usersStore.activeUser.isAdmin">
         <label for="isPublic">Conversation publique :</label>
         <input type="checkbox" id="isPublic" v-model="isPublic" />
-      </p>
-      <Field
-        name="conversationMembers"
-        ref="memberListField"
-        :rules="hasMembers"
-        :value="selectedUsers"
+      </div>
+      <div
+        v-if="hasInitialConversation.value && props.conversation.hasRightsOn"
       >
-        <Multiselect
-          id="membersList"
-          label="name"
-          mode="tags"
-          placeholder="Sélectionner un ou plusieurs interlocuteurs"
-          valueProp="id"
-          v-model="selectedUsers"
-          @focusout="triggerFieldAudit"
-          :close-on-select="false"
-          :object="true"
-          :options="usersStore.users"
-          :searchable="true"
-          v-if="!isPublic"
+        <label for="isClosed">Conversation close :</label>
+        <input type="checkbox" id="isClosed" v-model="isClosed" />
+      </div>
+      <div v-if="!isPublic">
+        <Field
+          name="conversationMembers"
+          ref="memberListFieldRef"
+          :rules="hasMembers"
+          :value="selectedUsers"
+        >
+          <label for="membersList">Membres de la conversation : </label>
+          <Multiselect
+            id="membersList"
+            label="name"
+            mode="tags"
+            placeholder="Sélectionner un ou plusieurs interlocuteurs"
+            valueProp="id"
+            v-model="selectedUsers"
+            @focusout="triggerMemberListFieldAudit"
+            :close-on-select="false"
+            :object="true"
+            :options="usersStore.users"
+            :searchable="false"
+          />
+          <ErrorMessage name="conversationMembers" class="errorMessage" />
+        </Field>
+      </div>
+      <div>
+        <input
+          class="basicButton"
+          type="submit"
+          value="Créer la conversation"
+          v-if="!hasInitialConversation.value"
         />
-        <ErrorMessage name="conversationMembers" class="errorMessage" />
-      </Field>
-      <input
-        class="basicButton"
-        type="submit"
-        value="Créer la conversation"
-        v-if="Object.keys(props.conversation).length == 0"
-      />
-      <input
-        class="basicButton"
-        type="submit"
-        value="Modifier la conversation"
-        v-if="Object.keys(props.conversation).length > 0"
-      />
+        <input
+          class="basicButton"
+          type="submit"
+          value="Modifier la conversation"
+          v-if="hasInitialConversation.value"
+        />
+      </div>
     </Form>
   </Modal>
 </template>
@@ -86,19 +122,40 @@ const conversationsStore = useConversationsStore();
 const usersStore = useUsersStore();
 
 //refs
-const selectedUsers = ref(null);
 const modalRef1 = ref();
-const memberListField = ref();
+const memberListFieldRef = ref();
+const ownerFieldRef = ref();
+const selectedOwner = ref(
+  Object.keys(props.conversation).length == 0
+    ? [] //ajouter ici le renvoi sur l'utilisateur actif quand celui-ci sera mieux défini (ajout du nom)
+    : [props.conversation.conversationOwner]
+);
+const selectedUsers = ref(
+  Object.keys(props.conversation).length == 0
+    ? null
+    : props.conversation.members
+);
+const conversationName = ref(
+  Object.keys(props.conversation).length == 0 ? "" : props.conversation.name
+);
 const isPublic = ref(
   Object.keys(props.conversation).length == 0
     ? false
     : !!props.conversation.isPublic
 );
-const conversationName = ref(
-  Object.keys(props.conversation).length == 0 ? "" : props.conversation.name
+const isClosed = ref(
+  Object.keys(props.conversation).length == 0
+    ? false
+    : !!props.conversation.isClosed
 );
 
 //computed
+const charactersLeftInConversationName = computed(() => {
+  return 80 - conversationName.value.length;
+});
+const hasInitialConversation = computed(() => {
+  return Object.keys(props.conversation).length != 0;
+});
 const members = computed(() => {
   if (selectedUsers.value) {
     return Array.from(selectedUsers.value, (x) => x.id);
@@ -106,8 +163,12 @@ const members = computed(() => {
     return [];
   }
 });
-const caractersLeftInConversationName = computed(() => {
-  return 80 - conversationName.value.length;
+const owner = computed(() => {
+  if (selectedOwner.value) {
+    return Array.from(selectedOwner.value, (x) => x.id);
+  } else {
+    return [];
+  }
 });
 
 //methods
@@ -121,34 +182,41 @@ function isNotEmpty() {
 }
 
 function hasMembers() {
-  if (!isPublic.value && !members.value.length) {
-    return "Vous devez saisir au moins un participant à cette conversation !";
-  } else {
+  if (isPublic.value || (!isPublic.value && members.value.length)) {
     return true;
+  } else {
+    return "Vous devez saisir au moins un participant à cette conversation !";
   }
 }
 
-function triggerFieldAudit() {
-  memberListField.value.validate();
+function hasOwner() {
+  if (owner.value.length == 1) {
+    return true;
+  } else {
+    return "Vous devez saisir un gestionnaire pour cette conversation !";
+  }
+}
+
+function triggerMemberListFieldAudit() {
+  memberListFieldRef.value.validate();
+}
+
+function triggerOwnerFieldAudit() {
+  ownerFieldRef.value.validate();
 }
 
 async function createConversation() {
-  if (!isPublic.value && selectedUsers.value.length == 0) {
-    return window.alert(
-      "Vous devez saisir au moins un participant à cette conversation !"
-    );
-  }
   const payload = {
     name: document.getElementById("conversationName").value,
-    users: Array.from(selectedUsers.value, (x) => x.id),
+    users: isPublic.value ? [] : members.value,
     isPublic: isPublic.value,
   };
   try {
     let newConversation = await EventService.createConversation(payload);
     conversationsStore.conversations.unshift(newConversation.data.body);
-    selectedUsers.value = [];
-    document.getElementById("conversationName").value = "";
+    conversationName.value = "";
     isPublic.value = false;
+    selectedUsers.value = null;
     modalRef1.value.closeModal();
   } catch (error) {
     console.error(error);
@@ -157,8 +225,9 @@ async function createConversation() {
 }
 
 onMounted(async () => {
+  console.log(hasInitialConversation.value);
   try {
-    if (!Object.keys(props.conversation).length == 0) {
+    if (hasInitialConversation.value) {
       selectedUsers.value = await EventService.getConversationMembers(
         props.conversation.id
       );
