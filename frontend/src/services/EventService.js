@@ -104,7 +104,7 @@ export default {
   getAllOtherUsers() {
     return apiUsers.get("/user/other");
   },
-  getAdminInfoForCurrentUser() {
+  getCurrentUser() {
     return apiUsers.get("/user/");
   }
 };

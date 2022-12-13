@@ -29,8 +29,8 @@ function logOut() {
 onMounted(async () => {
   try {
     if (!usersStore.activeUser) {
-      let response = await EventService.getAdminInfoForCurrentUser();
-      usersStore.storeIsActiveUserAdmin(response.data);
+      let response = await EventService.getCurrentUser();
+      usersStore.storeActiveUser(response.data.activeUser);
     }
     let conversations = await EventService.getAllConversationsForCurrentUser();
     conversationsStore.addConversations(conversations.data);

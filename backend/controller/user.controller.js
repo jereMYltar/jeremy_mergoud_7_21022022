@@ -19,9 +19,14 @@ exports.createOne = (req, res) => {
 
 // READ : récupére l'information d'utilisateur admin ou non de l'utilisateur courant
 exports.findOneByToken = (req, res) => {
-    res.status(200).json(
-        res.locals.user.isAdmin
-    );
+    res.status(200).json({
+        customMessage: "Informations sur l'utilisateur connecté correctement récupérées.",
+        activeUser: {
+            isAdmin: res.locals.user.isAdmin,
+            id: res.locals.user.id,
+            name: res.locals.user.firstName.concat(" ", res.locals.user.lastName),
+        },
+    });
 };
 
 // READ : récupérer tous les utilisateurs
