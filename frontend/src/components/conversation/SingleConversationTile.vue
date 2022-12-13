@@ -54,7 +54,10 @@ const conversationsStore = useConversationsStore();
 
 //methods
 async function showDetails(id) {
-  if (conversationsStore.activeConversation.id != id) {
+  if (
+    !conversationsStore.activeConversation ||
+    conversationsStore.activeConversation.id != id
+  ) {
     try {
       const conversationDetails = await EventService.getConversationDetail(id);
       conversationsStore.addActiveConversation(conversationDetails.data.body);
