@@ -153,7 +153,6 @@ const owner = computed(() => {
 
 //methods
 function isNotEmpty() {
-  console.log("vérification du nom effectuée");
   if (!conversationName.value) {
     return "Vous devez saisir le nom de votre conversation !";
   } else {

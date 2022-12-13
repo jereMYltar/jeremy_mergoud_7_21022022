@@ -57,7 +57,6 @@ async function showDetails(id) {
   if (conversationsStore.activeConversation.id != id) {
     try {
       const conversationDetails = await EventService.getConversationDetail(id);
-      console.log(conversationDetails.data.body);
       conversationsStore.addActiveConversation(conversationDetails.data.body);
     } catch (error) {
       console.log(error);

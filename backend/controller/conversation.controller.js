@@ -64,7 +64,6 @@ exports.findDetails = async (req, res) => {
         const isAdmin = res.locals.user.isAdmin;
         const conversation = await Conversation.findOneById(conversationId);
         const users = await UserConversation.findAllMembersByConversationId(conversationId);
-        console.log(users);
         let conversationDetails = {...conversation[0]};
         let membersList = new Array(...users)
         conversationDetails.hasRightsOn = (isAdmin || conversation.conversationOwnerId == userId);
@@ -84,7 +83,6 @@ exports.findDetails = async (req, res) => {
 //UPDATE : mettre à jour une conversation
 exports.updateOne = async (req, res) => {
     try {
-        console.log(req.params.conversationId);
         await Conversation.update(req.body, {
             where: {
               id: req.params.conversationId,
