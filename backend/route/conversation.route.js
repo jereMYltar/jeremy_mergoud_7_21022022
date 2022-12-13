@@ -14,6 +14,9 @@ router.post('/', canCreatePublicConversation, Conversation.createOne);
 //READ : récupérer toutes les conversations auxquel l'utilisateur a accès
 router.get('/', Conversation.findAllAllowed);
 
+//READ : récupérer le détail complet d'une conversation
+router.get('/details/:conversationId', Conversation.findDetails);
+
 //UPDATE : mettre à jour une conversation
 router.put('/:conversationId', isConversationOwnerOrAdmin, Conversation.updateOne);
 

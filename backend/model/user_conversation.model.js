@@ -50,8 +50,14 @@ module.exports = UserConversation;
 //- READ - lire/récupérer une relation utilisateur-conversation : requête brute ci-dessous
 //- DELETE - supprimer toutes les relations d'une conversation : requête de base de Sequelize => destroy. Requiert l'id de la conversation supprimée (pour la clause WHERE)
 
-//READ : récupérer toutes les conversations auxquelles participe un utilisateur (sur la base de son id)
+//READ : récupérer toutes les membres d'une conversation (sur la base de son id)
 module.exports.findAllMembersByConversationId = function (conversationId) {
-    let sql = `SELECT user_id FROM user_conversation WHERE conversation_id = ${conversationId}`;
-    return database.query(sql, { type: QueryTypes.SELECT });
+    return database.query(`
+        SELECT
+            user_conversation.user_id AS id,
+            CONCAT(user.firstName, ' ', user.lastName) AS name
+        FROM user_conversation
+        JOIN user ON user.id = user_conversation.user_id
+        WHERE conversation_id = ${conversationId}
+    `, { type: QueryTypes.SELECT });
 };

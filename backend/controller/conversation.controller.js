@@ -56,6 +56,31 @@ exports.findAllAllowed = async (req, res) => {
     }
 };
 
+//READ : récupérer le détail d'une conversation à partir de son id
+exports.findDetails = async (req, res) => {
+    try {
+        const conversationId = req.params.conversationId;
+        const userId = res.locals.user.id;
+        const isAdmin = res.locals.user.isAdmin;
+        const conversation = await Conversation.findOneById(conversationId);
+        const users = await UserConversation.findAllMembersByConversationId(conversationId);
+        console.log(users);
+        let conversationDetails = {...conversation[0]};
+        let membersList = new Array(...users)
+        conversationDetails.hasRightsOn = (isAdmin || conversation.conversationOwnerId == userId);
+        conversationDetails.members = membersList;
+        conversationDetails.owner = membersList.find((elt) => elt.id == conversationDetails.conversationOwnerId);
+        res.status(200).json({
+            customMessage: `Détails de la conversation n°${conversationId} récupérés avec succès.`,
+            body: conversationDetails,
+        });
+    } catch (error) {
+        res.status(400).json({
+            error: error
+        });
+    }
+};
+
 //UPDATE : mettre à jour une conversation
 exports.updateOne = async (req, res) => {
     try {

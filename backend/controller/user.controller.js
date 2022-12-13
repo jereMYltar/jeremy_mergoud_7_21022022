@@ -40,9 +40,10 @@ exports.findAllUsers = (req, res) => {
             });
         });
 };
+
 // READ : récupérer tous les utilisateurs différents de l'utilisateur courant
 exports.findAllOtherUsers = (req, res) => {
-    User.findAllUsers(res.locals.user.id)
+    User.findAllOtherUsers(res.locals.user.id)
         .then(users => {
 	        // Send all users to Client
 	        res.status(200).json(

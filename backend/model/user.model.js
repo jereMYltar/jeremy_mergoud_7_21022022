@@ -56,7 +56,7 @@ module.exports = User;
 //- DELETE - supprimer un utilisateur : requête de base de Sequelize => destroy. Requiert l'id du message supprimé (pour la clause WHERE)
 
 //READ : récupérer la liste de tous les utilisateurs en excluant ou non l'utilsateur courant
-module.exports.findAllUsers = function (id) {
+module.exports.findAllOtherUsers = function (id) {
     let sql  = `
     SELECT CONCAT(user.firstName, ' ', user.lastName) AS 'name',
         id

@@ -9,10 +9,10 @@ const isConnected = require("../policies/isConnected");
 router.post('/', User.createOne);
 
 // READ : récupérer un utilisateur spécifique
-router.get('/', isConnected, User.findOneByToken);
+router.get('/', User.findOneByToken);
 
 // READ : récupérer tous les utilisateurs
-router.get('/other', isConnected, User.findAllOtherUsers);
+router.get('/other', User.findAllOtherUsers);
 
 // READ : récupérer tous les utilisateurs
 router.get('/all', User.findAllUsers);
