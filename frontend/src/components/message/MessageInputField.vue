@@ -13,6 +13,7 @@
         class="textInput"
         :rules="isNotEmpty"
       />
+      <div>Nombre de caractères restants : {{ charactersLeftInContent }}</div>
       <ErrorMessage name="messageContent" class="errorMessage" />
       <p v-if="conversationsStore.activeConversation.hasRightsOn">
         <label for="isGlobal">Message global ? </label>
@@ -37,7 +38,7 @@
 <script setup>
 import EventService from "@/services/EventService.js";
 import { Form, Field, ErrorMessage } from "vee-validate";
-import { ref, defineProps, defineEmits } from "vue";
+import { ref, defineProps, defineEmits, computed } from "vue";
 import { useConversationsStore } from "@/store/conversationsStore";
 import { useMessagesStore } from "@/store/messagesStore";
 
@@ -53,12 +54,19 @@ const emit = defineEmits(["close"]);
 //variables
 const conversationsStore = useConversationsStore();
 const messagesStore = useMessagesStore();
+
+//ref
 const messageContent = ref(
   Object.keys(props.message).length == 0 ? "" : props.message.content
 );
 const isGlobal = ref(
   Object.keys(props.message).length == 0 ? false : !!props.message.isGlobal
 );
+
+//computed
+const charactersLeftInContent = computed(() => {
+  return 1000 - messageContent.value.length;
+});
 
 //methods
 function isNotEmpty() {
