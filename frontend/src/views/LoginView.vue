@@ -57,7 +57,7 @@ async function login() {
       password: password.value,
     };
     let response = await EventService.login(payload);
-    usersStore.storeIsActiveUserAdmin(response.data.isAdmin);
+    usersStore.storeActiveUser(response.data.activeUser);
     sessionStorage.setItem("token", response.data.token);
     router.push({
       name: "Exchanges",

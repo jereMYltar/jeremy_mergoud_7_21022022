@@ -71,6 +71,9 @@ export default {
   getAllConversationsForCurrentUser() {
     return apiUsers.get("/conversation/");
   },
+  getConversationDetail(conversationId) {
+    return apiUsers.get(`/conversation/details/${conversationId}`)
+  },
   updateConversation(conversationId, payload) {
     return apiUsers.put(`/conversation/${conversationId}`, payload);
   },

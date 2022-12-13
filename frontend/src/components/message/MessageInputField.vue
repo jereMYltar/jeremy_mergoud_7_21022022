@@ -49,6 +49,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+//events
 const emit = defineEmits(["close"]);
 
 //variables

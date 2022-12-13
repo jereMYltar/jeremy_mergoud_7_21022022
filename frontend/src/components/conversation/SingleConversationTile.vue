@@ -1,5 +1,5 @@
 <template>
-  <button @click="showDetails(props.conversation)">
+  <button @click="showDetails(props.conversation.id)">
     <h4>{{ props.conversation.name }}</h4>
     <p v-if="props.conversation.isClosed">Conversation fermée</p>
     <ModalComponent
@@ -16,7 +16,7 @@
           <p>Modifier</p>
         </template>
         <ConversationInputField
-          :conversation="props.conversation"
+          :existingConversation="0"
           @close="closeAllModals"
         />
       </ModalComponent>
@@ -53,8 +53,15 @@ const toClose = ref(false);
 const conversationsStore = useConversationsStore();
 
 //methods
-function showDetails(conversation) {
-  conversationsStore.addActiveConversation(conversation);
+async function showDetails(id) {
+  try {
+    const conversationDetails = await EventService.getConversationDetail(id);
+    console.log(conversationDetails.data.body);
+    conversationsStore.addActiveConversation(conversationDetails.data.body);
+  } catch (error) {
+    console.log(error);
+    return "Problème serveur";
+  }
 }
 
 async function deleteConversation(id) {

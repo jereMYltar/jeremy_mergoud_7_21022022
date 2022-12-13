@@ -53,9 +53,7 @@
         <label for="isPublic">Conversation publique :</label>
         <input type="checkbox" id="isPublic" v-model="isPublic" />
       </div>
-      <div
-        v-if="hasInitialConversation.value && props.conversation.hasRightsOn"
-      >
+      <div v-if="props.existingConversation && props.conversation.hasRightsOn">
         <label for="isClosed">Conversation close :</label>
         <input type="checkbox" id="isClosed" v-model="isClosed" />
       </div>
@@ -90,13 +88,13 @@
           class="basicButton"
           type="submit"
           value="Créer la conversation"
-          v-if="!hasInitialConversation.value"
+          v-if="!props.existingConversation"
         />
         <input
           class="basicButton"
           type="submit"
           value="Modifier la conversation"
-          v-if="hasInitialConversation.value"
+          v-if="props.existingConversation"
         />
       </div>
     </Form>
@@ -108,17 +106,27 @@ import EventService from "@/services/EventService.js";
 import Modal from "@/components/modal/ModalComponent.vue";
 import Multiselect from "@vueform/multiselect";
 import { Form, Field, ErrorMessage } from "vee-validate";
-import { ref, defineProps, computed, onMounted, onUpdated } from "vue";
+import {
+  ref,
+  defineProps,
+  defineEmits,
+  computed,
+  onMounted,
+  onUpdated,
+} from "vue";
 import { useConversationsStore } from "@/store/conversationsStore";
 import { useUsersStore } from "@/store/usersStore";
 
 //props
 const props = defineProps({
-  conversation: {
-    type: Object,
+  existingConversation: {
+    type: Number,
     required: true,
   },
 });
+
+//events
+const emit = defineEmits(["close"]);
 
 //variables
 const conversationsStore = useConversationsStore();
@@ -129,35 +137,35 @@ const modalRef1 = ref();
 const memberListFieldRef = ref();
 const ownerFieldRef = ref();
 const selectedOwner = ref(
-  Object.keys(props.conversation).length == 0
-    ? [] //ajouter ici le renvoi sur l'utilisateur actif quand celui-ci sera mieux défini (ajout du nom)
-    : [props.conversation.conversationOwner]
+  props.existingConversation
+    ? [{
+        id: usersStore.activeUser.id,
+        name: usersStore.activeUser.name,
+      }]
+    : [conversationsStore.activeConversation.owner]
 );
 const selectedUsers = ref(
-  Object.keys(props.conversation).length == 0
+  props.existingConversation
     ? null
-    : props.conversation.members
+    : conversationsStore.activeConversation.members
 );
 const conversationName = ref(
-  Object.keys(props.conversation).length == 0 ? "" : props.conversation.name
+  props.existingConversation ? "" : conversationsStore.activeConversation.name
 );
 const isPublic = ref(
-  Object.keys(props.conversation).length == 0
+  props.existingConversation
     ? false
-    : !!props.conversation.isPublic
+    : conversationsStore.activeConversation.isPublic
 );
 const isClosed = ref(
-  Object.keys(props.conversation).length == 0
+  props.existingConversation
     ? false
-    : !!props.conversation.isClosed
+    : conversationsStore.activeConversation.isClosed
 );
 
 //computed
 const charactersLeftInConversationName = computed(() => {
   return 80 - conversationName.value.length;
-});
-const hasInitialConversation = computed(() => {
-  return Object.keys(props.conversation).length != 0;
 });
 const members = computed(() => {
   if (selectedUsers.value) {
@@ -209,28 +217,32 @@ function triggerOwnerFieldAudit() {
 }
 
 async function createConversation() {
-  const payload = {
-    name: document.getElementById("conversationName").value,
-    users: isPublic.value ? [] : members.value,
-    isPublic: isPublic.value,
-  };
-  try {
-    let newConversation = await EventService.createConversation(payload);
-    conversationsStore.conversations.unshift(newConversation.data.body);
-    conversationName.value = "";
-    isPublic.value = false;
-    selectedUsers.value = null;
-    modalRef1.value.closeModal();
-  } catch (error) {
-    console.error(error);
-    return "Problème serveur";
+  if (props.existingConversation) {
+    emit("close");
+  } else {
+    const payload = {
+      name: document.getElementById("conversationName").value,
+      users: isPublic.value ? [] : members.value,
+      isPublic: isPublic.value,
+    };
+    try {
+      let newConversation = await EventService.createConversation(payload);
+      conversationsStore.conversations.unshift(newConversation.data.body);
+      conversationName.value = "";
+      isPublic.value = false;
+      selectedUsers.value = null;
+      modalRef1.value.closeModal();
+    } catch (error) {
+      console.error(error);
+      return "Problème serveur";
+    }
   }
 }
 
 onMounted(async () => {
-  console.log(hasInitialConversation.value);
+  console.log(props.existingConversation);
   try {
-    if (hasInitialConversation.value) {
+    if (props.existingConversation) {
       selectedUsers.value = await EventService.getConversationMembers(
         props.conversation.id
       );

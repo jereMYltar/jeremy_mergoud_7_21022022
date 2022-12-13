@@ -7,10 +7,8 @@ export const useUsersStore = defineStore("users", {
   }),
   getters: {},
   actions: {
-    storeIsActiveUserAdmin(payload) {
-      this.activeUser = {
-        isAdmin: payload,
-      };
+    storeActiveUser(payload) {
+      this.activeUser = payload;
     },
     addUsers(payload) {
       this.users = payload;
