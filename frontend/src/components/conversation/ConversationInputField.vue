@@ -1,124 +1,110 @@
 <template>
-  <Modal :global="true" ref="modalRef1">
-    <template #callButton>
-      <p>Nouvelle conversation</p>
-    </template>
-    <h1>Créer une nouvelle conversation</h1>
-    <p>Sélectionner les participants à cette conversation :</p>
-    <p>Ici mon outil de choix de personnes</p>
-    <Form @submit="createConversation" class="container" name="connectionForm">
+  <h1 v-if="!props.existingConversation">Créer une nouvelle conversation</h1>
+  <h1 v-if="props.existingConversation">Modifier la conversation</h1>
+  <Form @submit="createConversation" class="container" name="connectionForm">
+    <div>
+      <label for="conversationName">Nom de la conversation : </label>
+      <Field
+        v-model="conversationName"
+        id="conversationName"
+        name="conversationName"
+        type="text"
+        maxlength="80"
+        placeholder="Le nom de votre conversation"
+        class="textInput"
+        :rules="isNotEmpty"
+      />
       <div>
-        <label for="conversationName">Nom de la conversation : </label>
-        <Field
-          v-model="conversationName"
-          id="conversationName"
-          name="conversationName"
-          type="text"
-          maxlength="80"
-          placeholder="Le nom de votre conversation"
-          class="textInput"
-          :rules="isNotEmpty"
-        />
-        <div>
-          Nombre de caractères restants : {{ charactersLeftInConversationName }}
-        </div>
-        <ErrorMessage name="conversationName" class="errorMessage" />
+        Nombre de caractères restants : {{ charactersLeftInConversationName }}
       </div>
-      <div>
-        <Field
-          name="ownerField"
-          ref="ownerFieldRef"
-          :rules="hasOwner"
-          :value="selectedOwner"
-        >
-          <label for="ownerList">Gestionnaire de la conversation : </label>
-          <Multiselect
-            id="ownerList"
-            label="name"
-            mode="tags"
-            placeholder="Sélectionner un gestionnaire"
-            valueProp="id"
-            v-model="selectedOwner"
-            @focusout="triggerOwnerFieldAudit"
-            :close-on-select="true"
-            :max="1"
-            :object="true"
-            :options="usersStore.users"
-            :searchable="false"
-          />
-          <ErrorMessage name="ownerField" class="errorMessage" />
-        </Field>
-      </div>
-      <div v-if="usersStore.activeUser.isAdmin">
-        <label for="isPublic">Conversation publique :</label>
-        <input type="checkbox" id="isPublic" v-model="isPublic" />
-      </div>
-      <div
-        v-if="
-          props.existingConversation &&
-          conversationsStore.activeConversation.hasRightsOn
-        "
+      <ErrorMessage name="conversationName" class="errorMessage" />
+    </div>
+    <div v-if="props.existingConversation">
+      <Field
+        name="ownerField"
+        ref="ownerFieldRef"
+        :rules="hasOwner"
+        :value="selectedOwner"
       >
-        <label for="isClosed">Conversation close :</label>
-        <input type="checkbox" id="isClosed" v-model="isClosed" />
-      </div>
-      <div v-if="!isPublic">
-        <Field
-          name="conversationMembers"
-          ref="memberListFieldRef"
-          :rules="hasMembers"
-          :value="selectedUsers"
-        >
-          <label for="membersList">Membres de la conversation : </label>
-          <Multiselect
-            id="membersList"
-            label="name"
-            mode="tags"
-            placeholder="Sélectionner un ou plusieurs interlocuteurs"
-            valueProp="id"
-            v-model="selectedUsers"
-            @focusout="triggerMemberListFieldAudit"
-            :close-on-select="false"
-            :clear-on-select="false"
-            :multiple="true"
-            :object="true"
-            :options="usersStore.users"
-            :searchable="false"
-          />
-          <ErrorMessage name="conversationMembers" class="errorMessage" />
-        </Field>
-      </div>
-      <div>
-        <input
-          class="basicButton"
-          type="submit"
-          value="Créer la conversation"
-          v-if="!props.existingConversation"
+        <label for="ownerList">Gestionnaire de la conversation : </label>
+        <Multiselect
+          id="ownerList"
+          label="name"
+          mode="tags"
+          placeholder="Sélectionner un gestionnaire"
+          valueProp="id"
+          v-model="selectedOwner"
+          @focusout="triggerOwnerFieldAudit"
+          :close-on-select="true"
+          :max="1"
+          :object="true"
+          :options="usersStore.users"
+          :searchable="false"
         />
-        <input
-          class="basicButton"
-          type="submit"
-          value="Modifier la conversation"
-          v-if="props.existingConversation"
+        <ErrorMessage name="ownerField" class="errorMessage" />
+      </Field>
+    </div>
+    <div v-if="usersStore.activeUser.isAdmin">
+      <label for="isPublic">Conversation publique :</label>
+      <input type="checkbox" id="isPublic" v-model="isPublic" />
+    </div>
+    <div
+      v-if="
+        props.existingConversation &&
+        conversationsStore.activeConversation.hasRightsOn
+      "
+    >
+      <label for="isClosed">Conversation close :</label>
+      <input type="checkbox" id="isClosed" v-model="isClosed" />
+    </div>
+    <div v-if="!isPublic">
+      <Field
+        name="conversationMembers"
+        ref="memberListFieldRef"
+        :rules="hasMembers"
+        :value="selectedUsers"
+      >
+        <label for="membersList">Membres de la conversation : </label>
+        <Multiselect
+          id="membersList"
+          label="name"
+          mode="tags"
+          placeholder="Sélectionner un ou plusieurs interlocuteurs"
+          valueProp="id"
+          v-model="selectedUsers"
+          @focusout="triggerMemberListFieldAudit"
+          :close-on-select="false"
+          :clear-on-select="false"
+          :multiple="true"
+          :object="true"
+          :options="usersStore.users"
+          :searchable="false"
         />
-      </div>
-    </Form>
-  </Modal>
+        <ErrorMessage name="conversationMembers" class="errorMessage" />
+      </Field>
+    </div>
+    <div>
+      <input
+        class="basicButton"
+        type="submit"
+        value="Créer la conversation"
+        v-if="!props.existingConversation"
+      />
+      <input
+        class="basicButton"
+        type="submit"
+        value="Modifier la conversation"
+        v-if="props.existingConversation"
+      />
+    </div>
+  </Form>
 </template>
 
 <script setup>
 import EventService from "@/services/EventService.js";
-import Modal from "@/components/modal/ModalComponent.vue";
 import Multiselect from "@vueform/multiselect";
 import { Form, Field, ErrorMessage } from "vee-validate";
-import {
-  ref,
-  defineProps,
-  defineEmits,
-  computed,
-  onMounted,
-  onUpdated,
-} from "vue";
+import { ref, defineProps, defineEmits, computed, onMounted } from "vue";
 import { useConversationsStore } from "@/store/conversationsStore";
 import { useUsersStore } from "@/store/usersStore";
 
@@ -138,7 +124,6 @@ const conversationsStore = useConversationsStore();
 const usersStore = useUsersStore();
 
 //refs
-const modalRef1 = ref();
 const memberListFieldRef = ref();
 const ownerFieldRef = ref();
 const selectedOwner = ref([]);
@@ -215,7 +200,6 @@ async function createConversation() {
       conversationName.value = "";
       isPublic.value = false;
       selectedUsers.value = null;
-      modalRef1.value.closeModal();
     } catch (error) {
       console.error(error);
       return "Problème serveur";
@@ -224,7 +208,6 @@ async function createConversation() {
 }
 
 onMounted(async () => {
-  console.log(props.existingConversation);
   if (props.existingConversation) {
     selectedOwner.value = [conversationsStore.activeConversation.owner];
     selectedUsers.value = conversationsStore.activeConversation.members;
@@ -232,19 +215,6 @@ onMounted(async () => {
     isPublic.value = conversationsStore.activeConversation.isPublic;
     isClosed.value = conversationsStore.activeConversation.isClosed;
   }
-  try {
-    // if (props.existingConversation) {
-    //   selectedUsers.value = await EventService.getConversationMembers(
-    //     props.conversation.id
-    //   );
-    // }
-  } catch (error) {
-    console.error(error);
-    return "Problème serveur";
-  }
-});
-onUpdated(() => {
-  console.log("module 'nouvelle conversation' mis à jour");
 });
 </script>
 

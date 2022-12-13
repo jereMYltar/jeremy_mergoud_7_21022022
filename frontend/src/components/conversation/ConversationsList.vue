@@ -6,13 +6,19 @@
       :conversation="conversation"
     >
     </SingleConversationTile>
-    <ConversationInputField :existingConversation="0" />
+    <Modal :global="true">
+      <template #callButton>
+        <p>Nouvelle conversation</p>
+      </template>
+      <ConversationInputField :existingConversation="0" />
+    </Modal>
   </div>
 </template>
 
 <script setup>
 import SingleConversationTile from "@/components/conversation/SingleConversationTile.vue";
 import ConversationInputField from "@/components/conversation/ConversationInputField.vue";
+import Modal from "@/components/modal/ModalComponent.vue";
 import EventService from "@/services/EventService.js";
 import { useConversationsStore } from "@/store/conversationsStore";
 import { useMessagesStore } from "@/store/messagesStore";
