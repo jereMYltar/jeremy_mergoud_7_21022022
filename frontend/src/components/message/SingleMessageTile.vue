@@ -22,7 +22,6 @@
     <ModalComponent
       :global="false"
       :toClose="toClose"
-      ref="modalRef1"
       v-if="
         props.message.hasRightsOn ||
         conversationsStore.activeConversation.hasRightsOn
