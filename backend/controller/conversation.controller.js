@@ -1,5 +1,6 @@
 const Conversation = require('../model/conversation.model');
-const UserConversation = require('../model/user_conversation.model');
+const UserConversationModel = require('../model/user_conversation.model');
+const UserConversationCtrl = require('../controller/user_conversation.controller');
 const Message = require('../model/message.model');
 
 //CREATE : créer une conversation
@@ -19,8 +20,8 @@ exports.createOne = async (req, res) => {
         if (!conversation.isPublic) {
             const userList = req.body.users;
             userList.push(res.locals.user.id);
-            for await (const userId of userList) {
-                UserConversation.create({
+            for (const userId of userList) {
+                await UserConversationModel.create({
                     user_id: userId,
                     conversation_id: newConversation.id,
                 })
@@ -34,6 +35,37 @@ exports.createOne = async (req, res) => {
         res.status(400).json({
             errorMessage: error
         });
+    }
+};
+
+//upsert test
+exports.upsertOne = async (req, res) => {
+    let conversation = req.body;
+    if (!conversation.id) {
+        delete conversation.id;
+        conversation.conversationOwnerId = res.locals.user.id;
+        conversation.members.toAdd.push(res.locals.user.id);
+    };
+    const members = conversation.members;
+    delete conversation.members;
+    try {
+        const response = await Conversation.upsert(conversation);
+        let newConversation = response[0].dataValues;
+        newConversation.updatedAt = new Date();;
+        newConversation.hasRightsOn = conversation.conversationOwnerId == newConversation.conversationOwnerId
+            ? true
+            : false;
+        const newMembers = await UserConversationCtrl.updateAllMembers(members.toAdd, members.toDelete, newConversation.id);
+        newConversation.members = newMembers;
+        newConversation.owner = newMembers.find((elt) => elt.id == newConversation.conversationOwnerId);
+        res.status(201).json({
+            customMessage: 'Conversation créée avec succès',
+            body: newConversation,
+        });        
+    } catch (error) {
+        res.status(499).json({
+            errorMessage: error
+        });        
     }
 };
 
@@ -63,10 +95,10 @@ exports.findDetails = async (req, res) => {
         const userId = res.locals.user.id;
         const isAdmin = res.locals.user.isAdmin;
         const conversation = await Conversation.findOneById(conversationId);
-        const users = await UserConversation.findAllMembersByConversationId(conversationId);
+        const users = await UserConversationModel.findAllMembersByConversationId(conversationId);
         let conversationDetails = {...conversation[0]};
         let membersList = new Array(...users)
-        conversationDetails.hasRightsOn = (isAdmin || conversation.conversationOwnerId == userId);
+        conversationDetails.hasRightsOn = (isAdmin || conversationDetails.conversationOwnerId == userId);
         conversationDetails.members = membersList;
         conversationDetails.owner = membersList.find((elt) => elt.id == conversationDetails.conversationOwnerId);
         res.status(200).json({
@@ -105,7 +137,7 @@ exports.deleteOne = async (req, res) => {
     try {
         await Conversation.destroy({ where: {id: res.locals.conversation.id}});
         await Message.destroy({ where: {conversation_id: res.locals.conversation.id}});
-        await UserConversation.destroy({ where: {conversation_id: res.locals.conversation.id}});
+        await UserConversationModel.destroy({ where: {conversation_id: res.locals.conversation.id}});
         res.status(200).json({
             customMessage: 'Conversation supprimée avec succès'
         });      

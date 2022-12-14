@@ -59,5 +59,6 @@ module.exports.findAllMembersByConversationId = function (conversationId) {
         FROM user_conversation
         JOIN user ON user.id = user_conversation.user_id
         WHERE conversation_id = ${conversationId}
+        ORDER BY name ASC
     `, { type: QueryTypes.SELECT });
 };

@@ -97,6 +97,7 @@ async function closeConversation(conversation) {
     );
     updatedConversation = updatedConversation.data.body;
     conversationsStore.updateConversation(updatedConversation);
+    conversationsStore.updateActiveConversation(updatedConversation);
     closeAllModals();
   } catch (error) {
     console.log(error);

@@ -10,6 +10,7 @@ const canCreatePublicConversation = require("../policies/canCreatePublicConversa
 
 //CREATE : créer une conversation
 router.post('/', canCreatePublicConversation, Conversation.createOne);
+router.post('/new', canCreatePublicConversation, Conversation.upsertOne);
 
 //READ : récupérer toutes les conversations auxquel l'utilisateur a accès
 router.get('/', Conversation.findAllAllowed);

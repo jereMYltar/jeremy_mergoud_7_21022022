@@ -68,6 +68,9 @@ export default {
   createConversation(payload) {
     return apiUsers.post("/conversation/", payload);
   },
+  upsertConversation(payload) {
+    return apiUsers.post("/conversation/new", payload);
+  },
   getAllConversationsForCurrentUser() {
     return apiUsers.get("/conversation/");
   },
@@ -83,6 +86,9 @@ export default {
   //user_conversation
   getConversationMembers(conversationId) {
     return apiUsers.get(`/user_conversation/${conversationId}`);
+  },
+  updateConversationMembers(conversationId, payload) {
+    return apiUsers.put(`/user_conversation/${conversationId}`, payload);
   },
   //message
   getAllMessagesByConversationId(conversationId) {

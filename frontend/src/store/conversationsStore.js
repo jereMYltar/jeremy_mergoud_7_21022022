@@ -29,15 +29,39 @@ export const useConversationsStore = defineStore("conversations", () => {
     delete payload.id;
     for (const key in payload) {
       conversations.value[index][key] = payload[key];
+      activeConversation.value[key] = payload[key];
+    }
+  }
+  function upsertConversationsStore(payload) {
+    const index = conversations.value.findIndex(
+      (conversation) => conversation.id == payload.id
+    );
+    if (index == -1) {
+      this.conversations.unshift(payload);
+      this.activeConversation = payload;
+    } else {
+      delete payload.id;
+      for (const key in payload) {
+        conversations.value[index][key] = payload[key];
+        activeConversation.value[key] = payload[key];
+      }
+    }
+  }
+  function updateActiveConversation(payload) {
+    delete payload.id;
+    for (const key in payload) {
+      activeConversation.value[key] = payload[key];
     }
   }
   return {
     conversations,
     activeConversation,
     addConversations,
-    addActiveConversation,
     deleteConversation,
     updateConversation,
+    addActiveConversation,
+    updateActiveConversation,
     removeActiveConversation,
+    upsertConversationsStore,
   };
 });

@@ -1,7 +1,7 @@
 <template>
   <h1 v-if="!props.existingConversation">Créer une nouvelle conversation</h1>
   <h1 v-if="props.existingConversation">Modifier la conversation</h1>
-  <Form @submit="createConversation" class="container" name="connectionForm">
+  <Form @submit="saveConversation" class="container" name="connectionForm">
     <div>
       <label for="conversationName">Nom de la conversation : </label>
       <Field
@@ -38,7 +38,7 @@
           :close-on-select="true"
           :max="1"
           :object="true"
-          :options="usersStore.users"
+          :options="selectedUsers"
           :searchable="false"
         />
         <ErrorMessage name="ownerField" class="errorMessage" />
@@ -124,13 +124,13 @@ const conversationsStore = useConversationsStore();
 const usersStore = useUsersStore();
 
 //refs
+const conversationName = ref("");
+const selectedOwner = ref([]);
+const isClosed = ref(false);
+const isPublic = ref(false);
+const selectedUsers = ref(null);
 const memberListFieldRef = ref();
 const ownerFieldRef = ref();
-const selectedOwner = ref([]);
-const selectedUsers = ref(null);
-const conversationName = ref("");
-const isPublic = ref(false);
-const isClosed = ref(false);
 
 //computed
 const charactersLeftInConversationName = computed(() => {
@@ -184,26 +184,37 @@ function triggerOwnerFieldAudit() {
   ownerFieldRef.value.validate();
 }
 
-async function createConversation() {
-  if (props.existingConversation) {
-    emit("close");
-  } else {
-    const payload = {
-      name: document.getElementById("conversationName").value,
-      users: isPublic.value ? [] : members.value,
-      isPublic: isPublic.value,
-    };
-    try {
-      let newConversation = await EventService.createConversation(payload);
-      conversationsStore.conversations.unshift(newConversation.data.body);
-      conversationName.value = "";
-      isPublic.value = false;
-      selectedUsers.value = null;
-    } catch (error) {
-      console.error(error);
-      return "Problème serveur";
-    }
+async function saveConversation() {
+  let newMembers = isPublic.value ? [] : members.value;
+  if (!newMembers.includes(owner.value[0])) {
+    newMembers.concat(owner.value);
   }
+  const oldMembers = props.existingConversation
+    ? Array.from(conversationsStore.activeConversation.members, (x) => x.id)
+    : [];
+  let payload = {
+    id: props.existingConversation
+      ? conversationsStore.activeConversation.id
+      : 0,
+    name: conversationName.value,
+    conversationOwnerId: props.existingConversation ? owner.value[0] : 0,
+    isClosed: isClosed.value,
+    isPublic: isPublic.value,
+    members: {
+      toAdd: newMembers.filter((id) => !oldMembers.includes(id)),
+      toDelete: oldMembers.filter((id) => !newMembers.includes(id)),
+    },
+  };
+  let newConversation = await EventService.upsertConversation(payload);
+  newConversation = newConversation.data.body;
+  console.log(newConversation);
+  conversationsStore.upsertConversationsStore(newConversation);
+  if (!props.existingConversation) {
+    conversationName.value = "";
+    isPublic.value = false;
+    selectedUsers.value = null;
+  }
+  emit("close");
 }
 
 onMounted(async () => {
