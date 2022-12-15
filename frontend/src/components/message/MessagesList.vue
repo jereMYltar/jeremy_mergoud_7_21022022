@@ -14,10 +14,10 @@
 </template>
 
 <script setup>
-import MessageInputField from "@/components/message/MessageInputField.vue";
-import SingleMessageTile from "@/components/message/SingleMessageTile.vue";
 import { useMessagesStore } from "@/store/messagesStore";
 import { useConversationsStore } from "@/store/conversationsStore";
+import MessageInputField from "@/components/message/MessageInputField.vue";
+import SingleMessageTile from "@/components/message/SingleMessageTile.vue";
 
 const messagesStore = useMessagesStore();
 const conversationsStore = useConversationsStore();

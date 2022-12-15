@@ -101,12 +101,12 @@
 </template>
 
 <script setup>
-import EventService from "@/services/EventService.js";
-import Multiselect from "@vueform/multiselect";
-import { Form, Field, ErrorMessage } from "vee-validate";
 import { ref, defineProps, defineEmits, computed, onMounted } from "vue";
+import { Form, Field, ErrorMessage } from "vee-validate";
 import { useConversationsStore } from "@/store/conversationsStore";
 import { useUsersStore } from "@/store/usersStore";
+import EventService from "@/services/EventService.js";
+import Multiselect from "@vueform/multiselect";
 
 //props
 const props = defineProps({

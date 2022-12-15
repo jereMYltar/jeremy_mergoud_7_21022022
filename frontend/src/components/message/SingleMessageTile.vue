@@ -28,7 +28,7 @@
       "
     >
       <template #callButton>
-        <p>...</p>
+        <img src="@/assets/Images/gear-solid.svg" height="20" width="20" />
       </template>
       <ModalComponent
         :global="true"
@@ -61,13 +61,13 @@
 </template>
 
 <script setup>
-import EventService from "@/services/EventService.js";
 import { defineProps, ref, nextTick } from "vue";
 import moment from "moment";
-import ModalComponent from "@/components/modal/ModalComponent.vue";
-import MessageInputField from "@/components/message/MessageInputField.vue";
 import { useMessagesStore } from "@/store/messagesStore";
 import { useConversationsStore } from "@/store/conversationsStore";
+import EventService from "@/services/EventService.js";
+import ModalComponent from "@/components/modal/ModalComponent.vue";
+import MessageInputField from "@/components/message/MessageInputField.vue";
 
 //props
 const props = defineProps({

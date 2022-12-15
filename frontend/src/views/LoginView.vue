@@ -39,11 +39,11 @@
 </template>
 
 <script setup>
-import EventService from "@/services/EventService.js";
-import { Form, Field, ErrorMessage } from "vee-validate";
 import { ref, nextTick } from "vue";
+import { Form, Field, ErrorMessage } from "vee-validate";
 import { useRouter } from "vue-router";
 import { useUsersStore } from "@/store/usersStore";
+import EventService from "@/services/EventService.js";
 
 const email = ref("");
 const password = ref("");
@@ -57,7 +57,7 @@ async function login() {
       password: password.value,
     };
     let response = await EventService.login(payload);
-    usersStore.storeActiveUser(response.data.activeUser);
+    usersStore.addActiveUser(response.data.activeUser);
     sessionStorage.setItem("token", response.data.token);
     await nextTick();
     router.push({

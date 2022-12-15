@@ -36,11 +36,11 @@
 </template>
 
 <script setup>
-import EventService from "@/services/EventService.js";
-import { Form, Field, ErrorMessage } from "vee-validate";
 import { ref, defineProps, defineEmits, computed } from "vue";
+import { Form, Field, ErrorMessage } from "vee-validate";
 import { useConversationsStore } from "@/store/conversationsStore";
 import { useMessagesStore } from "@/store/messagesStore";
+import EventService from "@/services/EventService.js";
 
 //props
 const props = defineProps({

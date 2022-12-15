@@ -9,7 +9,7 @@
       v-if="props.conversation.hasRightsOn"
     >
       <template #callButton>
-        <p>...</p>
+        <img src="@/assets/Images/gear-solid.svg" height="20" width="20" />
       </template>
       <ModalComponent :global="true" :toClose="toClose">
         <template #callButton>
@@ -35,11 +35,11 @@
 </template>
 
 <script setup>
+import { defineProps, ref, nextTick } from "vue";
+import { useConversationsStore } from "@/store/conversationsStore";
 import EventService from "@/services/EventService.js";
 import ModalComponent from "../modal/ModalComponent.vue";
 import ConversationInputField from "./ConversationInputField.vue";
-import { defineProps, ref, nextTick } from "vue";
-import { useConversationsStore } from "@/store/conversationsStore";
 //props
 const props = defineProps({
   conversation: {
