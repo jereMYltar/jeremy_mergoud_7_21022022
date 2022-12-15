@@ -1,5 +1,4 @@
-const Message = require('../model/message.model');
-const User = require('../model/user.model');
+const MessageModel = require('../model/message.model');
 
 //CREATE : créer un message et renvoi le message enregistré en base
 exports.createOne = async (req, res) => {
@@ -11,7 +10,7 @@ exports.createOne = async (req, res) => {
     isGlobal: req.body.isGlobal,
   };
   try {
-    const messageCreated = await Message.create(message);
+    const messageCreated = await MessageModel.create(message);
     const newMessage = messageCreated.dataValues;
     newMessage.author = res.locals.user.firstName.concat(" ", res.locals.user.lastName);
     newMessage.isAuthor = true;
@@ -29,27 +28,25 @@ exports.createOne = async (req, res) => {
 };
 
 //READ : récupérer un message par son id
-exports.findOne = (req, res) => {
-  const messageId = req.params.messageId;
-  Message.findOneById(messageId)
-  .then(message => {
-    // Renvoie tous les messages au client
-    res.status(200).json(
-      message
-    );
-  })
-  .catch(error => {
-    res.status(400).json({
-      error: error
-    });
-  });
-};
+// exports.findOne = async (req, res) => {
+//   const messageId = req.params.messageId;
+//   try {
+//     const message = await MessageModel.findOneById(messageId)
+//     res.status(200).json(
+//       message
+//     );
+//   } catch (error) {
+//      res.status(400).json({
+//       error: error
+//     });   
+//   }
+// };
 
 //READ : récupérer tous les messages d'une conversation
 exports.readAllByConversationId = async (req, res) => {
   try {
     const conversationId = req.params.conversationId;
-    let messages = await Message.findAllByConversationId(conversationId);
+    let messages = await MessageModel.findAllByConversationId(conversationId);
     const userId = res.locals.user.id;
     const isAdmin = res.locals.user.isAdmin;
     for (let message of messages) {
@@ -69,12 +66,12 @@ exports.readAllByConversationId = async (req, res) => {
 //UPDATE : mettre à jour un message
 exports.updateOne = async (req, res) => {
   try {
-    await Message.update(req.body, {
+    await MessageModel.update(req.body, {
       where: {
         id: req.params.messageId,
       }
     })
-    const updatedMessage = await Message.findOneById(req.params.messageId);
+    const updatedMessage = await MessageModel.findOneById(req.params.messageId);
     let response = req.body;
     response.id = updatedMessage[0].id;
     response.updatedAt = updatedMessage[0].updatedAt;
@@ -92,7 +89,7 @@ exports.updateOne = async (req, res) => {
 //DELETE : supprimer un message
 exports.deleteOne = async (req, res) => {
   try {
-    await Message.destroy({ where: {
+    await MessageModel.destroy({ where: {
       id: res.locals.message.id
     }})
     res.status(200).json({

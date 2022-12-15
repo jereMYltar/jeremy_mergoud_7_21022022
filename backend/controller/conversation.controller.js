@@ -1,42 +1,43 @@
-const Conversation = require('../model/conversation.model');
+const ConversationModel = require('../model/conversation.model');
 const UserConversationModel = require('../model/user_conversation.model');
 const UserConversationCtrl = require('../controller/user_conversation.controller');
-const Message = require('../model/message.model');
+const MessageModel = require('../model/message.model');
+const { NOW } = require('sequelize');
 
 //CREATE : créer une conversation
-exports.createOne = async (req, res) => {
-    let conversation = {
-        name: req.body.name,
-        conversationOwnerId: res.locals.user.id,
-        isClosed: 0,
-        isPublic: req.body.isPublic,
-    };
-    try {
-        let newConversation = await Conversation.create(conversation);
-        newConversation = newConversation.dataValues;
-        delete newConversation.createdAt;
-        delete newConversation.updatedAt;
-        newConversation.hasRightsOn = true;
-        if (!conversation.isPublic) {
-            const userList = req.body.users;
-            userList.push(res.locals.user.id);
-            for (const userId of userList) {
-                await UserConversationModel.create({
-                    user_id: userId,
-                    conversation_id: newConversation.id,
-                })
-            };;
-        }
-        res.status(201).json({
-            customMessage: 'Conversation créée avec succès',
-            body: newConversation,
-        });
-    } catch (error) {
-        res.status(400).json({
-            errorMessage: error
-        });
-    }
-};
+// exports.createOne = async (req, res) => {
+//     let conversation = {
+//         name: req.body.name,
+//         conversationOwnerId: res.locals.user.id,
+//         isClosed: 0,
+//         isPublic: req.body.isPublic,
+//     };
+//     try {
+//         let newConversation = await ConversationModel.create(conversation);
+//         newConversation = newConversation.dataValues;
+//         delete newConversation.createdAt;
+//         delete newConversation.updatedAt;
+//         newConversation.hasRightsOn = true;
+//         if (!conversation.isPublic) {
+//             const userList = req.body.users;
+//             userList.push(res.locals.user.id);
+//             for (const userId of userList) {
+//                 await UserConversationModel.create({
+//                     user_id: userId,
+//                     conversation_id: newConversation.id,
+//                 })
+//             };;
+//         }
+//         res.status(201).json({
+//             customMessage: 'Conversation créée avec succès',
+//             body: newConversation,
+//         });
+//     } catch (error) {
+//         res.status(400).json({
+//             errorMessage: error
+//         });
+//     }
+// };
 
 //upsert test
 exports.upsertOne = async (req, res) => {
@@ -49,7 +50,7 @@ exports.upsertOne = async (req, res) => {
     const members = conversation.members;
     delete conversation.members;
     try {
-        const response = await Conversation.upsert(conversation);
+        const response = await ConversationModel.upsert(conversation);
         let newConversation = response[0].dataValues;
         newConversation.updatedAt = new Date();;
         newConversation.hasRightsOn = conversation.conversationOwnerId == newConversation.conversationOwnerId
@@ -72,7 +73,7 @@ exports.upsertOne = async (req, res) => {
 //READ : récupérer toutes les conversations auxquelles participe un utilisateur
 exports.findAllAllowed = async (req, res) => {
     try {
-        let conversations = await Conversation.findAllAllowed(res.locals.user.isAdmin, res.locals.user.id);
+        let conversations = await ConversationModel.findAllAllowed(res.locals.user.isAdmin, res.locals.user.id);
         const userId = res.locals.user.id;
         const isAdmin = res.locals.user.isAdmin;
         for (let conversation of conversations) {
@@ -94,7 +95,7 @@ exports.findDetails = async (req, res) => {
         const conversationId = req.params.conversationId;
         const userId = res.locals.user.id;
         const isAdmin = res.locals.user.isAdmin;
-        const conversation = await Conversation.findOneById(conversationId);
+        const conversation = await ConversationModel.findOneById(conversationId);
         const users = await UserConversationModel.findAllMembersByConversationId(conversationId);
         let conversationDetails = {...conversation[0]};
         let membersList = new Array(...users)
@@ -115,28 +116,44 @@ exports.findDetails = async (req, res) => {
 //UPDATE : mettre à jour une conversation
 exports.updateOne = async (req, res) => {
     try {
-        await Conversation.update(req.body, {
+        await ConversationModel.update(req.body, {
             where: {
               id: req.params.conversationId,
             }
-          })
-          const updatedConversation = await Conversation.findOneById(req.params.conversationId);
-          res.status(200).json({
-            customMessage: 'Conversation mise à jour avec succès',
-            body: updatedConversation[0]
-          });  
+        })
+        const updatedConversation = await ConversationModel.findOneById(req.params.conversationId);
+        res.status(200).json({
+        customMessage: 'Conversation mise à jour avec succès',
+        body: updatedConversation[0]
+        });  
     } catch (error) {
-        res.status(486).json({
+        res.status(400).json({
             error: error
           });
     }
 };
 
+//UPDATE : mettre à jour la date de dernière action sur une conversation
+// exports.updateTimestamp = async (req, res) => {
+//     try {
+//         await ConversationModel.updateTimestamp(req.params.conversationId)
+//         const updatedConversation = await ConversationModel.findOneById(req.params.conversationId);
+//         res.status(200).json({
+//             customMessage: 'Conversation mise à jour avec succès',
+//             body: updatedConversation[0].updatedAt
+//         });  
+//     } catch (error) {
+//         res.status(400).json({
+//             error: error
+//           });
+//     }
+// };
+
 //DELETE : supprimer une Conversation, tous ses messages, ainsi que toutes les relations user-conversation
 exports.deleteOne = async (req, res) => {
     try {
-        await Conversation.destroy({ where: {id: res.locals.conversation.id}});
-        await Message.destroy({ where: {conversation_id: res.locals.conversation.id}});
+        await ConversationModel.destroy({ where: {id: res.locals.conversation.id}});
+        await MessageModel.destroy({ where: {conversation_id: res.locals.conversation.id}});
         await UserConversationModel.destroy({ where: {conversation_id: res.locals.conversation.id}});
         res.status(200).json({
             customMessage: 'Conversation supprimée avec succès'

@@ -56,18 +56,23 @@ apiUsers.interceptors.response.use(
   });
 
 export default {
-  //login
+  //user
   login(payload) {
-    return apiUsers.post("/connection/login", payload);
+    return apiUsers.post("/user/login", payload);
   },
-  //sigup
   signUp(payload) {
-    return apiUsers.post("/connection/signup", payload);
+    return apiUsers.post("/user/signup", payload);
+  },
+  getAllOtherUsers() {
+    return apiUsers.get("/user/other");
+  },
+  getCurrentUser() {
+    return apiUsers.get("/user/");
   },
   //conversation
-  createConversation(payload) {
-    return apiUsers.post("/conversation/", payload);
-  },
+  // createConversation(payload) {
+  //   return apiUsers.post("/conversation/", payload);
+  // },
   upsertConversation(payload) {
     return apiUsers.post("/conversation/new", payload);
   },
@@ -80,16 +85,19 @@ export default {
   updateConversation(conversationId, payload) {
     return apiUsers.put(`/conversation/${conversationId}`, payload);
   },
+  // updateTimestampConversation(conversationId) {
+  //   return apiUsers.put(`/conversation/timestamp/${conversationId}`);
+  // },
   deleteConversation(conversationId) {
     return apiUsers.delete(`/conversation/${conversationId}`);
   },
   //user_conversation
-  getConversationMembers(conversationId) {
-    return apiUsers.get(`/user_conversation/${conversationId}`);
-  },
-  updateConversationMembers(conversationId, payload) {
-    return apiUsers.put(`/user_conversation/${conversationId}`, payload);
-  },
+  // getConversationMembers(conversationId) {
+  //   return apiUsers.get(`/user_conversation/${conversationId}`);
+  // },
+  // updateConversationMembers(conversationId, payload) {
+  //   return apiUsers.put(`/user_conversation/${conversationId}`, payload);
+  // },
   //message
   getAllMessagesByConversationId(conversationId) {
     return apiUsers.get(`/message/conversation/${conversationId}`);
@@ -103,16 +111,9 @@ export default {
   moderateMessage(messageId, payload, conversationId) {
     return apiUsers.put(`/message/${messageId}/${conversationId}`, payload);
   },
-  deleteMessage(payload) {
-    return apiUsers.delete(`/message/${payload}`);
+  deleteMessage(messageId) {
+    return apiUsers.delete(`/message/${messageId}`);
   },
-  //user
-  getAllOtherUsers() {
-    return apiUsers.get("/user/other");
-  },
-  getCurrentUser() {
-    return apiUsers.get("/user/");
-  }
 };
 
 // export default apiUsers

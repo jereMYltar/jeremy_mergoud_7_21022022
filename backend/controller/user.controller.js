@@ -1,21 +1,89 @@
-const User = require('../model/user.model');
+const UserModel = require('../model/user.model');
+const jwt = require('jsonwebtoken');
+const argon2 = require('argon2');
+const env = require('../config/env');
 
+//CREATE : créer un nouvel utilisateur
+exports.signup = (req, res, next) => {
+    const user = req.body.user;
+    argon2.hash(user.password)
+        .then((hash) => {
+            user.password = hash
+            UserModel.create(user)
+                .then(() => {
+                    res.status(201).json({
+                        customMessage: 'Utilisateur créé avec succès'
+                    });
+                })
+                .catch(error => {
+                    res.status(400).json({
+                        error: error
+                    });
+                });
+            })
+        .catch((error) => {
+                res.status(500).json({ error : error });
+            });
+};
+
+//READ : permettre la connexion d'un utilisateur créé en renvoyant le token d'authentification 
+exports.login = (req, res, next) => {
+    UserModel.findOne({ where: {email: req.body.email}})
+        .then(
+            (sequelizeInstance) => {
+                if (!sequelizeInstance) {
+                        return res.status(401).json({ error: 'Utilisateur non trouvé' })
+                    }
+                const user = sequelizeInstance.toJSON();
+                argon2.verify(user.password, req.body.password)
+                    .then(
+                        (valid) => {
+                            if (!valid) {
+                                return res.status(403).json({ error: 'Requête non autorisée' })
+                            }
+                            res.status(200).json({
+                                customMessage: "Connexion réussie",
+                                token: jwt.sign(
+                                    {userId: user.id,
+                                    isAdmin: user.isAdmin},
+                                    env.JWT_SALT,
+                                    {expiresIn: "12h"}
+                                ),
+                                activeUser: {
+                                    isAdmin: user.isAdmin,
+                                    id: user.id,
+                                    name: user.firstName.concat(" ",user.lastName),
+                                }
+                            })
+                        }
+                    )
+                    .catch(
+                        (error) => res.status(500).json({error: error})
+                    );
+            }
+        )
+        .catch(
+            (error) => {
+                res.status(500).json({error: error})
+            }
+        );
+};
 
 //CREATE : créer un utilisateur
-exports.createOne = (req, res) => {
-    const user = JSON.parse(req.body.user);
-    User.create(user)
-        .then(() => {
-            res.status(201).json({
-                customMessage: 'Utilisateur créé avec succès'
-            });
-        })
-        .catch(error => {
-            res.status(400).json({
-                error: error
-            });
-        });
-};
+// exports.createOne = (req, res) => {
+//     const user = JSON.parse(req.body.user);
+//     UserModel.create(user)
+//         .then(() => {
+//             res.status(201).json({
+//                 customMessage: 'Utilisateur créé avec succès'
+//             });
+//         })
+//         .catch(error => {
+//             res.status(400).json({
+//                 error: error
+//             });
+//         });
+// };
 
 // READ : récupére l'information d'utilisateur admin ou non de l'utilisateur courant
 exports.findOneByToken = (req, res) => {
@@ -30,25 +98,25 @@ exports.findOneByToken = (req, res) => {
 };
 
 // READ : récupérer tous les utilisateurs
-exports.findAllUsers = (req, res) => {
-    User.findAllUsers()
-        .then(users => {
-	        // Send all users to Client
-	        res.status(200).json(
-                users
-                //utilisateurs: users <= transformer en objet et mettre une clef ?
-            );
-	    })
-        .catch(error => {
-            res.status(400).json({
-                error: error
-            });
-        });
-};
+// exports.findAllUsers = (req, res) => {
+//     UserModel.findAllUsers()
+//         .then(users => {
+// 	        // Send all users to Client
+// 	        res.status(200).json(
+//                 users
+//                 //utilisateurs: users <= transformer en objet et mettre une clef ?
+//             );
+// 	    })
+//         .catch(error => {
+//             res.status(400).json({
+//                 error: error
+//             });
+//         });
+// };
 
 // READ : récupérer tous les utilisateurs différents de l'utilisateur courant
 exports.findAllOtherUsers = (req, res) => {
-    User.findAllOtherUsers(res.locals.user.id)
+    UserModel.findAllOtherUsers(res.locals.user.id)
         .then(users => {
 	        // Send all users to Client
 	        res.status(200).json(
@@ -64,92 +132,92 @@ exports.findAllOtherUsers = (req, res) => {
 };
 
 //READ : récupérer un utilisateur en fonction de son id
-exports.findOneById = (req, res) => {
-    User.findOne({ where: {id: req.params.userId}})
-        .then(user => {
-            // Send user found to Client
-	        if (!!user) {
-                res.status(200).json(
-                    user
-                );
-            } else {
-                throw 'La ressource demandée n\'existe pas';
-            };
-        })
-        .catch(error => {
-            res.status(400).json({
-                error: error
-            });
-        });
-};
+// exports.findOneById = (req, res) => {
+//     UserModel.findOne({ where: {id: req.params.userId}})
+//         .then(user => {
+//             // Send user found to Client
+// 	        if (!!user) {
+//                 res.status(200).json(
+//                     user
+//                 );
+//             } else {
+//                 throw 'La ressource demandée n\'existe pas';
+//             };
+//         })
+//         .catch(error => {
+//             res.status(400).json({
+//                 error: error
+//             });
+//         });
+// };
 
 //READ : récupérer une quantité d'information limité d'un utilisateur en fonction de son id
-exports.findOneLimitedById = (req, res) => {
-    User.findOneLimitedById(req.params.userId)
-        .then(user => {
-            // Send user found to Client
-	        if (!!user) {
-                res.status(200).json(
-                    user
-                );
-            } else {
-                throw 'La ressource demandée n\'existe pas';
-            };
-        })
-        .catch(error => {
-            res.status(400).json({
-                error: error
-            });
-        });
-};
+// exports.findOneLimitedById = (req, res) => {
+//     UserModel.findOneLimitedById(req.params.userId)
+//         .then(user => {
+//             // Send user found to Client
+// 	        if (!!user) {
+//                 res.status(200).json(
+//                     user
+//                 );
+//             } else {
+//                 throw 'La ressource demandée n\'existe pas';
+//             };
+//         })
+//         .catch(error => {
+//             res.status(400).json({
+//                 error: error
+//             });
+//         });
+// };
 
 //READ : récupérer un utilisateur en fonction de son email
-exports.findOneByEmail = (req, res) => {
-    User.findOne({ where: {email: req.body.email}})
-        .then(user => {
-            // Send user found to Client
-	        if (!!user) {
-                res.status(200).json(
-                    user
-                );
-            } else {
-                throw 'La ressource demandée n\'existe pas';
-            };
-        })
-        .catch(error => {
-            res.status(400).json({
-                error: error
-            });
-        });
-};
+// exports.findOneByEmail = (req, res) => {
+//     UserModel.findOne({ where: {email: req.body.email}})
+//         .then(user => {
+//             // Send user found to Client
+// 	        if (!!user) {
+//                 res.status(200).json(
+//                     user
+//                 );
+//             } else {
+//                 throw 'La ressource demandée n\'existe pas';
+//             };
+//         })
+//         .catch(error => {
+//             res.status(400).json({
+//                 error: error
+//             });
+//         });
+// };
 
 //UPDATE : mettre à jour un utilisateur
-exports.updateOne = (req, res) => {
-    const user = JSON.parse(req.body.user);
-    User.update(user, {where: {id: req.params.userId}})
-        .then(() => {
-            res.status(201).json({
-                customMessage: 'Utilisateur mis à jour avec succès'
-            });
-        })
-        .catch(error => {
-            res.status(400).json({
-                error: error
-            });
-        });
-};
+// exports.updateOne = (req, res) => {
+//     const user = JSON.parse(req.body.user);
+//     UserModel.update(user, {where: {id: req.params.userId}})
+//         .then(() => {
+//             res.status(201).json({
+//                 customMessage: 'Utilisateur mis à jour avec succès'
+//             });
+//         })
+//         .catch(error => {
+//             res.status(400).json({
+//                 error: error
+//             });
+//         });
+// };
 
 //DELETE : supprimer un utilisateur
-exports.deleteOne = (req, res) => {
-    User.destroy({ where: {id: req.params.userId}})
-    .then(() => {
-        res.status(200).json({
-            customMessage: 'Utilisateur supprimé avec succès'
-        });
-    })
-    .catch(error => {
-        res.status(400).json({
-            error: error
-        });
-    });
-};
+// exports.deleteOne = (req, res) => {
+//     UserModel.destroy({ where: {id: req.params.userId}})
+//     .then(() => {
+//         res.status(200).json({
+//             customMessage: 'Utilisateur supprimé avec succès'
+//         });
+//     })
+//     .catch(error => {
+//         res.status(400).json({
+//             error: error
+//         });
+//     });
+// };

@@ -76,20 +76,20 @@ module.exports.findAllByConversationId = function (conversationId) {
     `, { type: QueryTypes.SELECT });
 };
 //READ : récupérer tous les messages actifs (non modérés) d'une conversation par l'id de celle-ci
-module.exports.findAllActiveByConversationId = function (conversationId) {
-    return database.query(`
-    SELECT message.id AS id,
-        CONCAT(user.firstName, ' ', user.lastName) AS 'author',
-        message.content AS 'content',
-        message.createdAt AS createdAt,
-        message.updatedAt AS updatedAt,
-        message.isModerated as isModerated,
-        message.messageOwnerId AS messageOwnerId
-    FROM message
-    JOIN user ON message.messageOwnerId=user.id
-    WHERE message.conversation_id=${conversationId} AND !message.isModerated;
-    `, { type: QueryTypes.SELECT });
-};
+// module.exports.findAllActiveByConversationId = function (conversationId) {
+//     return database.query(`
+//     SELECT message.id AS id,
+//         CONCAT(user.firstName, ' ', user.lastName) AS 'author',
+//         message.content AS 'content',
+//         message.createdAt AS createdAt,
+//         message.updatedAt AS updatedAt,
+//         message.isModerated as isModerated,
+//         message.messageOwnerId AS messageOwnerId
+//     FROM message
+//     JOIN user ON message.messageOwnerId=user.id
+//     WHERE message.conversation_id=${conversationId} AND !message.isModerated;
+//     `, { type: QueryTypes.SELECT });
+// };
 //READ : récupérer les messages (tous, ou les non modérés ou les modérés) d'une conversation par l'id de celle-ci
 // module.exports.findAllByConversationId = function (conversationId, details=false, isModerated = false) {
 //     const sql = `SELECT message.id AS id,
@@ -113,18 +113,18 @@ module.exports.findAllActiveByConversationId = function (conversationId) {
 //     return database.query(sql, { type: QueryTypes.SELECT });
 // };
 //READ : récupérer le dernier message d'une conversation
-module.exports.findLatestByConversationId = function (conversationId) {
-    return database.query(`
-    SELECT message.id AS id,
-        CONCAT(user.firstName, ' ', user.lastName) AS 'author',
-        message.content AS 'content',
-        message.createdAt AS createdAt,
-        message.updatedAt AS updatedAt,
-        message.isModerated as isModerated,
-        message.messageOwnerId AS messageOwnerId
-    FROM message
-    JOIN user ON message.messageOwnerId=user.id
-    WHERE message.conversation_id=${conversationId}
-    ORDER BY message.id DESC LIMIT 0,1 ;
-    `, { type: QueryTypes.SELECT });
-};
+// module.exports.findLatestByConversationId = function (conversationId) {
+//     return database.query(`
+//     SELECT message.id AS id,
+//         CONCAT(user.firstName, ' ', user.lastName) AS 'author',
+//         message.content AS 'content',
+//         message.createdAt AS createdAt,
+//         message.updatedAt AS updatedAt,
+//         message.isModerated as isModerated,
+//         message.messageOwnerId AS messageOwnerId
+//     FROM message
+//     JOIN user ON message.messageOwnerId=user.id
+//     WHERE message.conversation_id=${conversationId}
+//     ORDER BY message.id DESC LIMIT 0,1 ;
+//     `, { type: QueryTypes.SELECT });
+// };

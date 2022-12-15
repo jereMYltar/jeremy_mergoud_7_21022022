@@ -75,3 +75,12 @@ module.exports.findOneById = function (conversationId) {
     WHERE id=${conversationId} ;
     `, { type: QueryTypes.SELECT });
 };
+//UPDATE : mettre à jour la date de dernière action sur une conversation
+// module.exports.updateTimestamp = async function (conversationId) {
+//     database.query(`
+//     UPDATE conversation
+//     SET updatedAt = NOW()
+//     WHERE id=${conversationId} ;
+//     `, { type: QueryTypes.UPDATE });
+//     return Promise.resolve("success");
+// };

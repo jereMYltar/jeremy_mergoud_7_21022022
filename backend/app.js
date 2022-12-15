@@ -26,21 +26,15 @@ app.use(limiter);
 const isConnected = require("./policies/isConnected");
 
 //Implémentation des routes
-//connexion
-const connectionRoutes = require('./route/connection.route');
-app.use('/api/connection', connectionRoutes);
 //utilisateurs
 const userRoutes = require('./route/user.route');
-app.use('/api/user', isConnected, userRoutes);
+app.use('/api/user', userRoutes);
 //messages
 const messageRoutes = require('./route/message.route');
 app.use('/api/message', isConnected, messageRoutes);
 //conversations
 const conversationRoutes = require('./route/conversation.route');
 app.use('/api/conversation', isConnected, conversationRoutes);
-//user_conversation
-const userConversationRoutes = require('./route/user_conversation.route');
-app.use('/api/user_conversation', isConnected, userConversationRoutes);
 
 
 module.exports = app;
