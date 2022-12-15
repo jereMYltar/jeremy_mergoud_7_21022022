@@ -82,9 +82,9 @@ export default {
   getConversationDetail(conversationId) {
     return apiUsers.get(`/conversation/details/${conversationId}`)
   },
-  updateConversation(conversationId, payload) {
-    return apiUsers.put(`/conversation/${conversationId}`, payload);
-  },
+  // updateConversation(conversationId, payload) {
+  //   return apiUsers.put(`/conversation/${conversationId}`, payload);
+  // },
   // updateTimestampConversation(conversationId) {
   //   return apiUsers.put(`/conversation/timestamp/${conversationId}`);
   // },

@@ -87,17 +87,21 @@ async function deleteConversation(id) {
 }
 
 async function closeConversation(conversation) {
-  let payload = conversation.isClosed
-    ? { isClosed: false }
-    : { isClosed: true };
+  let payload = {
+    id: conversation.id,
+    name: conversation.name,
+    conversationOwnerId: conversation.conversationOwnerId,
+    isClosed: !conversation.isClosed,
+    isPublic: conversation.isPublic,
+    members: {
+      toAdd: [],
+      toDelete: [],
+    },
+  };
   try {
-    let updatedConversation = await EventService.updateConversation(
-      conversation.id,
-      payload
-    );
-    updatedConversation = updatedConversation.data.body;
-    conversationsStore.updateConversation(updatedConversation);
-    conversationsStore.updateActiveConversation(updatedConversation);
+    let newConversation = await EventService.upsertConversation(payload);
+    newConversation = newConversation.data.body;
+    conversationsStore.upsertConversationsStore(newConversation);
     closeAllModals();
   } catch (error) {
     console.log(error);
