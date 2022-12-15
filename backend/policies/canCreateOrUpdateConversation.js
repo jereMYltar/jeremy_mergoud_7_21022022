@@ -1,4 +1,6 @@
-module.exports = (req, res, next) => {
+const ConversationModel = require('../model/conversation.model');
+
+module.exports = async (req, res, next) => {
     const user = res.locals.user;
     const newConversation = req.body;
     if (user.isAdmin) {
@@ -14,8 +16,7 @@ module.exports = (req, res, next) => {
         };
     } else {
         try {
-            const conversation = await Conversation.findOne({
-                attributes: ["conversationOwnerId", "isPublic", "isClosed"],
+            const conversation = await ConversationModel.findOne({
                 where: {id: newConversation.id},
             })
             if (conversation.dataValues.conversationOwnerId == res.locals.user.id) {
@@ -29,4 +30,3 @@ module.exports = (req, res, next) => {
         }
     }
 };
-
