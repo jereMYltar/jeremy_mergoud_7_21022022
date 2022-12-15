@@ -3,7 +3,7 @@ const router = express.Router();
 const UserCtrl = require('../controller/user.controller.js');
 const validatePassword = require('../middleware/validatePassword')
 //middleware pour savoir si l'utilisateur est connecté
-const isConnected = require("./policies/isConnected");
+const isConnected = require("../policies/isConnected");
 //test pour savoir si l'utilisateur a le droit d'action sur le compte
 // const isAccountOwnerOrAdmin = require("../policies/isAccountOwnerOrAdmin");
 // const isConnected = require("../policies/isConnected");
