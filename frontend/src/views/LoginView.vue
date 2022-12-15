@@ -31,10 +31,10 @@
       </div>
       <ErrorMessage name="password" class="errorMessage" />
       <input class="basicButton" type="submit" value="Se connecter" />
-      <router-link :to="{ name: 'HomePage' }" class="littleButton"
-        >Annuler</router-link
-      >
     </Form>
+    <router-link :to="{ name: 'HomePage' }" class="littleButton"
+      >Annuler</router-link
+    >
   </div>
 </template>
 
@@ -57,8 +57,8 @@ async function login() {
       password: password.value,
     };
     let response = await EventService.login(payload);
-    usersStore.addActiveUser(response.data.activeUser);
     sessionStorage.setItem("token", response.data.token);
+    usersStore.addActiveUser(response.data.activeUser);
     await nextTick();
     router.push({
       name: "Exchanges",
