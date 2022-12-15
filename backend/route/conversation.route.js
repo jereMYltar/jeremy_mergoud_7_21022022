@@ -6,11 +6,11 @@ const isConversationOwnerOrAdmin = require("../policies/isConversationOwnerOrAdm
 //test pour savoir si l'utilisateur a le droit d'action sur la conversation en tant qu'admin
 const isAdmin = require("../policies/isAdmin");
 //test pour savoir si l'utilisateur a le droit de créer une conversation publique
-const canCreatePublicConversation = require("../policies/canCreatePublicConversation");
+const canCreateOrUpdateConversation = require("../policies/canCreateOrUpdateConversation");
 
 //CREATE : créer une conversation
 // router.post('/', canCreatePublicConversation, ConversationCtrl.createOne);
-router.post('/new', canCreatePublicConversation, ConversationCtrl.upsertOne);
+router.post('/new', canCreateOrUpdateConversation, ConversationCtrl.upsertOne);
 
 //READ : récupérer toutes les conversations auxquel l'utilisateur a accès
 router.get('/', ConversationCtrl.findAllAllowed);
@@ -19,7 +19,7 @@ router.get('/', ConversationCtrl.findAllAllowed);
 router.get('/details/:conversationId', ConversationCtrl.findDetails);
 
 //UPDATE : mettre à jour une conversation
-router.put('/:conversationId', isConversationOwnerOrAdmin, ConversationCtrl.updateOne);
+// router.put('/:conversationId', isConversationOwnerOrAdmin, ConversationCtrl.updateOne);
 // router.put('/timestamp/:conversationId', ConversationCtrl.updateTimestamp);
 
 //DELETE : supprimer une conversation

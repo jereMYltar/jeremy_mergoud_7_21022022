@@ -2,7 +2,7 @@ const ConversationModel = require('../model/conversation.model');
 const UserConversationModel = require('../model/user_conversation.model');
 const UserConversationCtrl = require('../controller/user_conversation.controller');
 const MessageModel = require('../model/message.model');
-const { NOW } = require('sequelize');
+const UserModel = require('../model/user.model');
 
 //CREATE : créer une conversation
 // exports.createOne = async (req, res) => {
@@ -51,8 +51,7 @@ exports.upsertOne = async (req, res) => {
     delete conversation.members;
     try {
         const response = await ConversationModel.upsert(conversation);
-        let newConversation = response[0].dataValues;
-        newConversation.updatedAt = new Date();;
+        let newConversation = await ConversationModel.findOne({ where: { id: response[0].dataValues.id } });
         newConversation.hasRightsOn = conversation.conversationOwnerId == newConversation.conversationOwnerId
             ? true
             : false;
@@ -95,13 +94,22 @@ exports.findDetails = async (req, res) => {
         const conversationId = req.params.conversationId;
         const userId = res.locals.user.id;
         const isAdmin = res.locals.user.isAdmin;
-        const conversation = await ConversationModel.findOneById(conversationId);
-        const users = await UserConversationModel.findAllMembersByConversationId(conversationId);
-        let conversationDetails = {...conversation[0]};
-        let membersList = new Array(...users)
+        let conversationDetails = await ConversationModel.findOne({ where: { id: conversationId } });
+        conversationDetails = conversationDetails.dataValues;
         conversationDetails.hasRightsOn = (isAdmin || conversationDetails.conversationOwnerId == userId);
-        conversationDetails.members = membersList;
-        conversationDetails.owner = membersList.find((elt) => elt.id == conversationDetails.conversationOwnerId);
+        if (conversationDetails.isPublic) {
+            conversationDetails.members = [];
+            const owner = await UserModel.findOne({ where: { id: conversationDetails.conversationOwnerId } });
+            conversationDetails.owner = {
+                id: conversationDetails.conversationOwnerId,
+                name: owner.dataValues.firstName.concat(" ", owner.dataValues.lastName),
+            };
+        } else {
+            const users = await UserConversationModel.findAllMembersByConversationId(conversationId);
+            let membersList = new Array(...users)
+            conversationDetails.members = membersList;
+            conversationDetails.owner = membersList.find((elt) => elt.id == conversationDetails.conversationOwnerId);
+        }
         res.status(200).json({
             customMessage: `Détails de la conversation n°${conversationId} récupérés avec succès.`,
             body: conversationDetails,
@@ -114,24 +122,24 @@ exports.findDetails = async (req, res) => {
 };
 
 //UPDATE : mettre à jour une conversation
-exports.updateOne = async (req, res) => {
-    try {
-        await ConversationModel.update(req.body, {
-            where: {
-              id: req.params.conversationId,
-            }
-        })
-        const updatedConversation = await ConversationModel.findOneById(req.params.conversationId);
-        res.status(200).json({
-        customMessage: 'Conversation mise à jour avec succès',
-        body: updatedConversation[0]
-        });  
-    } catch (error) {
-        res.status(400).json({
-            error: error
-          });
-    }
-};
+// exports.updateOne = async (req, res) => {
+//     try {
+//         await ConversationModel.update(req.body, {
+//             where: {
+//               id: req.params.conversationId,
+//             }
+//         })
+//         const updatedConversation = await ConversationModel.findOne({ where: { id: req.params.conversationId } });
+//         res.status(200).json({
+//         customMessage: 'Conversation mise à jour avec succès',
+//         body: updatedConversation[0]
+//         });  
+//     } catch (error) {
+//         res.status(400).json({
+//             error: error
+//           });
+//     }
+// };
 
 //UPDATE : mettre à jour la date de dernière action sur une conversation
 // exports.updateTimestamp = async (req, res) => {
