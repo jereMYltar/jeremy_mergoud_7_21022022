@@ -4,26 +4,30 @@ const argon2 = require('argon2');
 const env = require('../config/env');
 
 //CREATE : créer un nouvel utilisateur
-exports.signup = (req, res, next) => {
+exports.signup = async (req, res, next) => {
     const user = req.body.user;
-    argon2.hash(user.password)
-        .then((hash) => {
-            user.password = hash
-            UserModel.create(user)
-                .then(() => {
-                    res.status(201).json({
-                        customMessage: 'Utilisateur créé avec succès'
-                    });
-                })
-                .catch(error => {
-                    res.status(400).json({
-                        error: error
-                    });
-                });
-            })
-        .catch((error) => {
-                res.status(500).json({ error : error });
-            });
+    try {
+        const hash = await argon2.hash(user.password);
+        user.password = hash;
+        let createdUser = await UserModel.create(user);
+        createdUser = createdUser.dataValues;
+        res.status(201).json({
+            customMessage: 'Utilisateur créé avec succès',
+            token: jwt.sign(
+                {userId: createdUser.id,
+                isAdmin: createdUser.isAdmin},
+                env.JWT_SALT,
+                {expiresIn: "12h"}
+            ),
+            activeUser: {
+                isAdmin: createdUser.isAdmin,
+                id: createdUser.id,
+                name: createdUser.firstName.concat(" ",createdUser.lastName),
+            }
+        });        
+    } catch (error) {
+        res.status(500).json({ error : error });
+    }
 };
 
 //READ : permettre la connexion d'un utilisateur créé en renvoyant le token d'authentification 

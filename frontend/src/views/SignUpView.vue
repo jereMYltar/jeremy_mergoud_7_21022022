@@ -90,16 +90,15 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-// import { ref, nextTick } from "vue";
+import { ref, nextTick } from "vue";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import { useRouter } from "vue-router";
-// import { useUsersStore } from "@/store/usersStore";
+import { useUsersStore } from "@/store/usersStore";
 import EventService from "@/services/EventService.js";
 
 //stores
 const router = useRouter();
-// const usersStore = useUsersStore();
+const usersStore = useUsersStore();
 
 //refs
 const firstName = ref("");
@@ -183,11 +182,11 @@ async function signUp() {
   try {
     const response = await EventService.signUp(payload);
     sessionStorage.setItem("token", response.data.token);
-    firstName.value = "";
-    lastName.value = "";
-    email.value = "";
-    password.value = "";
-    isAdmin.value = false;
+    usersStore.addActiveUser(response.data.activeUser);
+    await nextTick();
+    router.push({
+      name: "Exchanges",
+    });
   } catch (error) {
     if (error.response && error.response.status == 404) {
       router.push({
