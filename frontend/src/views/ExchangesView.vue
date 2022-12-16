@@ -13,7 +13,7 @@
           <template #callButton>
             <p>Mon compte</p>
           </template>
-          <p>Ici le composant de visualisation / modification de compte</p>
+          <UserComponent :userId="usersStore.activeUser.id" />
         </ModalComponent>
         <button @click="logOut">Se déconnecter</button>
       </ModalComponent>
@@ -32,6 +32,7 @@ import EventService from "@/services/EventService.js";
 import ConversationsList from "@/components/conversation/ConversationsList.vue";
 import MessagesList from "@/components/message/MessagesList.vue";
 import ModalComponent from "@/components/modal/ModalComponent.vue";
+import UserComponent from "@/components/user/UserComponent.vue";
 
 const router = useRouter();
 const conversationsStore = useConversationsStore();

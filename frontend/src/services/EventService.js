@@ -69,6 +69,9 @@ export default {
   getCurrentUser() {
     return apiUsers.get("/user/");
   },
+  getCurrentUserDetails() {
+    return apiUsers.get("/user/details");
+  },
   //conversation
   // createConversation(payload) {
   //   return apiUsers.post("/conversation/", payload);

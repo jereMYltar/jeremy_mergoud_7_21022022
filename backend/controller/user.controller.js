@@ -89,7 +89,7 @@ exports.login = (req, res, next) => {
 //         });
 // };
 
-// READ : récupére l'information d'utilisateur admin ou non de l'utilisateur courant
+// READ : récupére les informations de base (id, isAdmin, name) de l'utilisateur courant
 exports.findOneByToken = (req, res) => {
     res.status(200).json({
         customMessage: "Informations sur l'utilisateur connecté correctement récupérées.",
@@ -97,6 +97,22 @@ exports.findOneByToken = (req, res) => {
             isAdmin: res.locals.user.isAdmin,
             id: res.locals.user.id,
             name: res.locals.user.firstName.concat(" ", res.locals.user.lastName),
+        },
+    });
+};
+
+// READ : récupére toutes les informations d l'utilisateur courant
+exports.findUserDetails = (req, res) => {
+    res.status(200).json({
+        customMessage: "Informations sur l'utilisateur connecté correctement récupérées.",
+        activeUserDetails: {
+            firstName: res.locals.user.firstName,
+            lastName: res.locals.user.lastName,
+            email: res.locals.user.email,
+            isAdmin: res.locals.user.isAdmin,
+            isMale: res.locals.user.isMale,
+            photo: res.locals.user.photo,
+            pseudo: res.locals.user.pseudo,
         },
     });
 };

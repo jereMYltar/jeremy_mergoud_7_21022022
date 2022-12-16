@@ -17,6 +17,9 @@ router.post('/login', UserCtrl.login);
 // READ : récupérer un utilisateur spécifique
 router.get('/', isConnected, UserCtrl.findOneByToken);
 
+// READ : récupérer un utilisateur spécifique
+router.get('/details', isConnected, UserCtrl.findUserDetails);
+
 // READ : récupérer tous les utilisateurs
 router.get('/other', isConnected, UserCtrl.findAllOtherUsers);
 

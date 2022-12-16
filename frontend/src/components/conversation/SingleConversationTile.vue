@@ -48,8 +48,10 @@ const props = defineProps({
   },
 });
 
-//variables
+//refs
 const toClose = ref(false);
+
+//stores
 const conversationsStore = useConversationsStore();
 
 //methods
