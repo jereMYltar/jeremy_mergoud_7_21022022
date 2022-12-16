@@ -59,31 +59,27 @@
         <ErrorMessage name="password" class="errorMessage" />
       </div>
       <div class="question">
-        <Field
-          name="isAdminField"
-          ref="isAdminFieldRef"
-          :rules="validateAdminValue"
-          :value="isAdmin"
-        >
+        <Field name="isAdminField" :value="isAdmin">
           <label for="isAdmin" class="titre2">
             Cochez cette case si vous êtes administrateur du site :
           </label>
           <input type="checkbox" id="isAdmin" v-model="isAdmin" />
-          <div v-if="isAdmin">
-            <label for="adminPassword" class="titre2">
-              Code spécifique de vérification transmis par votre organisation.
-            </label>
-            <Field
-              v-model="isAdminPassword"
-              id="adminPassword"
-              type="password"
-              placeholder="Mot de passe donné par votre organisation"
-              class="textInput"
-              @onblur="isAdminFieldAudit"
-            />
-          </div>
         </Field>
-        <ErrorMessage name="isAdminField" class="errorMessage" />
+      </div>
+      <div v-if="isAdmin" class="question">
+        <label for="adminPassword" class="titre2">
+          Code spécifique de vérification transmis par votre organisation.
+        </label>
+        <Field
+          v-model="adminPassword"
+          name="adminPassword"
+          id="adminPassword"
+          type="password"
+          placeholder="Mot de passe donné par votre organisation"
+          class="textInput"
+          :rules="validateAdminValue"
+        />
+        <ErrorMessage name="adminPassword" class="errorMessage" />
       </div>
       <input class="basicButton" type="submit" value="Créer un compte" />
     </Form>
@@ -114,8 +110,7 @@ const isAdmin = ref(false);
 const isMale = ref(false);
 const photo = ref("");
 const pseudo = ref("");
-const isAdminPassword = ref("");
-const isAdminFieldRef = ref();
+const adminPassword = ref("");
 
 //methods
 function validateEmail(value) {
@@ -164,16 +159,12 @@ function validateName(value) {
 function validateAdminValue() {
   if (
     isAdmin.value == false ||
-    (isAdmin.value == true && isAdminPassword.value == "123")
+    (isAdmin.value == true && adminPassword.value == "123")
   ) {
     return true;
   } else {
     return "Pour vous inscrire en tant qu'administrateur, vous devez saisir le code spécifique transmis par votre organisation.";
   }
-}
-
-function isAdminFieldAudit() {
-  isAdminFieldRef.value.validate();
 }
 
 async function signUp() {
