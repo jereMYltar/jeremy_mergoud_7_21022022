@@ -44,6 +44,22 @@
         />
         <ErrorMessage name="email" class="errorMessage" />
       </div>
+      <div class="question" v-if="props.userId">
+        <label for="existingPassword" class="titre2">
+          Votre mot de passe actuel
+        </label>
+        <Field
+          v-model="existingPassword"
+          id="mdp"
+          name="existingPassword"
+          type="password"
+          maxlength="128"
+          placeholder="Votre mot de passe actuel"
+          class="textInput"
+          :rules="validateExistingPassword"
+        />
+        <ErrorMessage name="existingPassword" class="errorMessage" />
+      </div>
       <div class="question">
         <label for="mdp" class="titre2">Mot de passe</label>
         <Field
@@ -57,6 +73,20 @@
           :rules="validatePassword"
         />
         <ErrorMessage name="password" class="errorMessage" />
+      </div>
+      <div class="question">
+        <label for="mdp2" class="titre2">Confirmer votre mot de passe</label>
+        <Field
+          v-model="password2"
+          id="mdp2"
+          name="password2"
+          type="password"
+          maxlength="128"
+          placeholder="Confirmer votre mot de passe"
+          class="textInput"
+          :rules="validatePassword2"
+        />
+        <ErrorMessage name="password2" class="errorMessage" />
       </div>
       <div class="question">
         <Field name="isAdminField" :value="isAdmin">
@@ -128,6 +158,8 @@ const firstName = ref("");
 const lastName = ref("");
 const email = ref("");
 const password = ref("");
+const password2 = ref("");
+const existingPassword = ref("");
 const isAdmin = ref(false);
 const isMale = ref(false);
 const photo = ref("");
@@ -161,6 +193,30 @@ function validatePassword(value) {
   }
   // All is good
   return true;
+}
+function validatePassword2(value) {
+  // if the field is empty
+  if (!value) {
+    return "Ce champs est requis";
+  }
+  if (password.value == password2.value) {
+    return true;
+  } else {
+    return "Les mots de passe ne correspondent pas";
+  }
+  // All is good
+}
+function validateExistingPassword(value) {
+  // if the field is empty
+  if (!value) {
+    return "Ce champs est requis";
+  }
+  if (password.value == password2.value) {
+    return true;
+  } else {
+    return "Les mots de passe ne correspondent pas";
+  }
+  // All is good
 }
 
 function validateName(value) {
