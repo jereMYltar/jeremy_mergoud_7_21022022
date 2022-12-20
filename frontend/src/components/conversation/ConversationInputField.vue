@@ -205,15 +205,11 @@ async function saveConversation() {
       toDelete: oldMembers.filter((id) => !newMembers.includes(id)),
     },
   };
-  let newConversation = await EventService.upsertConversation(payload);
-  newConversation = newConversation.data.body;
-  newConversation.hasRightsOn =
-    usersStore.activeUser.isAdmin ||
-    newConversation.conversationOwnerId == usersStore.activeUser.id
-      ? true
-      : false;
-  delete newConversation.createdAt;
-  conversationsStore.upsertConversationsStore(newConversation);
+  const upsertResponse = await EventService.upsertConversation(payload);
+  let details = await EventService.getConversationDetail(
+    upsertResponse.data.body.id
+  );
+  conversationsStore.upsertConversationsStore(details.data.body);
   if (!props.existingConversation) {
     conversationName.value = "";
     isPublic.value = false;
