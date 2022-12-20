@@ -110,7 +110,6 @@ exports.findDetails = async (req, res) => {
             conversationDetails.members = membersList;
             conversationDetails.owner = membersList.find((elt) => elt.id == conversationDetails.conversationOwnerId);
         }
-        console.log("contrôleur findDetails : ", conversationDetails);
         res.status(200).json({
             customMessage: `Détails de la conversation n°${conversationId} récupérés avec succès.`,
             body: conversationDetails,
