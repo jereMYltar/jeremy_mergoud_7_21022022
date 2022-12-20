@@ -207,6 +207,12 @@ async function saveConversation() {
   };
   let newConversation = await EventService.upsertConversation(payload);
   newConversation = newConversation.data.body;
+  newConversation.hasRightsOn =
+    usersStore.activeUser.isAdmin ||
+    newConversation.conversationOwnerId == usersStore.activeUser.id
+      ? true
+      : false;
+  delete newConversation.createdAt;
   console.log(newConversation);
   conversationsStore.upsertConversationsStore(newConversation);
   if (!props.existingConversation) {
