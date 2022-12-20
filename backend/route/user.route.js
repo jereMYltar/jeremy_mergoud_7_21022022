@@ -22,6 +22,9 @@ router.get('/details/:userId', isConnected, isAccountOwnerOrAdmin,UserCtrl.findU
 // READ : récupérer tous les utilisateurs
 router.get('/other', isConnected, UserCtrl.findAllOtherUsers);
 
+//DELETE : supprimer un utilisateur
+router.delete('/:userId', isConnected, isAccountOwnerOrAdmin, UserCtrl.deleteOne);
+
 //CREATE : créer un utilisateur
 // router.post('/', UserCtrl.createOne);
 
@@ -39,8 +42,5 @@ router.get('/other', isConnected, UserCtrl.findAllOtherUsers);
 
 //UPDATE : mettre à jour un utilisateur
 // router.put('/:userId', isAccountOwnerOrAdmin, UserCtrl.updateOne);
-
-//DELETE : supprimer un utilisateur
-// router.delete('/:userId', isAccountOwnerOrAdmin, UserCtrl.deleteOne);
 
 module.exports = router;

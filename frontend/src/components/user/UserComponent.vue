@@ -136,7 +136,7 @@
     <button
       @click="deleteAccount"
       v-if="
-        !props.userId &&
+        props.userId &&
         (props.userId == usersStore.activeUser.id ||
           usersStore.activeUser.isAdmin)
       "
@@ -269,11 +269,23 @@ function validateAdminValue() {
   }
 }
 
-function deleteAccount() {
-  sessionStorage.clear();
-  router.push({
-    name: "Login",
-  });
+async function deleteAccount() {
+  if (
+    window.confirm(`Vous vous apprêter à supprimer cet utilisateur.
+    Cette action est irreversible, voulez-vous continuer ?`)
+  ) {
+    try {
+      await EventService.deleteUser(props.userId);
+      sessionStorage.clear();
+      router.push({
+        name: "HomePage",
+      });
+    } catch (error) {
+      return "Problème serveur";
+    }
+  } else {
+    emit("close");
+  }
 }
 
 async function signUp() {
@@ -318,7 +330,6 @@ onMounted(async () => {
   if (props.userId) {
     let user = await EventService.getUserDetails(props.userId);
     user = user.data.userDetails;
-    console.log(user);
     firstName.value = user.firstName;
     lastName.value = user.lastName;
     email.value = user.email;

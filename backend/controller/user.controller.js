@@ -1,4 +1,5 @@
 const UserModel = require('../model/user.model');
+const UserConversationModel = require("../model/user_conversation.model");
 const jwt = require('jsonwebtoken');
 const argon2 = require('argon2');
 const env = require('../config/env');
@@ -83,7 +84,6 @@ exports.signup = async (req, res) => {
         } else {
             response.customMessage = "Utilisateur mis à jour avec succès";
         }
-        console.log(response);
         res.status(201).json(response);   
     } catch (error) {
         if (error) {
@@ -326,16 +326,46 @@ exports.findAllOtherUsers = (req, res) => {
 // };
 
 //DELETE : supprimer un utilisateur
-// exports.deleteOne = (req, res) => {
-//     UserModel.destroy({ where: {id: req.params.userId}})
-//     .then(() => {
-//         res.status(200).json({
-//             customMessage: 'Utilisateur supprimé avec succès'
-//         });
-//     })
-//     .catch(error => {
-//         res.status(400).json({
-//             error: error
-//         });
-//     });
-// };
+exports.deleteOne = async (req, res) => {
+    try {
+        userId = req.params.userId;
+        let existingUser = await UserModel.findOne({ where: {id: userId}});
+        existingUser = existingUser.dataValues;
+        const userToDelete = {
+            id: userId,
+            firstName: anonymize(existingUser.firstName),
+            lastName: anonymize(existingUser.lastName),
+            isMale: false, //unused yet
+            email: anonymize(existingUser.email),
+            pseudo: "", //unused yet
+            photo: "", //unused yet
+            password: "**********",
+            isAdmin: false,
+            accountDeleted: true,
+        };
+        await UserConversationModel.destroy({ where: {user_id: userId}});
+        await UserModel.upsert(userToDelete);
+        res.status(201).json({
+            customMessage: 'Utilisateur supprimé avec succès'
+        });
+    } catch (error) {
+        res.status(555).json({
+            errorMessage: "Erreur serveur, veuillez réessayer."
+        })
+    }
+};
+
+function anonymize (str) {
+    const strSplited = str.split("@");
+    let stringSplited = strSplited[0].slice(0, 3);
+    let n = stringSplited.length;
+    while (n < 10) {
+        stringSplited = stringSplited.concat("*");
+        n++;
+    }
+    if (strSplited.length > 1) {
+        return stringSplited.concat("_", Date.now(), "@", strSplited[1]);
+    } else {
+        return stringSplited
+    }
+};

@@ -76,6 +76,9 @@ export default {
   getUserDetails(userId) {
     return apiUsers.get(`/user/details/${userId}`);
   },
+  deleteUser(userId) {
+    return apiUsers.delete(`/user/${userId}`);
+  },
   //conversation
   // createConversation(payload) {
   //   return apiUsers.post("/conversation/", payload);
