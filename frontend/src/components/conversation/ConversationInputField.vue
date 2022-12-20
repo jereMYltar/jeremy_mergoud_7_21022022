@@ -213,7 +213,6 @@ async function saveConversation() {
       ? true
       : false;
   delete newConversation.createdAt;
-  console.log(newConversation);
   conversationsStore.upsertConversationsStore(newConversation);
   if (!props.existingConversation) {
     conversationName.value = "";

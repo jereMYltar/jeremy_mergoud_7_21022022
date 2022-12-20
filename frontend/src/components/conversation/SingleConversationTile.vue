@@ -64,7 +64,6 @@ async function showDetails(id) {
       const conversationDetails = await EventService.getConversationDetail(id);
       conversationsStore.addActiveConversation(conversationDetails.data.body);
     } catch (error) {
-      console.log(error);
       return "Problème serveur";
     }
   }
@@ -80,7 +79,6 @@ async function deleteConversation(id) {
       conversationsStore.removeActiveConversation();
       conversationsStore.deleteConversation(id);
     } catch (error) {
-      console.log(error);
       return "Problème serveur";
     }
   } else {
@@ -106,7 +104,6 @@ async function closeConversation(conversation) {
     conversationsStore.upsertConversationsStore(newConversation);
     closeAllModals();
   } catch (error) {
-    console.log(error);
     return "Problème serveur";
   }
 }

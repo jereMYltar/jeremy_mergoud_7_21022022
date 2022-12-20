@@ -23,7 +23,6 @@ export const useUsersStore = defineStore("users", () => {
       activeUser.value = payload;
     }
     const index = users.value.findIndex((user) => user.id == payload.id);
-    console.log("index : ", index);
     if (index != -1) {
       users.value[index].name = payload.name;
       users.value[index].isAdmin = payload.isAdmin;
