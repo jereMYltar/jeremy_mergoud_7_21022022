@@ -77,8 +77,10 @@ const props = defineProps({
   },
 });
 
-//variable
+//refs
 const toClose = ref(false);
+
+//variable
 const messagesStore = useMessagesStore();
 const conversationsStore = useConversationsStore();
 
