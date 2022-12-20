@@ -4,7 +4,7 @@ const argon2 = require('argon2');
 const env = require('../config/env');
 
 //CREATE : créer un nouvel utilisateur
-exports.signup = async (req, res, next) => {
+exports.signup2 = async (req, res, next) => {
     const user = req.body.user;
     try {
         const hash = await argon2.hash(user.password);
@@ -30,47 +30,111 @@ exports.signup = async (req, res, next) => {
     }
 };
 
+//upsert user : si existant => UPDATE / si non existant => INSERT
+exports.signup = async (req, res) => {
+    try {
+        let newUserData = req.body;
+        if (!newUserData.id) {
+            delete newUserData.id;
+        } else {
+            let existingUser = await UserModel.findOne({ where: {id: newUserData.id}});
+            if (!existingUser || existingUser.dataValues.accountDeleted) {
+                throw "Le compte que vous recherchez n'existe pas ou a été supprimé.";
+            };
+            existingUser = existingUser.dataValues;
+            if (
+                newUserData.isAdmin &&
+                !existingUser.isAdmin &&
+                newUserData.adminPassword != env.ADMIN_PASSWORD
+            ) {
+                throw "Le mot de passe administrateur renseigné est erroné.";
+            }
+            if (newUserData.initialPassword) {
+                const valid = await argon2.verify(existingUser.password, newUserData.initialPassword);
+                if (!valid) {
+                    throw "Le mot de passe saisi est incorrect";
+                }
+            }
+        }
+        if (!newUserData.password) {
+            delete newUserData.password;
+        } else {
+            newUserData.password = await argon2.hash(newUserData.password);
+        }
+        delete newUserData.adminPassword;
+        delete newUserData.initialPassword;
+        let userUpserted = await UserModel.upsert(newUserData);
+        userUpserted = userUpserted[0].dataValues;
+        let response = {
+            user: {
+                isAdmin: userUpserted.isAdmin,
+                id: userUpserted.id,
+                name: userUpserted.firstName.concat(" ",userUpserted.lastName),
+            },
+        };
+        if (!newUserData.id) {
+            response.customMessage = "Utilisateur créé avec succès";
+            response.token = jwt.sign(
+                {userId: userUpserted.id,
+                isAdmin: userUpserted.isAdmin},
+                env.JWT_SALT,
+                {expiresIn: "12h"}
+            );
+        } else {
+            response.customMessage = "Utilisateur mis à jour avec succès";
+        }
+        console.log(response);
+        res.status(201).json(response);   
+    } catch (error) {
+        if (error) {
+            res.status(400).json({
+                errorMessage: error
+            })
+        } else {
+            res.status(500).json({
+                errorMessage: "Erreur serveur, veuillez réessayer."
+            })
+        }
+    }
+};
+
 //READ : permettre la connexion d'un utilisateur créé en renvoyant le token d'authentification 
-exports.login = (req, res, next) => {
-    UserModel.findOne({ where: {email: req.body.email}})
-        .then(
-            (sequelizeInstance) => {
-                if (!sequelizeInstance) {
-                        return res.status(401).json({ error: 'Utilisateur non trouvé' })
-                    }
-                const user = sequelizeInstance.toJSON();
-                argon2.verify(user.password, req.body.password)
-                    .then(
-                        (valid) => {
-                            if (!valid) {
-                                return res.status(403).json({ error: 'Requête non autorisée' })
-                            }
-                            res.status(200).json({
-                                customMessage: "Connexion réussie",
-                                token: jwt.sign(
-                                    {userId: user.id,
-                                    isAdmin: user.isAdmin},
-                                    env.JWT_SALT,
-                                    {expiresIn: "12h"}
-                                ),
-                                activeUser: {
-                                    isAdmin: user.isAdmin,
-                                    id: user.id,
-                                    name: user.firstName.concat(" ",user.lastName),
-                                }
-                            })
-                        }
-                    )
-                    .catch(
-                        (error) => res.status(500).json({error: error})
-                    );
+exports.login = async (req, res, next) => {
+    try {
+        let user = await UserModel.findOne({ where: {email: req.body.email}});
+        if (!user) {
+            throw "L'identifiant saisi est incorrect.";
+        };
+        user = user.dataValues;
+        const valid = await argon2.verify(user.password, req.body.password);
+        if (!valid) {
+            throw "Mot de passe incorrect";
+        }
+        res.status(200).json({
+            customMessage: "Connexion réussie",
+            token: jwt.sign(
+                {userId: user.id,
+                isAdmin: user.isAdmin},
+                env.JWT_SALT,
+                {expiresIn: "12h"}
+            ),
+            activeUser: {
+                isAdmin: user.isAdmin,
+                id: user.id,
+                name: user.firstName.concat(" ",user.lastName),
             }
-        )
-        .catch(
-            (error) => {
-                res.status(500).json({error: error})
-            }
-        );
+        })
+    } catch (error) {
+        if (error) {
+            res.status(400).json({
+                errorMessage: error
+            })
+        } else {
+            res.status(500).json({
+                errorMessage: "Erreur serveur, veuillez réessayer."
+            })
+        }
+    }
 };
 
 //CREATE : créer un utilisateur
@@ -101,20 +165,54 @@ exports.findOneByToken = (req, res) => {
     });
 };
 
-// READ : récupére toutes les informations d l'utilisateur courant
-exports.findUserDetails = (req, res) => {
-    res.status(200).json({
-        customMessage: "Informations sur l'utilisateur connecté correctement récupérées.",
-        activeUserDetails: {
-            firstName: res.locals.user.firstName,
-            lastName: res.locals.user.lastName,
-            email: res.locals.user.email,
-            isAdmin: res.locals.user.isAdmin,
-            isMale: res.locals.user.isMale,
-            photo: res.locals.user.photo,
-            pseudo: res.locals.user.pseudo,
-        },
-    });
+// READ : récupére toutes les informations d'un utilisateur
+exports.findUserDetails = async (req, res) => {
+    if (res.locals.user.id == req.params.userId) {
+        res.status(200).json({
+            customMessage: "Informations sur l'utilisateur connecté correctement récupérées.",
+            userDetails: {
+                id: res.locals.user.id,
+                firstName: res.locals.user.firstName,
+                lastName: res.locals.user.lastName,
+                email: res.locals.user.email,
+                isAdmin: res.locals.user.isAdmin,
+                isMale: res.locals.user.isMale,
+                photo: res.locals.user.photo,
+                pseudo: res.locals.user.pseudo,
+            },
+        });
+    } else {
+        try {
+            let user = await UserModel.findOne({ where: {id: req.params.userId}});
+            if (!user) {
+                throw "L'identifiant saisi est incorrect.";
+            };
+            user = user.dataValues;
+            res.status(200).json({
+                customMessage: "Informations sur l'utilisateur connecté correctement récupérées.",
+                userDetails: {
+                    id: req.params.userId,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email,
+                    isAdmin: user.isAdmin,
+                    isMale: user.isMale,
+                    photo: user.photo,
+                    pseudo: user.pseudo,
+                },
+            });
+        } catch (error) {
+            if (error) {
+                res.status(400).json({
+                    errorMessage: error
+                })
+            } else {
+                res.status(500).json({
+                    errorMessage: "Erreur serveur, veuillez réessayer."
+                })
+            }
+        }
+    }
 };
 
 // READ : récupérer tous les utilisateurs

@@ -32,7 +32,7 @@ export const useConversationsStore = defineStore("conversations", () => {
       conversations.value[index][key] = payload[key];
       activeConversation.value[key] = payload[key];
     }
-    sortArray(conversations.value);
+    sortConversationArray(conversations.value);
   }
   function upsertConversationsStore(payload) {
     const index = conversations.value.findIndex(
@@ -48,7 +48,7 @@ export const useConversationsStore = defineStore("conversations", () => {
         activeConversation.value[key] = payload[key];
       }
     }
-    sortArray(conversations.value);
+    sortConversationArray(conversations.value);
   }
   function updateActiveConversation(payload) {
     delete payload.id;
@@ -56,7 +56,7 @@ export const useConversationsStore = defineStore("conversations", () => {
       activeConversation.value[key] = payload[key];
     }
   }
-  function sortArray(array) {
+  function sortConversationArray(array) {
     array.sort((a, b) => {
       if (moment(a.updatedAt).isBefore(moment(b.updatedAt))) {
         return 1;

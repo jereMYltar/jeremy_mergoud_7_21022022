@@ -5,8 +5,7 @@ const validatePassword = require('../middleware/validatePassword')
 //middleware pour savoir si l'utilisateur est connecté
 const isConnected = require("../policies/isConnected");
 //test pour savoir si l'utilisateur a le droit d'action sur le compte
-// const isAccountOwnerOrAdmin = require("../policies/isAccountOwnerOrAdmin");
-// const isConnected = require("../policies/isConnected");
+const isAccountOwnerOrAdmin = require("../policies/isAccountOwnerOrAdmin");
 
 //CREATE : créer un nouvel utilisateur
 router.post('/signup', validatePassword, UserCtrl.signup);
@@ -18,7 +17,7 @@ router.post('/login', UserCtrl.login);
 router.get('/', isConnected, UserCtrl.findOneByToken);
 
 // READ : récupérer un utilisateur spécifique
-router.get('/details', isConnected, UserCtrl.findUserDetails);
+router.get('/details/:userId', isConnected, isAccountOwnerOrAdmin,UserCtrl.findUserDetails);
 
 // READ : récupérer tous les utilisateurs
 router.get('/other', isConnected, UserCtrl.findAllOtherUsers);

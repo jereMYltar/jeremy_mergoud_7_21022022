@@ -39,7 +39,7 @@ const UserModel = require('../model/user.model');
 //     }
 // };
 
-//upsert test
+//upsert conversation : si existante => UPDATE / si non existante => INSERT
 exports.upsertOne = async (req, res) => {
     let conversation = req.body;
     if (!conversation.id) {
@@ -50,8 +50,8 @@ exports.upsertOne = async (req, res) => {
     const members = conversation.members;
     delete conversation.members;
     try {
-        const response = await ConversationModel.upsert(conversation);
-        let newConversation = await ConversationModel.findOne({ where: { id: response[0].dataValues.id } });
+        const upsertion = await ConversationModel.upsert(conversation);
+        let newConversation = await ConversationModel.findOne({ where: { id: upsertion[0].dataValues.id } });
         newConversation.hasRightsOn = conversation.conversationOwnerId == newConversation.conversationOwnerId
             ? true
             : false;

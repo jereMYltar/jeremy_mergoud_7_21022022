@@ -24,7 +24,7 @@
           name="lastName"
           type="text"
           maxlength="20"
-          placeholder="Votre nom d\'usage"
+          placeholder="Votre nom d'usage"
           class="textInput"
           :rules="validateName"
         />
@@ -45,12 +45,17 @@
         <ErrorMessage name="email" class="errorMessage" />
       </div>
       <div class="question" v-if="props.userId">
+        <h3>
+          Si vous souhaitez modifier votre mot de passe, saisissez votre mot de
+          passe actuel puis saississez un nouveau mot de passe, sinon laissez ce
+          champs vide.
+        </h3>
         <label for="existingPassword" class="titre2">
           Votre mot de passe actuel
         </label>
         <Field
-          v-model="existingPassword"
-          id="mdp"
+          v-model="initialPassword"
+          id="existingPassword"
           name="existingPassword"
           type="password"
           maxlength="128"
@@ -60,56 +65,60 @@
         />
         <ErrorMessage name="existingPassword" class="errorMessage" />
       </div>
-      <div class="question">
-        <label for="mdp" class="titre2">Mot de passe</label>
-        <Field
-          v-model="password"
-          id="mdp"
-          name="password"
-          type="password"
-          maxlength="128"
-          placeholder="Votre mot de passe"
-          class="textInput"
-          :rules="validatePassword"
-        />
-        <ErrorMessage name="password" class="errorMessage" />
+      <div v-if="!props.userId || initialPassword">
+        <div class="question">
+          <label for="mdp" class="titre2">Mot de passe</label>
+          <Field
+            v-model="password"
+            id="mdp"
+            name="password"
+            type="password"
+            maxlength="128"
+            placeholder="Votre mot de passe"
+            class="textInput"
+            :rules="validatePassword"
+          />
+          <ErrorMessage name="password" class="errorMessage" />
+        </div>
+        <div class="question">
+          <label for="mdp2" class="titre2">Confirmer votre mot de passe</label>
+          <Field
+            v-model="password2"
+            id="mdp2"
+            name="password2"
+            type="password"
+            maxlength="128"
+            placeholder="Confirmer votre mot de passe"
+            class="textInput"
+            :rules="validatePassword2"
+          />
+          <ErrorMessage name="password2" class="errorMessage" />
+        </div>
       </div>
-      <div class="question">
-        <label for="mdp2" class="titre2">Confirmer votre mot de passe</label>
-        <Field
-          v-model="password2"
-          id="mdp2"
-          name="password2"
-          type="password"
-          maxlength="128"
-          placeholder="Confirmer votre mot de passe"
-          class="textInput"
-          :rules="validatePassword2"
-        />
-        <ErrorMessage name="password2" class="errorMessage" />
-      </div>
-      <div class="question">
-        <Field name="isAdminField" :value="isAdmin">
-          <label for="isAdmin" class="titre2">
-            Cochez cette case si vous êtes administrateur du site :
+      <div>
+        <div class="question">
+          <Field name="isAdminField" :value="isAdmin">
+            <label for="isAdmin" class="titre2">
+              Cochez cette case si vous êtes administrateur du site :
+            </label>
+            <input type="checkbox" id="isAdmin" v-model="isAdmin" />
+          </Field>
+        </div>
+        <div v-if="isAdmin" class="question">
+          <label for="adminPassword" class="titre2">
+            Code spécifique de vérification transmis par votre organisation.
           </label>
-          <input type="checkbox" id="isAdmin" v-model="isAdmin" />
-        </Field>
-      </div>
-      <div v-if="isAdmin" class="question">
-        <label for="adminPassword" class="titre2">
-          Code spécifique de vérification transmis par votre organisation.
-        </label>
-        <Field
-          v-model="adminPassword"
-          name="adminPassword"
-          id="adminPassword"
-          type="password"
-          placeholder="Mot de passe donné par votre organisation"
-          class="textInput"
-          :rules="validateAdminValue"
-        />
-        <ErrorMessage name="adminPassword" class="errorMessage" />
+          <Field
+            v-model="adminPassword"
+            name="adminPassword"
+            id="adminPassword"
+            type="password"
+            placeholder="Mot de passe donné par votre organisation"
+            class="textInput"
+            :rules="validateAdminValue"
+          />
+          <ErrorMessage name="adminPassword" class="errorMessage" />
+        </div>
       </div>
       <input
         v-if="!props.userId"
@@ -124,15 +133,29 @@
         value="Modifier votre compte"
       />
     </Form>
-    <button @click="deleteAccount" v-if="props.userId" class="littleButton">
-      Supprimer votre compte
+    <button
+      @click="deleteAccount"
+      v-if="
+        !props.userId &&
+        (props.userId == usersStore.activeUser.id ||
+          usersStore.activeUser.isAdmin)
+      "
+      class="littleButton"
+    >
+      Supprimer le compte
     </button>
   </div>
 </template>
 
 <script setup>
-import { ref, nextTick, defineProps, onMounted } from "vue";
-// import { ref, nextTick, defineEmits, defineProps, onMounted } from "vue";
+import {
+  ref,
+  nextTick,
+  defineProps,
+  defineEmits,
+  onMounted,
+  onUnmounted,
+} from "vue";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import { useRouter } from "vue-router";
 import { useUsersStore } from "@/store/usersStore";
@@ -151,31 +174,31 @@ const props = defineProps({
 });
 
 //events
-// const emit = defineEmits(["close"]);
+const emit = defineEmits(["close"]);
 
 //refs
 const firstName = ref("");
 const lastName = ref("");
 const email = ref("");
+const initialPassword = ref("");
 const password = ref("");
 const password2 = ref("");
-const existingPassword = ref("");
+const adminPassword = ref("");
 const isAdmin = ref(false);
 const isMale = ref(false);
 const photo = ref("");
 const pseudo = ref("");
-const adminPassword = ref("");
 
 //methods
 function validateEmail(value) {
   // if the field is empty
   if (!value) {
-    return "Ce champs est requis";
+    return "Ce champs est requis.";
   }
   // if the field is not a valid email
   const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   if (!regex.test(value)) {
-    return "Ce champ doit contenir une adresse email valide";
+    return "Ce champ doit contenir une adresse email valide (exemple : mon-email@domaine.fr).";
   }
   // All is good
   return true;
@@ -184,12 +207,12 @@ function validateEmail(value) {
 function validatePassword(value) {
   // if the field is empty
   if (!value) {
-    return "Ce champs est requis";
+    return "Ce champs est requis.";
   }
   // if the field is not a valid email
   const regex = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})/g;
   if (!regex.test(value)) {
-    return "Votre mot de passe doit contenir entre 8 et 64 caractères, avec au moins un lettre en minuscule, une en majuscule, un chiffre et un caractère spécial";
+    return "Votre mot de passe doit contenir entre 8 et 64 caractères, avec au moins un lettre en minuscule, une en majuscule, un chiffre et un caractère spécial.";
   }
   // All is good
   return true;
@@ -197,32 +220,30 @@ function validatePassword(value) {
 function validatePassword2(value) {
   // if the field is empty
   if (!value) {
-    return "Ce champs est requis";
+    return "Ce champs est requis.";
   }
   if (password.value == password2.value) {
     return true;
   } else {
-    return "Les mots de passe ne correspondent pas";
+    return "Les mots de passe ne correspondent pas.";
   }
   // All is good
 }
 function validateExistingPassword(value) {
-  // if the field is empty
-  if (!value) {
-    return "Ce champs est requis";
-  }
-  if (password.value == password2.value) {
-    return true;
+  // if the field is not a valid email
+  const regex = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})/g;
+  if (value && !regex.test(value)) {
+    return "Votre mot de passe actuel contient entre 8 et 64 caractères, avec au moins un lettre en minuscule, une en majuscule, un chiffre et un caractère spécial. Vérifiez votre saisie.";
   } else {
-    return "Les mots de passe ne correspondent pas";
+    // All is good
+    return true;
   }
-  // All is good
 }
 
 function validateName(value) {
   // if the field is empty
   if (!value) {
-    return "Ce champs est requis";
+    return "Ce champs est requis.";
   }
   // if the field is not a valid email
   const regex =
@@ -236,12 +257,13 @@ function validateName(value) {
 
 function validateAdminValue() {
   if (
-    isAdmin.value == false ||
-    (isAdmin.value == true && adminPassword.value == "123")
+    isAdmin.value &&
+    isAdmin.value != usersStore.userWatched.isAdmin &&
+    !adminPassword.value
   ) {
-    return true;
-  } else {
     return "Pour vous inscrire en tant qu'administrateur, vous devez saisir le code spécifique transmis par votre organisation.";
+  } else {
+    return true;
   }
 }
 
@@ -253,26 +275,31 @@ function deleteAccount() {
 }
 
 async function signUp() {
-  let payload = {
-    user: {
-      firstName: firstName.value,
-      lastName: lastName.value,
-      email: email.value,
-      password: password.value,
-      isAdmin: isAdmin.value,
-      isMale: isMale.value,
-      photo: photo.value,
-      pseudo: pseudo.value,
-    },
+  let userData = {
+    firstName: firstName.value,
+    lastName: lastName.value,
+    email: email.value,
+    initialPassword: initialPassword.value,
+    password: password.value,
+    isAdmin: isAdmin.value,
+    adminPassword: adminPassword.value,
+    isMale: isMale.value, //unused yet
+    photo: photo.value, //unused yet
+    pseudo: pseudo.value, //unused yet
   };
+  userData.id = props.userId ? props.userId : 0;
   try {
-    const response = await EventService.signUp(payload);
-    sessionStorage.setItem("token", response.data.token);
-    usersStore.addActiveUser(response.data.activeUser);
+    const response = await EventService.signUp(userData);
+    usersStore.updateUsersStore(response.data.user);
     await nextTick();
-    router.push({
-      name: "Exchanges",
-    });
+    if (response.data.token) {
+      sessionStorage.setItem("token", response.data.token);
+      router.push({
+        name: "Exchanges",
+      });
+    } else {
+      emit("close");
+    }
   } catch (error) {
     if (error.response && error.response.status == 404) {
       router.push({
@@ -287,14 +314,25 @@ async function signUp() {
 
 onMounted(async () => {
   if (props.userId) {
-    let user = await EventService.getCurrentUserDetails();
-    user = user.data.activeUserDetails;
+    let user = await EventService.getUserDetails(props.userId);
+    user = user.data.userDetails;
     console.log(user);
     firstName.value = user.firstName;
     lastName.value = user.lastName;
     email.value = user.email;
-    password.value = "******";
+    initialPassword.value = "";
     isAdmin.value = user.isAdmin;
+    usersStore.addUserWatched({
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    });
   }
+});
+
+onUnmounted(async () => {
+  usersStore.removeUserWatched();
 });
 </script>

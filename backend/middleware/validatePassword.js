@@ -1,10 +1,11 @@
 const schema = require('../model/password.model');
 
 module.exports = (req, res, next) => {
-    if (!!schema.validate(req.body.user.password)) {
+    const user = req.body;
+    if ((user.id && !user.password) || !!schema.validate(user.password)) {
         next();
     }
     else {
-        res.status(400).json({ error: 'Mot de passe trop simple!' })
+        res.status(400).json({ errorMessage: 'Mot de passe trop simple!' })
     }
 };

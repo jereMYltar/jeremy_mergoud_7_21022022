@@ -20,18 +20,20 @@ apiUsers.interceptors.request.use(function (config)
 
 // Add a response interceptor
 apiUsers.interceptors.response.use(
+  // Any status code that lie within the range of 2xx cause this function to trigger
+  // Do something with response data
   (response) => {
     if (response.data.customMessage) {
       console.log(response.data.customMessage);
     };
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
     return response;
   },
+  // Any status codes that falls outside the range of 2xx cause this function to trigger
+  // Do something with response error
   (error) => {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
-      if (error.response.status == 401) {
+      if (error.response.status == 400) {
+        alert(error.response.data.errorMessage);
+      } else if (error.response.status == 401) {
         router.push({
           name: "NotAuthorized",
         });
@@ -49,6 +51,8 @@ apiUsers.interceptors.response.use(
         router.push({
           name: "Login",
         });
+      } else if (error.response.status == 500) {
+        alert(error.response.data.errorMessage);
       } else {
         router.push({ name: "NetworkError" });
       }
@@ -69,8 +73,8 @@ export default {
   getCurrentUser() {
     return apiUsers.get("/user/");
   },
-  getCurrentUserDetails() {
-    return apiUsers.get("/user/details");
+  getUserDetails(userId) {
+    return apiUsers.get(`/user/details/${userId}`);
   },
   //conversation
   // createConversation(payload) {

@@ -60,10 +60,11 @@ module.exports.findAllOtherUsers = function (id) {
     let sql  = `
     SELECT CONCAT(user.firstName, ' ', user.lastName) AS 'name',
         id
-    FROM user`;
+    FROM user
+    WHERE accountDeleted = false`;
     if (id) {
         sql += `
-        WHERE id != ${id}`
+        AND id != ${id}`
     }
     sql += `
     ORDER BY name ASC;`
