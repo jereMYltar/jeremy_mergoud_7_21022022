@@ -106,7 +106,7 @@ import { Form, Field, ErrorMessage } from "vee-validate";
 import { useConversationsStore } from "@/store/conversationsStore";
 import { useUsersStore } from "@/store/usersStore";
 import EventService from "@/services/EventService.js";
-import Multiselect from "@vueform/multiselect";
+import Multiselect from "@vueform/multiselect.vue";
 
 //props
 const props = defineProps({
