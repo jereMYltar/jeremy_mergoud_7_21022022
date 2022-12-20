@@ -217,6 +217,7 @@ function validatePassword(value) {
   // All is good
   return true;
 }
+
 function validatePassword2(value) {
   // if the field is empty
   if (!value) {
@@ -229,6 +230,7 @@ function validatePassword2(value) {
   }
   // All is good
 }
+
 function validateExistingPassword(value) {
   // if the field is not a valid email
   const regex = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})/g;

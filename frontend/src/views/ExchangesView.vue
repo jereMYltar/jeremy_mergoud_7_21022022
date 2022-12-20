@@ -2,18 +2,21 @@
   <div class="main1 container">
     <div>
       <h4>Vous êtes connectés en tant que :</h4>
-      <ModalComponent :global="false">
+      <ModalComponent :global="false" :toClose="toClose">
         <template #callButton>
           <p>
             {{ usersStore.activeUser.name }}
             <img src="../assets/Images/user-solid.svg" height="20" width="20" />
           </p>
         </template>
-        <ModalComponent :global="true">
+        <ModalComponent :global="true" :toClose="toClose">
           <template #callButton>
             <p>Mon compte</p>
           </template>
-          <UserComponent :userId="usersStore.activeUser.id" />
+          <UserComponent
+            :userId="usersStore.activeUser.id"
+            @close="closeAllModals"
+          />
         </ModalComponent>
         <button @click="logOut">Se déconnecter</button>
       </ModalComponent>
@@ -24,7 +27,7 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, ref, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { useConversationsStore } from "@/store/conversationsStore";
 import { useUsersStore } from "@/store/usersStore";
@@ -38,11 +41,19 @@ const router = useRouter();
 const conversationsStore = useConversationsStore();
 const usersStore = useUsersStore();
 
+const toClose = ref(false);
+
 function logOut() {
   sessionStorage.clear();
   router.push({
     name: "Login",
   });
+}
+
+async function closeAllModals() {
+  toClose.value = true;
+  await nextTick();
+  toClose.value = false;
 }
 
 onMounted(async () => {
