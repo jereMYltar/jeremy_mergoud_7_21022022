@@ -37,12 +37,17 @@ import MessagesList from "@/components/message/MessagesList.vue";
 import ModalComponent from "@/components/modal/ModalComponent.vue";
 import UserComponent from "@/components/user/UserComponent.vue";
 
-const router = useRouter();
+//stores
 const conversationsStore = useConversationsStore();
 const usersStore = useUsersStore();
 
+//variables
+const router = useRouter();
+
+//refs
 const toClose = ref(false);
 
+//methods
 function logOut() {
   sessionStorage.clear();
   router.push({
@@ -56,6 +61,7 @@ async function closeAllModals() {
   toClose.value = false;
 }
 
+//vue lifecycle hooks
 onMounted(async () => {
   try {
     if (!usersStore.activeUser.id) {
