@@ -42,6 +42,8 @@ export const useConversationsStore = defineStore("conversations", () => {
     delete payload.createdAt;
     delete payload.owner;
     delete payload.members;
+    console.log("initialPayload : ", initialPayload);
+    console.log("payload : ", payload);
     if (index == -1) {
       this.conversations.unshift(payload);
     } else {
