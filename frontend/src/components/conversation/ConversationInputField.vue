@@ -1,12 +1,12 @@
 <template>
   <h1 v-if="!props.existingConversation">Créer une nouvelle conversation</h1>
   <h1 v-if="props.existingConversation">Modifier la conversation</h1>
-  <Form @submit="saveConversation" class="container" name="connectionForm">
+  <Form class="container" name="connectionForm" @submit="saveConversation">
     <div>
       <label for="conversationName">Nom de la conversation : </label>
       <Field
-        v-model="conversationName"
         id="conversationName"
+        v-model="conversationName"
         name="conversationName"
         type="text"
         maxlength="80"
@@ -21,32 +21,32 @@
     </div>
     <div v-if="props.existingConversation">
       <Field
-        name="ownerField"
         ref="ownerFieldRef"
+        name="ownerField"
         :rules="hasOwner"
         :value="selectedOwner"
       >
         <label for="ownerList">Gestionnaire de la conversation : </label>
         <Multiselect
           id="ownerList"
+          v-model="selectedOwner"
           label="name"
           mode="tags"
           placeholder="Sélectionner un gestionnaire"
-          valueProp="id"
-          v-model="selectedOwner"
-          @focusout="triggerOwnerFieldAudit"
+          value-prop="id"
           :close-on-select="true"
           :max="1"
           :object="true"
           :options="selectedUsers"
           :searchable="false"
+          @focusout="triggerOwnerFieldAudit"
         />
         <ErrorMessage name="ownerField" class="errorMessage" />
       </Field>
     </div>
     <div v-if="usersStore.activeUser.isAdmin">
       <label for="isPublic">Conversation publique :</label>
-      <input type="checkbox" id="isPublic" v-model="isPublic" />
+      <input id="isPublic" v-model="isPublic" type="checkbox" />
     </div>
     <div
       v-if="
@@ -55,46 +55,46 @@
       "
     >
       <label for="isClosed">Conversation close :</label>
-      <input type="checkbox" id="isClosed" v-model="isClosed" />
+      <input id="isClosed" v-model="isClosed" type="checkbox" />
     </div>
     <div v-if="!isPublic">
       <Field
-        name="conversationMembers"
         ref="memberListFieldRef"
+        name="conversationMembers"
         :rules="hasMembers"
         :value="selectedUsers"
       >
         <label for="membersList">Membres de la conversation : </label>
         <Multiselect
           id="membersList"
+          v-model="selectedUsers"
           label="name"
           mode="tags"
           placeholder="Sélectionner un ou plusieurs interlocuteurs"
-          valueProp="id"
-          v-model="selectedUsers"
-          @focusout="triggerMemberListFieldAudit"
+          value-prop="id"
           :close-on-select="false"
           :clear-on-select="false"
           :multiple="true"
           :object="true"
           :options="usersStore.users"
           :searchable="false"
+          @focusout="triggerMemberListFieldAudit"
         />
         <ErrorMessage name="conversationMembers" class="errorMessage" />
       </Field>
     </div>
     <div>
       <input
+        v-if="!props.existingConversation"
         class="basicButton"
         type="submit"
         value="Créer la conversation"
-        v-if="!props.existingConversation"
       />
       <input
+        v-if="props.existingConversation"
         class="basicButton"
         type="submit"
         value="Modifier la conversation"
-        v-if="props.existingConversation"
       />
     </div>
   </Form>
@@ -106,7 +106,7 @@ import { Form, Field, ErrorMessage } from "vee-validate";
 import { useConversationsStore } from "@/store/conversationsStore";
 import { useUsersStore } from "@/store/usersStore";
 import EventService from "@/services/EventService.js";
-import Multiselect from "@vueform/multiselect.vue";
+import Multiselect from "vue-multiselect";
 
 //props
 const props = defineProps({

@@ -4,7 +4,8 @@
   "description": "Projet numéro 7 du parcours Développeur Web d'OpenClassRooms : réalisation d'un chat online",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "nodemon start"
   },
   "author": "Jeremy MERGOUD",
   "license": "ISC",
