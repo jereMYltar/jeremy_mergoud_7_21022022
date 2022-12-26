@@ -6,12 +6,12 @@
       :conversation="conversation"
     >
     </SingleConversationTile>
-    <ModalComponent :global="true" :toClose="toClose">
+    <ModalComponent :global="true" :to-close="toClose">
       <template #callButton>
         <p>Nouvelle conversation</p>
       </template>
       <ConversationInputField
-        :existingConversation="0"
+        :existing-conversation="0"
         @close="closeAllModals"
       />
     </ModalComponent>
@@ -22,6 +22,7 @@
 import { ref, nextTick } from "vue";
 import { useConversationsStore } from "@/store/conversationsStore";
 import { useMessagesStore } from "@/store/messagesStore";
+import { useUsersStore } from "@/store/usersStore";
 import EventService from "@/services/EventService.js";
 import SingleConversationTile from "@/components/conversation/SingleConversationTile.vue";
 import ConversationInputField from "@/components/conversation/ConversationInputField.vue";
@@ -30,6 +31,7 @@ import ModalComponent from "@/components/modal/ModalComponent.vue";
 //stores
 const conversationsStore = useConversationsStore();
 const messagesStore = useMessagesStore();
+const usersStore = useUsersStore();
 
 //refs
 const toClose = ref(false);
@@ -46,6 +48,12 @@ conversationsStore.$subscribe(async () => {
       console.error(error);
       return "Problème serveur";
     }
+  }
+});
+usersStore.$subscribe(async () => {
+  if (usersStore.activeUser) {
+    let conversations = await EventService.getAllConversationsForCurrentUser();
+    conversationsStore.addConversations(conversations.data);
   }
 });
 

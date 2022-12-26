@@ -3,20 +3,20 @@
     <h4>{{ props.conversation.name }}</h4>
     <p v-if="props.conversation.isClosed">Conversation fermée</p>
     <ModalComponent
-      :global="false"
-      :toClose="toClose"
-      ref="modalRef1"
       v-if="props.conversation.hasRightsOn"
+      ref="modalRef1"
+      :global="false"
+      :to-close="toClose"
     >
       <template #callButton>
         <img src="@/assets/Images/gear-solid.svg" height="20" width="20" />
       </template>
-      <ModalComponent :global="true" :toClose="toClose">
+      <ModalComponent :global="true" :to-close="toClose">
         <template #callButton>
           <p>Modifier</p>
         </template>
         <ConversationInputField
-          :existingConversation="1"
+          :existing-conversation="1"
           @close="closeAllModals"
         />
       </ModalComponent>
@@ -25,8 +25,8 @@
         <span v-if="!props.conversation.isClosed">Fermer la conversation</span>
       </button>
       <button
-        @click.stop="deleteConversation(props.conversation.id)"
         v-if="props.conversation.conversationOwnerId"
+        @click.stop="deleteConversation(props.conversation.id)"
       >
         Supprimer
       </button>

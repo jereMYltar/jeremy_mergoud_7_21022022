@@ -2,19 +2,19 @@
   <div class="main1 container">
     <div>
       <h4>Vous êtes connectés en tant que :</h4>
-      <ModalComponent :global="false" :toClose="toClose">
+      <ModalComponent :global="false" :to-close="toClose">
         <template #callButton>
           <p>
             {{ usersStore.activeUser.name }}
             <img src="../assets/Images/user-solid.svg" height="20" width="20" />
           </p>
         </template>
-        <ModalComponent :global="true" :toClose="toClose">
+        <ModalComponent :global="true" :to-close="toClose">
           <template #callButton>
             <p>Mon compte</p>
           </template>
           <UserComponent
-            :userId="usersStore.activeUser.id"
+            :user-id="usersStore.activeUser.id"
             @close="closeAllModals"
           />
         </ModalComponent>

@@ -20,20 +20,20 @@
     </div>
     <div>Message posté le {{ timeFormat(props.message.createdAt) }}</div>
     <ModalComponent
-      :global="false"
-      :toClose="toClose"
       v-if="
         props.message.hasRightsOn ||
         conversationsStore.activeConversation.hasRightsOn
       "
+      :global="false"
+      :to-close="toClose"
     >
       <template #callButton>
         <img src="@/assets/Images/gear-solid.svg" height="20" width="20" />
       </template>
       <ModalComponent
-        :global="true"
-        :toClose="toClose"
         v-if="props.message.isAuthor"
+        :global="true"
+        :to-close="toClose"
       >
         <template #callButton>
           <p>Modifier</p>
@@ -41,18 +41,18 @@
         <MessageInputField :message="props.message" @close="closeAllModals" />
       </ModalComponent>
       <button
-        @click.stop="moderateMessage(props.message)"
         v-if="
           conversationsStore.activeConversation.hasRightsOn &&
           !props.message.isAuthor
         "
+        @click.stop="moderateMessage(props.message)"
       >
         <span v-if="props.message.isModerated">Rétablir</span>
         <span v-if="!props.message.isModerated">Modérer</span>
       </button>
       <button
-        @click.stop="deleteMessage(props.message.id)"
         v-if="props.message.isAuthor"
+        @click.stop="deleteMessage(props.message.id)"
       >
         Supprimer
       </button>

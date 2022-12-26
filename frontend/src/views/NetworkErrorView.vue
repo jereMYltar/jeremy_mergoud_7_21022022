@@ -5,10 +5,10 @@
       Il semblerait que vous recontriez actuellement des problèmes réseau,
       prenez une grande inspiration et :
     </p>
-    <a href="#" @click="$router.go(-1)" class="basicButton"
+    <a href="#" class="basicButton" @click="$router.go(-1)"
       >cliquez ici pour réessayer
     </a>
-    <a href="#" @click="returnHome" class="basicButton"
+    <a href="#" class="basicButton" @click="returnHome"
       >cliquez ici pour revenir à la page d'accueil
     </a>
   </div>

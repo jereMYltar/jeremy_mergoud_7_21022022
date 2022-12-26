@@ -1,12 +1,12 @@
 <template>
   <div class="main1 container">
     <h2 class="titre1">Connexion</h2>
-    <Form @submit="login" class="container" name="connectionForm">
+    <Form class="container" name="connectionForm" @submit="login">
       <div class="question">
         <label for="email" class="titre2">Id de connection</label>
         <Field
-          v-model="email"
           id="email"
+          v-model="email"
           name="email"
           type="text"
           maxlength="255"
@@ -19,8 +19,8 @@
       <div class="question">
         <label for="mdp" class="titre2">Mot de passe</label>
         <Field
-          v-model="password"
           id="mdp"
+          v-model="password"
           name="password"
           type="password"
           maxlength="255"

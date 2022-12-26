@@ -1,6 +1,6 @@
 <template>
   <div class="main1 container">
-    <UserComponent :userId="0" />
+    <UserComponent :user-id="0" />
     <router-link :to="{ name: 'HomePage' }" class="littleButton"
       >Annuler</router-link
     >

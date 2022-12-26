@@ -7,8 +7,8 @@
     />
     <!-- <MessageInputField :messageData="{ content: '', isGlobal: false }" /> -->
     <MessageInputField
-      :message="{}"
       v-if="!conversationsStore.activeConversation.isClosed"
+      :message="{}"
     />
   </div>
 </template>

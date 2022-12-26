@@ -1,12 +1,12 @@
 <template>
   <div class="main1 container">
     <h2 class="titre1">Création de compte</h2>
-    <Form @submit="signUp" class="container" name="signUpForm">
+    <Form class="container" name="signUpForm" @submit="signUp">
       <div class="question">
         <label for="firstName" class="titre2">Prénom</label>
         <Field
-          v-model="firstName"
           id="firstName"
+          v-model="firstName"
           name="firstName"
           type="text"
           maxlength="20"
@@ -19,8 +19,8 @@
       <div class="question">
         <label for="lastName" class="titre2">Nom</label>
         <Field
-          v-model="lastName"
           id="lastName"
+          v-model="lastName"
           name="lastName"
           type="text"
           maxlength="20"
@@ -33,8 +33,8 @@
       <div class="question">
         <label for="email" class="titre2">Id de connection</label>
         <Field
-          v-model="email"
           id="email"
+          v-model="email"
           name="email"
           type="text"
           maxlength="255"
@@ -44,7 +44,7 @@
         />
         <ErrorMessage name="email" class="errorMessage" />
       </div>
-      <div class="question" v-if="props.userId">
+      <div v-if="props.userId" class="question">
         <h3>
           Si vous souhaitez modifier votre mot de passe, saisissez votre mot de
           passe actuel puis saississez un nouveau mot de passe, sinon laissez ce
@@ -54,8 +54,8 @@
           Votre mot de passe actuel
         </label>
         <Field
-          v-model="initialPassword"
           id="existingPassword"
+          v-model="initialPassword"
           name="existingPassword"
           type="password"
           maxlength="128"
@@ -69,8 +69,8 @@
         <div class="question">
           <label for="mdp" class="titre2">Mot de passe</label>
           <Field
-            v-model="password"
             id="mdp"
+            v-model="password"
             name="password"
             type="password"
             maxlength="128"
@@ -83,8 +83,8 @@
         <div class="question">
           <label for="mdp2" class="titre2">Confirmer votre mot de passe</label>
           <Field
-            v-model="password2"
             id="mdp2"
+            v-model="password2"
             name="password2"
             type="password"
             maxlength="128"
@@ -101,7 +101,7 @@
             <label for="isAdmin" class="titre2">
               Cochez cette case si vous êtes administrateur du site :
             </label>
-            <input type="checkbox" id="isAdmin" v-model="isAdmin" />
+            <input id="isAdmin" v-model="isAdmin" type="checkbox" />
           </Field>
         </div>
         <div v-if="isAdmin" class="question">
@@ -109,9 +109,9 @@
             Code spécifique de vérification transmis par votre organisation.
           </label>
           <Field
+            id="adminPassword"
             v-model="adminPassword"
             name="adminPassword"
-            id="adminPassword"
             type="password"
             placeholder="Mot de passe donné par votre organisation"
             class="textInput"
@@ -134,13 +134,13 @@
       />
     </Form>
     <button
-      @click="deleteAccount"
       v-if="
         props.userId &&
         (props.userId == usersStore.activeUser.id ||
           usersStore.activeUser.isAdmin)
       "
       class="littleButton"
+      @click="deleteAccount"
     >
       Supprimer le compte
     </button>

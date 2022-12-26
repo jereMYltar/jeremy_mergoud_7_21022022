@@ -1,11 +1,11 @@
 <template>
   <div class="main1 container">
     <h1 class="titre1">Votre message</h1>
-    <Form @submit="saveMessage" class="container">
+    <Form class="container" @submit="saveMessage">
       <label for="message" class="text">Votre message</label>
       <Field
-        v-model="messageContent"
         id="messageContent"
+        v-model="messageContent"
         name="messageContent"
         type="text"
         maxlength="1000"
@@ -17,19 +17,19 @@
       <ErrorMessage name="messageContent" class="errorMessage" />
       <p v-if="conversationsStore.activeConversation.hasRightsOn">
         <label for="isGlobal">Message global ? </label>
-        <input type="checkbox" id="isGlobal" v-model="isGlobal" />
+        <input id="isGlobal" v-model="isGlobal" type="checkbox" />
       </p>
       <input
+        v-if="Object.keys(props.message).length == 0"
         class="basicButton"
         type="submit"
         value="Envoyer"
-        v-if="Object.keys(props.message).length == 0"
       />
       <input
+        v-if="Object.keys(props.message).length > 0"
         class="basicButton"
         type="submit"
         value="Modifier"
-        v-if="Object.keys(props.message).length > 0"
       />
     </Form>
   </div>

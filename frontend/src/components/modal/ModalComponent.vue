@@ -5,30 +5,30 @@
   </button>
   <transition name="fade">
     <div
-      class="vue-modal"
-      @click.self="closeModal"
       v-if="isOpen"
+      class="vue-modal"
       :createdat="Date.now()"
+      @click.self="closeModal"
     >
       <transition name="drop-in">
         <div class="vue-modal-inner">
           <div class="vue-modal-content">
             <button
-              type="button"
+              v-if="props.global"
               ref="firstButton1"
+              type="button"
               aria-label="Fermer"
               title="Fermer cette fenêtre modale"
               @click="closeModal"
-              v-if="props.global"
             >
               X
             </button>
             <slot></slot>
             <button
-              type="button"
-              ref="lastButton1"
-              @click="closeModal"
               v-if="props.global"
+              ref="lastButton1"
+              type="button"
+              @click="closeModal"
             >
               Annuler
             </button>
@@ -50,6 +50,7 @@ const props = defineProps({
     default: true,
   },
   toClose: {
+    type: Boolean,
     default: false,
   },
 });
