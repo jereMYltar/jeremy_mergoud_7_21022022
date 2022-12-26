@@ -68,17 +68,16 @@
         <Multiselect
           id="membersList"
           v-model="selectedUsers"
-          :multiple="true"
-          :taggable="true"
-          :options="usersStore.users"
-          :hide-selected="true"
-          placeholder="Sélectionner un ou plusieurs interlocuteurs"
-          tag-placeholder="Add this as new tag"
           label="name"
-          :searchable="false"
+          mode="tags"
+          placeholder="Sélectionner un ou plusieurs interlocuteurs"
+          value-prop="id"
           :close-on-select="false"
           :clear-on-select="false"
-          value-prop="id"
+          :multiple="true"
+          :object="true"
+          :options="usersStore.users"
+          :searchable="false"
           @focusout="triggerMemberListFieldAudit"
         />
         <ErrorMessage name="conversationMembers" class="errorMessage" />
@@ -107,7 +106,7 @@ import { Form, Field, ErrorMessage } from "vee-validate";
 import { useConversationsStore } from "@/store/conversationsStore";
 import { useUsersStore } from "@/store/usersStore";
 import EventService from "@/services/EventService.js";
-import Multiselect from "vue-multiselect";
+import Multiselect from "@vueform/multiselect";
 
 //props
 const props = defineProps({
