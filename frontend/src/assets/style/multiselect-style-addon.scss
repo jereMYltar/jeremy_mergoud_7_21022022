@@ -1,32 +1,20 @@
 .multiselect-tag {
-    background: darkgoldenrod;
+    background-color: #FD2D01;
+    &-remove {
+        color: white;
+        &:hover {
+            background-color: white;
+            color: black;
+        }
+    }
+    &:hover {
+        background-color: black;
+        color: #FD2D01;
+    }
 }
 
-.multiselect__option--highlight {
-    background: red;
-}
-
-.multiselect__option--highlight:after {
-    background: blue;
-}
-
-.multiselect__option--selected.multiselect__option--highlight {
-    background: yellow;
-}
-
-.multiselect__option--selected.multiselect__option--highlight:after {
-    background: brown;
-}
-
-.multiselect__tag-icon:hover {
-    background: greenyellow;
-}
-
-.multiselect__input, .multiselect__single {
-    padding: 0 0 0 0;
-}
-
-.multiselect__placeholder {
-    margin-left:1px;
-    color: #999999;
+.multiselect-option {
+    &.is-pointed {
+        background-color: #FD2D01;
+    }
 }
