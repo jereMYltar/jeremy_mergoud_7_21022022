@@ -6,7 +6,11 @@
         <template #callButton>
           <p>
             {{ usersStore.activeUser.name }}
-            <img src="../assets/Images/user-solid.svg" height="20" width="20" />
+            <img
+              src="../assets/Images/usefull icons/user-solid.svg"
+              height="20"
+              width="20"
+            />
           </p>
         </template>
         <ModalComponent :global="true" :to-close="toClose">

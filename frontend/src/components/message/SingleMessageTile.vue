@@ -28,7 +28,11 @@
       :to-close="toClose"
     >
       <template #callButton>
-        <img src="@/assets/Images/gear-solid.svg" height="20" width="20" />
+        <img
+          src="@/assets/Images/usefull icons/gear-solid.svg"
+          height="20"
+          width="20"
+        />
       </template>
       <ModalComponent
         v-if="props.message.isAuthor"
