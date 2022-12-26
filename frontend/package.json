@@ -5,7 +5,7 @@
   "scripts": {
     "start": "vite --port 8080 --host",
     "build": "vite build",
-    "serve": "vite preview",
+    "preview": "vite preview",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
     "format": "prettier .  --write"
   },
@@ -18,7 +18,7 @@
     "pinia": "^2.0.28",
     "vee-validate": "^4.7.3",
     "vue": "^3.2.45",
-    "vue-multiselect": "^2.1.6",
+    "vue-multiselect": "^3.0.0-alpha.1",
     "vue-multiselect-listbox": "^0.2.6",
     "vue-router": "^4.1.6"
   },
@@ -29,6 +29,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^8.7.1",
     "prettier": "2.8.1",
+    "sass": "^1.57.1",
     "vite": "^4.0.2"
   },
   "browserslist": [

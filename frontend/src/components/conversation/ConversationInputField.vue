@@ -68,16 +68,17 @@
         <Multiselect
           id="membersList"
           v-model="selectedUsers"
-          label="name"
-          mode="tags"
+          :multiple="true"
+          :taggable="true"
+          :options="usersStore.users"
+          :hide-selected="true"
           placeholder="Sélectionner un ou plusieurs interlocuteurs"
-          value-prop="id"
+          tag-placeholder="Add this as new tag"
+          label="name"
+          :searchable="false"
           :close-on-select="false"
           :clear-on-select="false"
-          :multiple="true"
-          :object="true"
-          :options="usersStore.users"
-          :searchable="false"
+          value-prop="id"
           @focusout="triggerMemberListFieldAudit"
         />
         <ErrorMessage name="conversationMembers" class="errorMessage" />
@@ -128,7 +129,7 @@ const conversationName = ref("");
 const selectedOwner = ref([]);
 const isClosed = ref(false);
 const isPublic = ref(false);
-const selectedUsers = ref(null);
+const selectedUsers = ref([]);
 const memberListFieldRef = ref();
 const ownerFieldRef = ref();
 
@@ -229,5 +230,4 @@ onMounted(async () => {
 });
 </script>
 
-<style src="@vueform/multiselect/themes/default.css"></style>
 <style scoped></style>
