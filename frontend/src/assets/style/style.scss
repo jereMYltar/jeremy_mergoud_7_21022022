@@ -1,6 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Sonsie+One&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Palette+Mosaic&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap");
+@import "@vueform/multiselect/themes/default.scss";
+@import "multiselect-colors";
 
 body {
   background-color: #202020;
@@ -107,3 +109,6 @@ body {
   background-color: #333533;
   text-decoration: none;
 }
+// .multiselect__option {
+//   background-color: #ffd100;
+// }

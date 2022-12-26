@@ -1,0 +1,32 @@
+.multiselect__tag {
+    background: darkgoldenrod;
+}
+
+.multiselect__option--highlight {
+    background: red;
+}
+
+.multiselect__option--highlight:after {
+    background: blue;
+}
+
+.multiselect__option--selected.multiselect__option--highlight {
+    background: yellow;
+}
+
+.multiselect__option--selected.multiselect__option--highlight:after {
+    background: brown;
+}
+
+.multiselect__tag-icon:hover {
+    background: greenyellow;
+}
+
+.multiselect__input, .multiselect__single {
+    padding: 0 0 0 0;
+}
+
+.multiselect__placeholder {
+    margin-left:1px;
+    color: #999999;
+}
