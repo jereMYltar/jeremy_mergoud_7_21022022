@@ -1,5 +1,5 @@
 <template>
-  <div class="main1 container">
+  <div class="main container__col">
     <div>
       <h4>
         Vous êtes connectés en tant que : {{ usersStore.activeUser.name }}

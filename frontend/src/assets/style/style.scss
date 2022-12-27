@@ -1,6 +1,12 @@
 @use "fonts";
 @use "colors";
-@use "multiselect-style-addon";
-@use "base";
+@use "structure";
 @use "elements";
 @import "@vueform/multiselect/themes/default.scss";
+@import "multiselect-style-addon";
+
+body {
+    background-color: #202020;
+    display: flex;
+    justify-content: center;
+  }

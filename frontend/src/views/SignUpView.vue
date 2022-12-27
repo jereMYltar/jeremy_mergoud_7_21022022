@@ -1,5 +1,5 @@
 <template>
-  <div class="main1 container">
+  <div class="main container__col">
     <UserComponent :user-id="0" />
     <router-link :to="{ name: 'HomePage' }" class="bouton__secondaire"
       >Annuler</router-link

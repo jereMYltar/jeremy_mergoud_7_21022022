@@ -1,7 +1,7 @@
 <template>
-  <div class="main1 container">
-    <h1 class="titre1">Votre message</h1>
-    <Form class="container" @submit="saveMessage">
+  <div class="main container__col">
+    <h1 class="titre__tertiaire">Votre message</h1>
+    <Form class="container__col" @submit="saveMessage">
       <label for="message" class="text">Votre message</label>
       <Field
         id="messageContent"
@@ -9,24 +9,24 @@
         name="messageContent"
         type="text"
         maxlength="1000"
-        placeholder="Votre messageContent"
+        placeholder="Contenu de votre message"
         :rules="isNotEmpty"
       />
       <div>Nombre de caractères restants : {{ charactersLeftInContent }}</div>
-      <ErrorMessage name="messageContent" class="errorMessage" />
+      <ErrorMessage name="messageContent" class="alerte" />
       <p v-if="conversationsStore.activeConversation.hasRightsOn">
         <label for="isGlobal">Message global ? </label>
         <input id="isGlobal" v-model="isGlobal" type="checkbox" />
       </p>
       <input
         v-if="Object.keys(props.message).length == 0"
-        class="basicButton"
+        class="bouton__principal"
         type="submit"
         value="Envoyer"
       />
       <input
         v-if="Object.keys(props.message).length > 0"
-        class="basicButton"
+        class="bouton__principal"
         type="submit"
         value="Modifier"
       />
@@ -72,7 +72,7 @@ const charactersLeftInContent = computed(() => {
 //methods
 function isNotEmpty() {
   if (!messageContent.value) {
-    return "Vous devez saisir un message !";
+    return "Vous devez saisir un contenu pour votre message !";
   } else {
     return true;
   }

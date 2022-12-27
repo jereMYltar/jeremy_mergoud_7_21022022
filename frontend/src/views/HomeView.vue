@@ -1,5 +1,5 @@
 <template>
-  <div class="main1 container">
+  <div class="main container__col">
     <h2 class="titre__secondaire">Bienvenue !</h2>
     <p class="text">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -10,7 +10,7 @@
       cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
       est laborum.
     </p>
-    <div class="container">
+    <div class="container__col">
       <router-link :to="{ name: 'SignUp' }" class="bouton__principal"
         >Créer un compte</router-link
       >

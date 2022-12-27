@@ -1,8 +1,8 @@
 <template>
-  <div class="main1 container">
+  <div class="main container__col">
     <h2 class="titre__secondaire">Connexion</h2>
-    <Form class="container" name="connectionForm" @submit="login">
-      <div class="question">
+    <Form class="container__col" name="connectionForm" @submit="login">
+      <div class="container__col__raw">
         <label for="email" class="text">Id de connection</label>
         <Field
           id="email"
@@ -14,8 +14,8 @@
           :rules="validateEmail"
         />
       </div>
-      <ErrorMessage name="email" class="errorMessage" />
-      <div class="question">
+      <ErrorMessage name="email" class="alerte" />
+      <div class="container__col__raw">
         <label for="mdp" class="text">Mot de passe</label>
         <Field
           id="mdp"
@@ -27,7 +27,7 @@
           :rules="validatePassword"
         />
       </div>
-      <ErrorMessage name="password" class="errorMessage" />
+      <ErrorMessage name="password" class="alerte" />
       <input class="bouton__principal" type="submit" value="Se connecter" />
     </Form>
     <router-link :to="{ name: 'HomePage' }" class="bouton__secondaire"

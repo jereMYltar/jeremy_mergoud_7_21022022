@@ -1,7 +1,7 @@
 <template>
   <h1 v-if="!props.existingConversation">Créer une nouvelle conversation</h1>
   <h1 v-if="props.existingConversation">Modifier la conversation</h1>
-  <Form class="container" name="connectionForm" @submit="saveConversation">
+  <Form class="container__col" name="connectionForm" @submit="saveConversation">
     <div>
       <label for="conversationName">Nom de la conversation : </label>
       <Field
@@ -16,7 +16,7 @@
       <div>
         Nombre de caractères restants : {{ charactersLeftInConversationName }}
       </div>
-      <ErrorMessage name="conversationName" class="errorMessage" />
+      <ErrorMessage name="conversationName" class="alerte" />
     </div>
     <div v-if="props.existingConversation">
       <Field
@@ -40,7 +40,7 @@
           :searchable="false"
           @focusout="triggerOwnerFieldAudit"
         />
-        <ErrorMessage name="ownerField" class="errorMessage" />
+        <ErrorMessage name="ownerField" class="alerte" />
       </Field>
     </div>
     <div v-if="usersStore.activeUser.isAdmin">
@@ -79,19 +79,19 @@
           :searchable="false"
           @focusout="triggerMemberListFieldAudit"
         />
-        <ErrorMessage name="conversationMembers" class="errorMessage" />
+        <ErrorMessage name="conversationMembers" class="alerte" />
       </Field>
     </div>
     <div>
       <input
         v-if="!props.existingConversation"
-        class="basicButton"
+        class="bouton__principal"
         type="submit"
         value="Créer la conversation"
       />
       <input
         v-if="props.existingConversation"
-        class="basicButton"
+        class="bouton__principal"
         type="submit"
         value="Modifier la conversation"
       />

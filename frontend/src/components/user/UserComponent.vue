@@ -1,9 +1,9 @@
 <template>
-  <div class="main1 container">
-    <h2 class="titre1">Création de compte</h2>
-    <Form class="container" name="signUpForm" @submit="signUp">
-      <div class="question">
-        <label for="firstName" class="titre2">Prénom</label>
+  <div class="main container__col">
+    <h2 class="titre__secondaire">Création de compte</h2>
+    <Form class="container__col" name="signUpForm" @submit="signUp">
+      <div class="container__col__raw">
+        <label for="firstName" class="text">Prénom</label>
         <Field
           id="firstName"
           v-model="firstName"
@@ -13,10 +13,10 @@
           placeholder="Votre prénom"
           :rules="validateName"
         />
-        <ErrorMessage name="firstName" class="errorMessage" />
+        <ErrorMessage name="firstName" class="alerte" />
       </div>
-      <div class="question">
-        <label for="lastName" class="titre2">Nom</label>
+      <div class="container__col__raw">
+        <label for="lastName" class="text">Nom</label>
         <Field
           id="lastName"
           v-model="lastName"
@@ -26,10 +26,10 @@
           placeholder="Votre nom d'usage"
           :rules="validateName"
         />
-        <ErrorMessage name="lastName" class="errorMessage" />
+        <ErrorMessage name="lastName" class="alerte" />
       </div>
-      <div class="question">
-        <label for="email" class="titre2">Id de connection</label>
+      <div class="container__col__raw">
+        <label for="email" class="text">Id de connection</label>
         <Field
           id="email"
           v-model="email"
@@ -39,15 +39,15 @@
           placeholder="Votre identifiant de connexion"
           :rules="validateEmail"
         />
-        <ErrorMessage name="email" class="errorMessage" />
+        <ErrorMessage name="email" class="alerte" />
       </div>
-      <div v-if="props.userId" class="question">
+      <div v-if="props.userId" class="container__col__raw">
         <h3>
           Si vous souhaitez modifier votre mot de passe, saisissez votre mot de
           passe actuel puis saississez un nouveau mot de passe, sinon laissez ce
           champs vide.
         </h3>
-        <label for="existingPassword" class="titre2">
+        <label for="existingPassword" class="text">
           Votre mot de passe actuel
         </label>
         <Field
@@ -59,11 +59,11 @@
           placeholder="Votre mot de passe actuel"
           :rules="validateExistingPassword"
         />
-        <ErrorMessage name="existingPassword" class="errorMessage" />
+        <ErrorMessage name="existingPassword" class="alerte" />
       </div>
       <div v-if="!props.userId || initialPassword">
-        <div class="question">
-          <label for="mdp" class="titre2">Mot de passe</label>
+        <div class="container__col__raw">
+          <label for="mdp" class="text">Mot de passe</label>
           <Field
             id="mdp"
             v-model="password"
@@ -73,10 +73,10 @@
             placeholder="Votre mot de passe"
             :rules="validatePassword"
           />
-          <ErrorMessage name="password" class="errorMessage" />
+          <ErrorMessage name="password" class="alerte" />
         </div>
-        <div class="question">
-          <label for="mdp2" class="titre2">Confirmer votre mot de passe</label>
+        <div class="container__col__raw">
+          <label for="mdp2" class="text">Confirmer votre mot de passe</label>
           <Field
             id="mdp2"
             v-model="password2"
@@ -86,20 +86,20 @@
             placeholder="Confirmer votre mot de passe"
             :rules="validatePassword2"
           />
-          <ErrorMessage name="password2" class="errorMessage" />
+          <ErrorMessage name="password2" class="alerte" />
         </div>
       </div>
       <div>
-        <div class="question">
+        <div class="container__col__raw">
           <Field name="isAdminField" :value="isAdmin">
-            <label for="isAdmin" class="titre2">
+            <label for="isAdmin" class="text">
               Cochez cette case si vous êtes administrateur du site :
             </label>
             <input id="isAdmin" v-model="isAdmin" type="checkbox" />
           </Field>
         </div>
-        <div v-if="isAdmin" class="question">
-          <label for="adminPassword" class="titre2">
+        <div v-if="isAdmin" class="container__col__raw">
+          <label for="adminPassword" class="text">
             Code spécifique de vérification transmis par votre organisation.
           </label>
           <Field
@@ -110,18 +110,18 @@
             placeholder="Mot de passe donné par votre organisation"
             :rules="validateAdminValue"
           />
-          <ErrorMessage name="adminPassword" class="errorMessage" />
+          <ErrorMessage name="adminPassword" class="alerte" />
         </div>
       </div>
       <input
         v-if="!props.userId"
-        class="basicButton"
+        class="bouton__principal"
         type="submit"
         value="Créer un compte"
       />
       <input
         v-if="props.userId"
-        class="basicButton"
+        class="bouton__principal"
         type="submit"
         value="Modifier votre compte"
       />
@@ -132,7 +132,7 @@
         (props.userId == usersStore.activeUser.id ||
           usersStore.activeUser.isAdmin)
       "
-      class="littleButton"
+      class="bouton__secondaire"
       @click="deleteAccount"
     >
       Supprimer le compte

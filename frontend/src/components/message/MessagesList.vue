@@ -1,5 +1,5 @@
 <template>
-  <div class="main1 container">
+  <div class="main container__col">
     <SingleMessageTile
       v-for="message in messagesStore.messages"
       :key="message.id"

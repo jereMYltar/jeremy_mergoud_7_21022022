@@ -1,5 +1,5 @@
 <template>
-  <div class="main1 container">
+  <div class="main container_raw">
     <SingleConversationTile
       v-for="conversation in conversationsStore.conversations"
       :key="conversation.id"

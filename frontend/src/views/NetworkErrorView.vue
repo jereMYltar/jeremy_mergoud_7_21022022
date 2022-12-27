@@ -1,14 +1,14 @@
 <template>
-  <div class="main1 container">
-    <h1 class="titre1">Mince !</h1>
+  <div class="main container__col">
+    <h1 class="titre__secondaire">Mince !</h1>
     <p class="text">
       Il semblerait que vous recontriez actuellement des problèmes réseau,
       prenez une grande inspiration et :
     </p>
-    <a href="#" class="basicButton" @click="$router.go(-1)"
+    <a href="#" class="bouton__secondaire" @click="$router.go(-1)"
       >cliquez ici pour réessayer
     </a>
-    <a href="#" class="basicButton" @click="returnHome"
+    <a href="#" class="bouton__secondaire" @click="returnHome"
       >cliquez ici pour revenir à la page d'accueil
     </a>
   </div>
