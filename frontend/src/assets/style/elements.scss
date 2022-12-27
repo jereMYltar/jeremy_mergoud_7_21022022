@@ -1,0 +1,130 @@
+.titre {
+  &__principal {
+    font-family: "Nevis_Bold", sans-serif;
+    font-size: 2em;
+    color: $color-dark;
+    background-color: black;
+  }
+  &__secondaire {
+    font-family: "Luciole_Bold", sans-serif;
+    font-size: 1.5em;
+    color: $color-light;
+    background-color: $color-primary-dark;
+  }
+  &__tertiaire {
+    font-family: "Luciole_Regular", sans-serif;
+    font-size: 1em;
+    color: $color-lightest;
+    background-color: $color-primary-dark;
+  }
+  &__petit {
+    font-family: "Luciole_Regular_Italic", sans-serif;
+    font-size: 1em;
+    color: white;
+    background-color: $color-secondary-dark;
+  }
+}
+
+.text {
+  font-family: "Luciole_Regular", sans-serif;
+  font-size: 1em;
+  color: black;
+  &__details {
+    font-family: "M PLUS Rounded 1c", sans-serif;
+    font-size: 0.8em;
+    color: black;
+  }
+}
+
+.bouton {
+  &__principal {
+    font-family: "Luciole_Bold", sans-serif;
+    font-size: 1.5em;
+    border: none;
+    padding: 0.2em;
+    color: $color-primary-dark;
+    background-color: $color-light;
+    &:hover {
+      color: $color-light;
+      background-color: $color-primary-dark;
+    }
+  }
+  &__secondaire {
+    font-family: "Luciole_Regular", sans-serif;
+    font-size: 1em;
+    border: none;
+    padding: 0.2em;
+    color: $color-primary-dark;
+    background-color: $color-lightest;
+    &:hover {
+      color: $color-lightest;
+      background-color: $color-primary-dark;
+    }
+  }
+  &__conversation {
+    font-family: "Luciole_Regular", sans-serif;
+    font-size: 1em;
+    border: 1px solid black;
+    padding: 0.2em;
+    color: black;
+    background-color: white;
+    &:hover {
+      border: 1px solid white;
+      color: white;
+      background-color: black;
+    } 
+  }
+  &__fermer {
+    font-family: "Luciole_Bold", sans-serif;
+    font-size: 1.5em;
+    border: none;
+    padding: 0.2em;
+    color: white;
+    background-color: black;
+    &:hover {
+      color: black;
+      background-color: $color-dark;
+    }
+  }
+}
+
+.alerte {
+  font-family: "Luciole_Regular", sans-serif;
+  font-size: 1em;
+  color: white;
+  background-color: $color-darkest;
+}
+
+.icone {
+  &__parametres {
+    height: 20px;
+    width: 20px;
+    border: none;
+    padding: 0.2em;
+    color: $color-secondary-dark;
+    &:hover {
+      color: white;
+      background-color: $color-secondary-dark;
+      border-radius: 50%;
+    }
+  }
+  &__utilisateur {
+    height: 20px;
+    width: 20px;
+    border: none;
+    padding: 0.2em;
+    color: $color-secondary-dark;
+    &:hover {
+      color: white;
+      background-color: $color-secondary-dark;
+      border-radius: 50%;
+    }
+  }
+  &__cadenas {
+    height: 20px;
+    width: 20px;
+    border: none;
+    padding: 0.2em;
+    color: $color-dark;
+  }
+}
