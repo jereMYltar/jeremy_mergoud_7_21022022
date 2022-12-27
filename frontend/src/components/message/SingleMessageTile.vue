@@ -2,23 +2,30 @@
   <div
     :class="[
       'message',
-      props.message.isAuthor ? 'written' : 'read',
-      props.message.isGlobal ? 'global' : '',
+      props.message.isAuthor ? 'message__written' : 'message__read',
+      props.message.isGlobal ? 'message__global' : '',
     ]"
   >
-    <div v-if="!props.message.isAuthor">{{ props.message.author }}</div>
-    <div v-if="props.message.isAuthor">Moi</div>
-    <div v-if="props.message.createdAt != props.message.updatedAt">
-      Message modifié le {{ timeFormat(props.message.updatedAt) }}
+    <div v-if="!props.message.isAuthor" class="text__details">
+      {{ props.message.author }}
     </div>
-    <div v-if="!props.message.isModerated">
+    <div v-if="props.message.isAuthor" class="text__details">Moi</div>
+    <div v-if="!props.message.isModerated" class="text">
       {{ props.message.content }}
     </div>
-    <div v-if="props.message.isModerated">
+    <div v-if="props.message.isModerated" class="text">
       Le contenu de ce message a été modéré en raison d'un non-respect des
       règles de bonne conduite de notre entreprise.
     </div>
-    <div>Message posté le {{ timeFormat(props.message.createdAt) }}</div>
+    <div class="text__details">
+      Posté le {{ timeFormat(props.message.createdAt) }}
+    </div>
+    <div
+      v-if="props.message.createdAt != props.message.updatedAt"
+      class="text__details"
+    >
+      Modifié le {{ timeFormat(props.message.updatedAt) }}
+    </div>
     <ModalComponent
       v-if="
         props.message.hasRightsOn ||
@@ -28,11 +35,7 @@
       :to-close="toClose"
     >
       <template #callButton>
-        <img
-          src="@/assets/Images/usefull icons/gear-solid.svg"
-          height="20"
-          width="20"
-        />
+        <div class="icone__parametres"></div>
       </template>
       <ModalComponent
         v-if="props.message.isAuthor"
@@ -136,25 +139,4 @@ async function closeAllModals() {
 }
 </script>
 
-<style scoped>
-.message {
-  margin: 5px;
-  padding: 3px;
-  border: 1px grey solid;
-  border-radius: 3px;
-  width: 70%;
-}
-.written {
-  background-color: lightcyan;
-  align-self: flex-end;
-}
-.read {
-  background-color: lightgray;
-  align-self: flex-start;
-}
-
-.global {
-  background-color: lemonchiffon;
-  width: 100%;
-}
-</style>
+<style scoped></style>

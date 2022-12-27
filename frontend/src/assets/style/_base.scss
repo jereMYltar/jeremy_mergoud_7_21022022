@@ -50,11 +50,6 @@ body {
     justify-content: space-between;
     margin: 10px 20px;
   }
-  .textInput {
-    width: 50%;
-    background-color: #ffd10061;
-    border: none;
-  }
   .basicButton {
     margin: 20px;
     padding: 10px;
@@ -102,11 +97,4 @@ body {
     color: #ffd100;
     background-color: #333533;
     text-decoration: none;
-  }
-  // .multiselect__option {
-  //   background-color: #ffd100;
-  // }
-  
-  input[type="checkbox"] {
-    accent-color: $color-light;
   }

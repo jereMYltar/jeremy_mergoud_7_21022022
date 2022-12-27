@@ -1,24 +1,24 @@
-@import "./colors.scss";
-@import "./fonts.scss";
+@use "colors";
+@use "fonts";
 
 .multiselect-tag {
     font-family: "Luciole_Regular", sans-serif;
-    color: $color-primary-dark;
-    background-color: $color-light;
+    color: colors.$primary-dark;
+    background-color: colors.$light;
     &-remove {
         margin-left: 5px;
         color: white;
         background-color: black;
     }
     &:hover {
-        color: $color-light;
-        background-color: $color-primary-dark;
+        color: colors.$light;
+        background-color: colors.$primary-dark;
         >.multiselect-tag-remove {
             color: black;
             background-color: white;
             &:hover {
                 color: black;
-                background-color: $color-light;
+                background-color: colors.$light;
             }
         }
     }
@@ -26,11 +26,11 @@
 
 .multiselect-option {
     font-family: "Luciole_Regular", sans-serif;
-    color: $color-primary-dark;
+    color: colors.$primary-dark;
     background-color: white;
     &.is-pointed {
-        color: $color-primary-dark;
-        background-color: $color-light;
+        color: colors.$primary-dark;
+        background-color: colors.$light;
     }
 }
 
@@ -41,7 +41,7 @@
     border-radius: 4px;
     &:hover {
         color: black;
-        background-color: $color-dark;
+        background-color: colors.$dark;
     }
     &-icon {
         background-color: white;

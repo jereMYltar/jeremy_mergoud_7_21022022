@@ -1,0 +1,187 @@
+@use "colors";
+
+.titre {
+  &__principal {
+    font-family: "Nevis_Bold", sans-serif;
+    font-size: 2em;
+    color: colors.$dark;
+    background-color: black;
+    text-align: center;
+  }
+  &__secondaire {
+    font-family: "Luciole_Bold", sans-serif;
+    font-size: 1.5em;
+    color: colors.$light;
+    background-color: colors.$primary-dark;
+    text-align: right;
+  }
+  &__tertiaire {
+    font-family: "Luciole_Regular", sans-serif;
+    font-size: 1em;
+    color: colors.$lightest;
+    background-color: colors.$primary-dark;
+  }
+  &__petit {
+    font-family: "Luciole_Regular_Italic", sans-serif;
+    font-size: 1em;
+    color: white;
+    background-color: colors.$secondary-dark;
+  }
+}
+
+.text {
+  font-family: "Luciole_Regular", sans-serif;
+  font-size: 1em;
+  color: black;
+  word-break: break-word;
+  &__details {
+    font-family: "M PLUS Rounded 1c", sans-serif;
+    font-size: 0.8em;
+    color: black;
+    word-break: break-word;
+  }
+}
+
+.bouton {
+  &__principal {
+    font-family: "Luciole_Bold", sans-serif;
+    font-size: 1.5em;
+    border: none;
+    text-decoration: none;
+    text-align: center;
+    padding: 0.2em;
+    color: colors.$primary-dark;
+    background-color: colors.$light;
+    &:hover {
+      color: colors.$light;
+      background-color: colors.$primary-dark;
+    }
+  }
+  &__secondaire {
+    font-family: "Luciole_Regular", sans-serif;
+    font-size: 1em;
+    border: none;
+    text-decoration: none;
+    text-align: center;
+    padding: 0.2em;
+    color: colors.$primary-dark;
+    background-color: colors.$lightest;
+    &:hover {
+      color: colors.$lightest;
+      background-color: colors.$primary-dark;
+    }
+  }
+  &__conversation {
+    font-family: "Luciole_Regular", sans-serif;
+    font-size: 1em;
+    border: 1px solid black;
+    text-decoration: none;
+    text-align: center;
+    padding: 0.2em;
+    color: black;
+    background-color: white;
+    &:hover {
+      border: 1px solid white;
+      color: white;
+      background-color: black;
+    } 
+  }
+  &__fermer {
+    font-family: "Luciole_Bold", sans-serif;
+    font-size: 1.5em;
+    border: none;
+    text-decoration: none;
+    padding: 0.2em;
+    color: white;
+    background-color: black;
+    &:hover {
+      color: black;
+      background-color: colors.$dark;
+    }
+  }
+}
+
+.alerte {
+  font-family: "Luciole_Regular", sans-serif;
+  font-size: 1em;
+  color: white;
+  background-color: colors.$darkest;
+}
+
+.icone {
+  &__parametres {
+    height: 20px;
+    width: 20px;
+    border: none;
+    padding: 0.2em;
+    background-color: colors.$primary-dark;
+    -webkit-mask: url("../Images/usefull_icons/gear-solid.svg") no-repeat center;
+    mask: url("../Images/usefull_icons/gear-solid.svg") no-repeat center;
+    &:hover {
+      background-color: colors.$secondary-dark;
+    }
+  }
+  &__utilisateur {
+    height: 20px;
+    width: 20px;
+    border: none;
+    padding: 0.2em;
+    background-color: colors.$primary-dark;
+    -webkit-mask: url("../Images/usefull_icons/user-solid.svg") no-repeat center;
+    mask: url("../Images/usefull_icons/user-solid.svg") no-repeat center;
+    &:hover {
+      background-color: colors.$secondary-dark;
+    }
+  }
+  &__cadenas {
+    height: 20px;
+    width: 20px;
+    border: none;
+    padding: 0.2em;
+    background-color: colors.$dark;
+    -webkit-mask: url("../Images/usefull_icons/lock-solid.svg") no-repeat center;
+    mask: url("../Images/usefull_icons/lock-solid.svg") no-repeat center;
+  }
+}
+
+.message {
+  margin: 5px 0;
+  padding: 3px;
+  width: 70%;
+  &__written {
+    background-color: colors.$lightest;
+    align-self: flex-end;
+  }
+  &__read {
+    background-color: lightgray;
+    align-self: flex-start;
+  }
+  
+  &__global {
+    background-color: colors.$dark;
+    width: 100%;
+    border: none;
+  }
+}
+
+input {
+  &[type="checkbox"] {
+  accent-color: colors.$light;
+  }
+  &[type="text"] {
+    font-family: "Luciole_Regular", sans-serif;
+    font-size: 1em;
+    color: black;
+    background-color: colors.$lightest;
+    width: 50%;
+    border: none;
+  }
+  &[type="password"] {
+    font-family: "Luciole_Regular", sans-serif;
+    font-size: 1em;
+    color: black;
+    background-color: colors.$lightest;
+    width: 50%;
+    border: none;
+  }
+}

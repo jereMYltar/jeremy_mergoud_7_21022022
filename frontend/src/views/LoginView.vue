@@ -1,9 +1,9 @@
 <template>
   <div class="main1 container">
-    <h2 class="titre1">Connexion</h2>
+    <h2 class="titre__secondaire">Connexion</h2>
     <Form class="container" name="connectionForm" @submit="login">
       <div class="question">
-        <label for="email" class="titre2">Id de connection</label>
+        <label for="email" class="text">Id de connection</label>
         <Field
           id="email"
           v-model="email"
@@ -11,13 +11,12 @@
           type="text"
           maxlength="255"
           placeholder="Votre identifiant de connexion"
-          class="textInput"
           :rules="validateEmail"
         />
       </div>
       <ErrorMessage name="email" class="errorMessage" />
       <div class="question">
-        <label for="mdp" class="titre2">Mot de passe</label>
+        <label for="mdp" class="text">Mot de passe</label>
         <Field
           id="mdp"
           v-model="password"
@@ -25,14 +24,13 @@
           type="password"
           maxlength="255"
           placeholder="Votre mot de passe"
-          class="textInput"
           :rules="validatePassword"
         />
       </div>
       <ErrorMessage name="password" class="errorMessage" />
-      <input class="basicButton" type="submit" value="Se connecter" />
+      <input class="bouton__principal" type="submit" value="Se connecter" />
     </Form>
-    <router-link :to="{ name: 'HomePage' }" class="littleButton"
+    <router-link :to="{ name: 'HomePage' }" class="bouton__secondaire"
       >Annuler</router-link
     >
   </div>

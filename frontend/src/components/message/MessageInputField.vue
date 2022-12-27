@@ -10,7 +10,6 @@
         type="text"
         maxlength="1000"
         placeholder="Votre messageContent"
-        class="textInput"
         :rules="isNotEmpty"
       />
       <div>Nombre de caractères restants : {{ charactersLeftInContent }}</div>

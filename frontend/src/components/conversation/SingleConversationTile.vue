@@ -1,13 +1,9 @@
 <template>
   <button @click="showDetails(props.conversation.id)">
     <h4>{{ props.conversation.name }}</h4>
-    <p v-if="props.conversation.isClosed">
-      <img
-        src="@/assets/Images/usefull icons/lock-solid.svg"
-        height="20"
-        width="20"
-      />
-    </p>
+    <div v-if="props.conversation.isClosed">
+      <p class="icone__cadenas"></p>
+    </div>
     <ModalComponent
       v-if="props.conversation.hasRightsOn"
       ref="modalRef1"
@@ -15,11 +11,7 @@
       :to-close="toClose"
     >
       <template #callButton>
-        <img
-          src="@/assets/Images/usefull icons/gear-solid.svg"
-          height="20"
-          width="20"
-        />
+        <div class="icone__parametres"></div>
       </template>
       <ModalComponent :global="true" :to-close="toClose">
         <template #callButton>

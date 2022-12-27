@@ -1,7 +1,7 @@
 <template>
   <div class="main1 container">
     <UserComponent :user-id="0" />
-    <router-link :to="{ name: 'HomePage' }" class="littleButton"
+    <router-link :to="{ name: 'HomePage' }" class="bouton__secondaire"
       >Annuler</router-link
     >
   </div>

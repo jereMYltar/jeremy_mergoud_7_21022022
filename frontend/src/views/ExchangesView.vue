@@ -1,17 +1,13 @@
 <template>
   <div class="main1 container">
     <div>
-      <h4>Vous êtes connectés en tant que :</h4>
+      <h4>
+        Vous êtes connectés en tant que : {{ usersStore.activeUser.name }}
+      </h4>
       <ModalComponent :global="false" :to-close="toClose">
         <template #callButton>
-          <p>
-            {{ usersStore.activeUser.name }}
-            <img
-              src="../assets/Images/usefull icons/user-solid.svg"
-              height="20"
-              width="20"
-            />
-          </p>
+          <p>Mon compte</p>
+          <div class="icone__utilisateur"></div>
         </template>
         <ModalComponent :global="true" :to-close="toClose">
           <template #callButton>

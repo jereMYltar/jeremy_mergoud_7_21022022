@@ -11,7 +11,6 @@
         type="text"
         maxlength="80"
         placeholder="Le nom de votre conversation"
-        class="textInput"
         :rules="isNotEmpty"
       />
       <div>

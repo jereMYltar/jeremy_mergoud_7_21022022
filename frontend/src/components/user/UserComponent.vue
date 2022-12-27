@@ -11,7 +11,6 @@
           type="text"
           maxlength="20"
           placeholder="Votre prénom"
-          class="textInput"
           :rules="validateName"
         />
         <ErrorMessage name="firstName" class="errorMessage" />
@@ -25,7 +24,6 @@
           type="text"
           maxlength="20"
           placeholder="Votre nom d'usage"
-          class="textInput"
           :rules="validateName"
         />
         <ErrorMessage name="lastName" class="errorMessage" />
@@ -39,7 +37,6 @@
           type="text"
           maxlength="255"
           placeholder="Votre identifiant de connexion"
-          class="textInput"
           :rules="validateEmail"
         />
         <ErrorMessage name="email" class="errorMessage" />
@@ -60,7 +57,6 @@
           type="password"
           maxlength="128"
           placeholder="Votre mot de passe actuel"
-          class="textInput"
           :rules="validateExistingPassword"
         />
         <ErrorMessage name="existingPassword" class="errorMessage" />
@@ -75,7 +71,6 @@
             type="password"
             maxlength="128"
             placeholder="Votre mot de passe"
-            class="textInput"
             :rules="validatePassword"
           />
           <ErrorMessage name="password" class="errorMessage" />
@@ -89,7 +84,6 @@
             type="password"
             maxlength="128"
             placeholder="Confirmer votre mot de passe"
-            class="textInput"
             :rules="validatePassword2"
           />
           <ErrorMessage name="password2" class="errorMessage" />
@@ -114,7 +108,6 @@
             name="adminPassword"
             type="password"
             placeholder="Mot de passe donné par votre organisation"
-            class="textInput"
             :rules="validateAdminValue"
           />
           <ErrorMessage name="adminPassword" class="errorMessage" />
