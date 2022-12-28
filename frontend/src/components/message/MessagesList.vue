@@ -10,7 +10,7 @@
         :message="message"
       />
     </div>
-    <div class="h200 scrollbox w100">
+    <div class="h200 w100">
       <MessageInputField
         v-if="!conversationsStore.activeConversation.isClosed"
         :message="{}"

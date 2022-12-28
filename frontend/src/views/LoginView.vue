@@ -1,8 +1,8 @@
 <template>
   <div class="main container__col">
-    <h2 class="titre__secondaire">Connexion</h2>
-    <Form class="container__col" name="connectionForm" @submit="login">
-      <div class="container__col__row">
+    <h2 class="titre__secondaire w100">Connexion</h2>
+    <Form class="container__col w100" name="connectionForm" @submit="login">
+      <div class="container__row w70">
         <label for="email" class="text">Id de connection</label>
         <Field
           id="email"
@@ -15,7 +15,7 @@
         />
       </div>
       <ErrorMessage name="email" class="alerte" />
-      <div class="container__col__row">
+      <div class="container__row w70">
         <label for="mdp" class="text">Mot de passe</label>
         <Field
           id="mdp"
@@ -30,7 +30,7 @@
       <ErrorMessage name="password" class="alerte" />
       <input class="bouton__principal" type="submit" value="Se connecter" />
     </Form>
-    <router-link :to="{ name: 'HomePage' }" class="bouton__secondaire"
+    <router-link :to="{ name: 'HomePage' }" class="bouton__secondaire w50"
       >Annuler</router-link
     >
   </div>

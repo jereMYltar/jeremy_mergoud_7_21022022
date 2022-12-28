@@ -1,23 +1,31 @@
 <template>
-  <h1 v-if="!props.existingConversation">Créer une nouvelle conversation</h1>
-  <h1 v-if="props.existingConversation">Modifier la conversation</h1>
+  <h1 v-if="!props.existingConversation" class="titre__tertiaire w100">
+    Créer une nouvelle conversation
+  </h1>
+  <h1 v-if="props.existingConversation" class="titre__tertiaire w100">
+    Modifier la conversation
+  </h1>
   <Form
     class="container__col w90"
     name="connectionForm"
     @submit="saveConversation"
   >
-    <div>
-      <label for="conversationName">Nom de la conversation : </label>
-      <Field
-        id="conversationName"
-        v-model="conversationName"
-        name="conversationName"
-        type="text"
-        maxlength="80"
-        placeholder="Le nom de votre conversation"
-        :rules="isNotEmpty"
-      />
-      <div>
+    <div class="container_col w100">
+      <div class="container__row w100">
+        <label for="conversationName" class="text"
+          >Nom de la conversation :
+        </label>
+        <Field
+          id="conversationName"
+          v-model="conversationName"
+          name="conversationName"
+          type="text"
+          maxlength="80"
+          placeholder="Le nom de votre conversation"
+          :rules="isNotEmpty"
+        />
+      </div>
+      <div class="text">
         Nombre de caractères restants : {{ charactersLeftInConversationName }}
       </div>
       <ErrorMessage name="conversationName" class="alerte" />
@@ -47,8 +55,8 @@
         <ErrorMessage name="ownerField" class="alerte" />
       </Field>
     </div>
-    <div v-if="usersStore.activeUser.isAdmin">
-      <label for="isPublic">Conversation publique :</label>
+    <div v-if="usersStore.activeUser.isAdmin" class="container__row w100">
+      <label for="isPublic" class="text">Conversation publique :</label>
       <input id="isPublic" v-model="isPublic" type="checkbox" />
     </div>
     <div
@@ -56,8 +64,9 @@
         props.existingConversation &&
         conversationsStore.activeConversation.hasRightsOn
       "
+      class="container__row w100"
     >
-      <label for="isClosed">Conversation close :</label>
+      <label for="isClosed" class="text">Conversation close :</label>
       <input id="isClosed" v-model="isClosed" type="checkbox" />
     </div>
     <div v-if="!isPublic">
@@ -86,16 +95,16 @@
         <ErrorMessage name="conversationMembers" class="alerte" />
       </Field>
     </div>
-    <div>
+    <div class="container__col w100">
       <input
         v-if="!props.existingConversation"
-        class="bouton__secondaire"
+        class="bouton__principal w70"
         type="submit"
         value="Créer la conversation"
       />
       <input
         v-if="props.existingConversation"
-        class="bouton__secondaire"
+        class="bouton__principal w70"
         type="submit"
         value="Modifier la conversation"
       />

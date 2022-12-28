@@ -1,11 +1,20 @@
 <template>
   <div class="main container__col w100">
     <h1 class="titre__tertiaire w100">Votre message</h1>
-    <Form class="container__row w100" @submit="saveMessage">
+    <Form
+      :class="[
+        'w100',
+        Object.keys(props.message).length == 0
+          ? 'container__row'
+          : 'container__col',
+        props.message.isGlobal ? 'message__global' : '',
+      ]"
+      @submit="saveMessage"
+    >
       <div class="container__col w75">
         <div class="container__row w100">
-          <label for="message" class="text w30">Votre message</label>
-          <div class="container__col container__col--stretch w70">
+          <label for="message" class="text">Votre message</label>
+          <div class="container__col container__col--stretch w100">
             <Field
               id="messageContent"
               v-model="messageContent"
@@ -14,7 +23,6 @@
               maxlength="1000"
               placeholder="Contenu de votre message"
               :rules="isNotEmpty"
-              class="w100"
             />
             <div class="text">
               Nombre de caractères restants : {{ charactersLeftInContent }}
@@ -30,7 +38,13 @@
           <input id="isGlobal" v-model="isGlobal" type="checkbox" />
         </p>
       </div>
-      <div class="container__row container__row--end w25">
+      <div
+        :class="[
+          Object.keys(props.message).length == 0
+            ? 'container__row container__row--end w25'
+            : 'container__col w100',
+        ]"
+      >
         <input
           v-if="Object.keys(props.message).length == 0"
           class="bouton__secondaire"
@@ -39,7 +53,7 @@
         />
         <input
           v-if="Object.keys(props.message).length > 0"
-          class="bouton__secondaire"
+          class="bouton__principal"
           type="submit"
           value="Modifier"
         />

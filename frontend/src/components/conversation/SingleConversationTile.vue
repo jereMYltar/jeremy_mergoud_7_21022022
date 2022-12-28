@@ -31,7 +31,7 @@
           />
         </ModalComponent>
         <button
-          class="bouton__secondaire"
+          class="bouton__secondaire w100"
           @click.stop="closeConversation(props.conversation)"
         >
           <span v-if="props.conversation.isClosed"
@@ -43,7 +43,7 @@
         </button>
         <button
           v-if="props.conversation.conversationOwnerId"
-          class="bouton__secondaire"
+          class="bouton__secondaire w100"
           @click.stop="deleteConversation(props.conversation.id)"
         >
           Supprimer

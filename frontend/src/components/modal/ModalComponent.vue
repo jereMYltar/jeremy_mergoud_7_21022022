@@ -15,7 +15,7 @@
     >
       <transition name="drop-in">
         <div class="vue-modal-inner">
-          <div class="vue-modal-content">
+          <div class="vue-modal-content container__col">
             <button
               v-if="props.global"
               ref="firstButton1"
@@ -32,7 +32,7 @@
               v-if="props.global"
               ref="lastButton1"
               type="button"
-              class="bouton__secondaire"
+              class="bouton__secondaire w50"
               @click="closeModal"
             >
               Annuler

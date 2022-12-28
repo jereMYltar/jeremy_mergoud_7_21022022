@@ -56,7 +56,7 @@
             conversationsStore.activeConversation.hasRightsOn &&
             !props.message.isAuthor
           "
-          class="bouton__secondaire"
+          class="bouton__secondaire w100"
           @click.stop="moderateMessage(props.message)"
         >
           <span v-if="props.message.isModerated">Rétablir</span>
@@ -64,7 +64,7 @@
         </button>
         <button
           v-if="props.message.isAuthor"
-          class="bouton__secondaire"
+          class="bouton__secondaire w100"
           @click.stop="deleteMessage(props.message.id)"
         >
           Supprimer

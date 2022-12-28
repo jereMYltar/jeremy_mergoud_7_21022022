@@ -1,8 +1,8 @@
 <template>
-  <div class="main container__col">
-    <h2 class="titre__secondaire">Création de compte</h2>
-    <Form class="container__col" name="signUpForm" @submit="signUp">
-      <div class="container__col__row">
+  <div class="main container__col w100">
+    <h2 class="titre__secondaire w100">Création de compte</h2>
+    <Form class="container__col w100" name="signUpForm" @submit="signUp">
+      <div class="container__row w70">
         <label for="firstName" class="text">Prénom</label>
         <Field
           id="firstName"
@@ -15,7 +15,7 @@
         />
         <ErrorMessage name="firstName" class="alerte" />
       </div>
-      <div class="container__col__row">
+      <div class="container__row w70">
         <label for="lastName" class="text">Nom</label>
         <Field
           id="lastName"
@@ -28,7 +28,7 @@
         />
         <ErrorMessage name="lastName" class="alerte" />
       </div>
-      <div class="container__col__row">
+      <div class="container__row w70">
         <label for="email" class="text">Id de connection</label>
         <Field
           id="email"
@@ -41,7 +41,7 @@
         />
         <ErrorMessage name="email" class="alerte" />
       </div>
-      <div v-if="props.userId" class="container__col__row">
+      <div v-if="props.userId" class="container__row w70">
         <h3>
           Si vous souhaitez modifier votre mot de passe, saisissez votre mot de
           passe actuel puis saississez un nouveau mot de passe, sinon laissez ce
@@ -61,8 +61,8 @@
         />
         <ErrorMessage name="existingPassword" class="alerte" />
       </div>
-      <div v-if="!props.userId || initialPassword">
-        <div class="container__col__row">
+      <div v-if="!props.userId || initialPassword" class="container_row w70">
+        <div class="container__row">
           <label for="mdp" class="text">Mot de passe</label>
           <Field
             id="mdp"
@@ -75,7 +75,7 @@
           />
           <ErrorMessage name="password" class="alerte" />
         </div>
-        <div class="container__col__row">
+        <div class="container__row">
           <label for="mdp2" class="text">Confirmer votre mot de passe</label>
           <Field
             id="mdp2"
@@ -89,8 +89,8 @@
           <ErrorMessage name="password2" class="alerte" />
         </div>
       </div>
-      <div>
-        <div class="container__col__row">
+      <div class="container__col w70">
+        <div class="container__row w100">
           <Field name="isAdminField" :value="isAdmin">
             <label for="isAdmin" class="text">
               Cochez cette case si vous êtes administrateur du site :
@@ -98,7 +98,7 @@
             <input id="isAdmin" v-model="isAdmin" type="checkbox" />
           </Field>
         </div>
-        <div v-if="isAdmin" class="container__col__row">
+        <div v-if="isAdmin" class="container__row w100">
           <label for="adminPassword" class="text">
             Code spécifique de vérification transmis par votre organisation.
           </label>
@@ -115,7 +115,7 @@
       </div>
       <input
         v-if="!props.userId"
-        class="bouton__principal"
+        class="bouton__principal w100"
         type="submit"
         value="Créer un compte"
       />
@@ -132,7 +132,7 @@
         (props.userId == usersStore.activeUser.id ||
           usersStore.activeUser.isAdmin)
       "
-      class="bouton__secondaire"
+      class="bouton__principal w100"
       @click="deleteAccount"
     >
       Supprimer le compte
