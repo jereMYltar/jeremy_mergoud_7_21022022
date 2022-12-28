@@ -104,6 +104,8 @@
     border: none;
     text-decoration: none;
     padding: 0.2em;
+    margin: 0 0 10px 0;
+    align-self: flex-end;
     color: white;
     background-color: black;
     &:hover, &:focus {

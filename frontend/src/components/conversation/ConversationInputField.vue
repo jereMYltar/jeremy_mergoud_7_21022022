@@ -37,7 +37,9 @@
         :rules="hasOwner"
         :value="selectedOwner"
       >
-        <label for="ownerList">Gestionnaire de la conversation : </label>
+        <label for="ownerList" class="text"
+          >Gestionnaire de la conversation :
+        </label>
         <Multiselect
           id="ownerList"
           v-model="selectedOwner"
@@ -76,7 +78,9 @@
         :rules="hasMembers"
         :value="selectedUsers"
       >
-        <label for="membersList">Membres de la conversation : </label>
+        <label for="membersList" class="text"
+          >Membres de la conversation :
+        </label>
         <Multiselect
           id="membersList"
           v-model="selectedUsers"
