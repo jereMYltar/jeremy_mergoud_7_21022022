@@ -1,23 +1,88 @@
 .main {
   background-color: white;
-  padding: 20px;
+  margin: 20px 0;
   align-self: center;
-  width: 100%;
 }
 
 .container {
-  &__raw {
+  &__row {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 10px 0;
-    width: 100%;
+    align-items: center;
+    &--center {
+      justify-content: center;
+    }
+    &--end {
+      justify-content: flex-end;
+    }
   }
   &__col {
     display: flex;
     flex-direction: column;
-    margin: 10px 0;
+    align-items: center;
+    &--rev {
+      flex-direction: column-reverse;
+    }
+    &--jc_start {
+      justify-content: flex-start;
+
+    }
+    &--stretch {
+      align-items: stretch;
+    }
+  }
+}
+
+.scrollbox {
+  overflow-y: scroll;
+  &__big {
+    height: 550px;
+  }
+  &__medium {
+    height: 550px;
+  }
+}
+
+.w {
+  &100 {
     width: 100%;
+  }
+  &90 {
+    width: 90%;
+  }
+  &80 {
+    width: 80%;
+  }
+  &75 {
+    width: 75%;
+  }
+  &70 {
+    width: 70%;
+  }
+  &50 {
+    width: 50%;
+  }
+  &25 {
+    width: 25%;
+  }
+  &15 {
+    width: 15%;
+  }
+  &10 {
+    width: 10%;
+  }
+}
+
+.h {
+  &88 {
+    height: 88px;
+  }
+  &200 {
+    height: 200px;
+  }
+  &260 {
+    height: 260px;
   }
 }
   

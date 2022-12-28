@@ -1,38 +1,55 @@
 <template>
-  <button @click="showDetails(props.conversation.id)">
-    <h4>{{ props.conversation.name }}</h4>
-    <div v-if="props.conversation.isClosed">
-      <p class="icone__cadenas"></p>
-    </div>
-    <ModalComponent
-      v-if="props.conversation.hasRightsOn"
-      ref="modalRef1"
-      :global="false"
-      :to-close="toClose"
-    >
-      <template #callButton>
-        <div class="icone__parametres"></div>
-      </template>
-      <ModalComponent :global="true" :to-close="toClose">
-        <template #callButton>
-          <p>Modifier</p>
-        </template>
-        <ConversationInputField
-          :existing-conversation="1"
-          @close="closeAllModals"
-        />
-      </ModalComponent>
-      <button @click.stop="closeConversation(props.conversation)">
-        <span v-if="props.conversation.isClosed">Rouvrir la conversation</span>
-        <span v-if="!props.conversation.isClosed">Fermer la conversation</span>
-      </button>
-      <button
-        v-if="props.conversation.conversationOwnerId"
-        @click.stop="deleteConversation(props.conversation.id)"
+  <button
+    class="bouton__conversation container__row"
+    @click="showDetails(props.conversation.id)"
+  >
+    <h3>{{ props.conversation.name }}</h3>
+    <div class="container__col container__col--rev icone__box">
+      <div v-if="props.conversation.isClosed">
+        <p class="icone__cadenas"></p>
+      </div>
+      <ModalComponent
+        v-if="props.conversation.hasRightsOn"
+        ref="modalRef1"
+        :global="false"
+        :to-close="toClose"
       >
-        Supprimer
-      </button>
-    </ModalComponent>
+        <template #callButton>
+          <div
+            class="icone__parametres"
+            role="button"
+            aria-label="Propriété de la conversation"
+          ></div>
+        </template>
+        <ModalComponent :global="true" :to-close="toClose">
+          <template #callButton>
+            <p>Modifier</p>
+          </template>
+          <ConversationInputField
+            :existing-conversation="1"
+            @close="closeAllModals"
+          />
+        </ModalComponent>
+        <button
+          class="bouton__secondaire"
+          @click.stop="closeConversation(props.conversation)"
+        >
+          <span v-if="props.conversation.isClosed"
+            >Rouvrir la conversation</span
+          >
+          <span v-if="!props.conversation.isClosed"
+            >Fermer la conversation</span
+          >
+        </button>
+        <button
+          v-if="props.conversation.conversationOwnerId"
+          class="bouton__secondaire"
+          @click.stop="deleteConversation(props.conversation.id)"
+        >
+          Supprimer
+        </button>
+      </ModalComponent>
+    </div>
   </button>
 </template>
 

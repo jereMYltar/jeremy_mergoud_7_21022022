@@ -1,7 +1,11 @@
 <template>
   <h1 v-if="!props.existingConversation">Créer une nouvelle conversation</h1>
   <h1 v-if="props.existingConversation">Modifier la conversation</h1>
-  <Form class="container__col" name="connectionForm" @submit="saveConversation">
+  <Form
+    class="container__col w90"
+    name="connectionForm"
+    @submit="saveConversation"
+  >
     <div>
       <label for="conversationName">Nom de la conversation : </label>
       <Field
@@ -85,13 +89,13 @@
     <div>
       <input
         v-if="!props.existingConversation"
-        class="bouton__principal"
+        class="bouton__secondaire"
         type="submit"
         value="Créer la conversation"
       />
       <input
         v-if="props.existingConversation"
-        class="bouton__principal"
+        class="bouton__secondaire"
         type="submit"
         value="Modifier la conversation"
       />

@@ -1,28 +1,34 @@
 <template>
   <div class="main container__col">
-    <div>
-      <h4>
+    <div class="container__row container__row--end w90">
+      <h2 class="text text--end w80">
         Vous êtes connectés en tant que : {{ usersStore.activeUser.name }}
-      </h4>
-      <ModalComponent :global="false" :to-close="toClose">
-        <template #callButton>
-          <p>Mon compte</p>
-          <div class="icone__utilisateur"></div>
-        </template>
-        <ModalComponent :global="true" :to-close="toClose">
+      </h2>
+      <div class="w20">
+        <ModalComponent :global="false" :to-close="toClose">
           <template #callButton>
             <p>Mon compte</p>
+            <div class="icone__utilisateur"></div>
           </template>
-          <UserComponent
-            :user-id="usersStore.activeUser.id"
-            @close="closeAllModals"
-          />
+          <ModalComponent :global="true" :to-close="toClose">
+            <template #callButton>
+              <p>Mon compte</p>
+            </template>
+            <UserComponent
+              :user-id="usersStore.activeUser.id"
+              @close="closeAllModals"
+            />
+          </ModalComponent>
+          <button class="bouton__secondaire" @click="logOut">
+            Se déconnecter
+          </button>
         </ModalComponent>
-        <button @click="logOut">Se déconnecter</button>
-      </ModalComponent>
+      </div>
     </div>
-    <ConversationsList />
-    <MessagesList v-if="conversationsStore.activeConversation" />
+    <div class="container__row w90">
+      <ConversationsList />
+      <MessagesList v-if="conversationsStore.activeConversation" />
+    </div>
   </div>
 </template>
 

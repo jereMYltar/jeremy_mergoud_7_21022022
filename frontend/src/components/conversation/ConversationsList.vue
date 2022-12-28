@@ -1,5 +1,5 @@
 <template>
-  <div class="main container_raw">
+  <div class="main container__col w20 scrollbox scrollbox__big">
     <SingleConversationTile
       v-for="conversation in conversationsStore.conversations"
       :key="conversation.id"

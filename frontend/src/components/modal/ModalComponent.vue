@@ -1,6 +1,9 @@
 /* eslint-disable */
 <template>
-  <button @click="openModal">
+  <button
+    class="container__row container__row--center bouton__secondaire w100"
+    @click="openModal"
+  >
     <slot name="callButton"></slot>
   </button>
   <transition name="fade">
@@ -19,6 +22,7 @@
               type="button"
               aria-label="Fermer"
               title="Fermer cette fenêtre modale"
+              class="bouton__fermer"
               @click="closeModal"
             >
               X
@@ -28,6 +32,7 @@
               v-if="props.global"
               ref="lastButton1"
               type="button"
+              class="bouton__secondaire"
               @click="closeModal"
             >
               Annuler

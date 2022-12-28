@@ -2,7 +2,7 @@
   <div class="main container__col">
     <h2 class="titre__secondaire">Connexion</h2>
     <Form class="container__col" name="connectionForm" @submit="login">
-      <div class="container__col__raw">
+      <div class="container__col__row">
         <label for="email" class="text">Id de connection</label>
         <Field
           id="email"
@@ -15,7 +15,7 @@
         />
       </div>
       <ErrorMessage name="email" class="alerte" />
-      <div class="container__col__raw">
+      <div class="container__col__row">
         <label for="mdp" class="text">Mot de passe</label>
         <Field
           id="mdp"

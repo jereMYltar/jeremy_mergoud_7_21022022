@@ -5,8 +5,14 @@
 @import "@vueform/multiselect/themes/default.scss";
 @import "multiselect-style-addon";
 
+html {
+    height: 100vh;
+}
+
 body {
     background-color: #202020;
     display: flex;
     justify-content: center;
+    margin: 0;
+    height: 100vh;
   }

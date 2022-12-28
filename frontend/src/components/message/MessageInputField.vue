@@ -1,35 +1,49 @@
 <template>
-  <div class="main container__col">
-    <h1 class="titre__tertiaire">Votre message</h1>
-    <Form class="container__col" @submit="saveMessage">
-      <label for="message" class="text">Votre message</label>
-      <Field
-        id="messageContent"
-        v-model="messageContent"
-        name="messageContent"
-        type="text"
-        maxlength="1000"
-        placeholder="Contenu de votre message"
-        :rules="isNotEmpty"
-      />
-      <div>Nombre de caractères restants : {{ charactersLeftInContent }}</div>
-      <ErrorMessage name="messageContent" class="alerte" />
-      <p v-if="conversationsStore.activeConversation.hasRightsOn">
-        <label for="isGlobal">Message global ? </label>
-        <input id="isGlobal" v-model="isGlobal" type="checkbox" />
-      </p>
-      <input
-        v-if="Object.keys(props.message).length == 0"
-        class="bouton__principal"
-        type="submit"
-        value="Envoyer"
-      />
-      <input
-        v-if="Object.keys(props.message).length > 0"
-        class="bouton__principal"
-        type="submit"
-        value="Modifier"
-      />
+  <div class="main container__col w100">
+    <h1 class="titre__tertiaire w100">Votre message</h1>
+    <Form class="container__row w100" @submit="saveMessage">
+      <div class="container__col w75">
+        <div class="container__row w100">
+          <label for="message" class="text w30">Votre message</label>
+          <div class="container__col container__col--stretch w70">
+            <Field
+              id="messageContent"
+              v-model="messageContent"
+              name="messageContent"
+              type="text"
+              maxlength="1000"
+              placeholder="Contenu de votre message"
+              :rules="isNotEmpty"
+              class="w100"
+            />
+            <div class="text">
+              Nombre de caractères restants : {{ charactersLeftInContent }}
+            </div>
+            <ErrorMessage name="messageContent" class="alerte" />
+          </div>
+        </div>
+        <p
+          v-if="conversationsStore.activeConversation.hasRightsOn"
+          class="w100"
+        >
+          <label for="isGlobal" class="text">Message global ? </label>
+          <input id="isGlobal" v-model="isGlobal" type="checkbox" />
+        </p>
+      </div>
+      <div class="container__row container__row--end w25">
+        <input
+          v-if="Object.keys(props.message).length == 0"
+          class="bouton__secondaire"
+          type="submit"
+          value="Envoyer"
+        />
+        <input
+          v-if="Object.keys(props.message).length > 0"
+          class="bouton__secondaire"
+          type="submit"
+          value="Modifier"
+        />
+      </div>
     </Form>
   </div>
 </template>
