@@ -3,16 +3,13 @@
     <button
       id="conversations-title"
       class="titre__tertiaire w100"
+      aria-label="Cliquer pour afficher ou masquer la liste des conversations."
       @click="toggleConversationsDisplay"
     >
-      <h2
-        aria-label="Cliquer pour afficher ou masquer la liste des conversations."
-      >
-        Liste des conversations
-      </h2>
+      <h2 class="titre__tertiaire">Liste des conversations</h2>
     </button>
-    <div id="conversations-list" class="w100">
-      <div class="container__col scrollbox scrollbox__big w100">
+    <div id="conversations-list" class="container__col w100 f1">
+      <div class="container__col scrollbox w100 hv__conversations">
         <SingleConversationTile
           v-for="conversation in conversationsStore.conversations"
           :key="conversation.id"

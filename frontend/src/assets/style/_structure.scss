@@ -8,6 +8,8 @@
 }
 
 .container {
+  display: flex;
+  flex-direction: column;
   &__row {
     display: flex;
     flex-direction: row;
@@ -55,14 +57,27 @@
   }
 }
 
+.ac {
+  &__start {
+    align-content: flex-start;
+  }
+  &__center {
+    align-content: center;
+  }
+  &__stretch {
+    align-content: stretch;
+  }
+  &__end {
+    align-content: flex-end;
+  }
+}
+
 .scrollbox {
-  overflow-y: scroll;
-  &__big {
-    max-height: 50vh;
-  }
-  &__medium {
-    height: 25vh;
-  }
+  overflow-y: auto;
+}
+
+.f1 {
+  flex: 1;
 }
 
 .w {
@@ -98,15 +113,18 @@
   }
 }
 
-.h {
-  &88 {
-    height: 88px;
+.hv {
+  &__max {
+    height: calc(100vh - 150px);
   }
-  &200 {
-    height: 200px;
+  &__messages {
+    height: calc(100vh - 440px);
+    flex-grow: 1;
   }
-  &260 {
-    height: 260px;
+  &__conversations {
+    height: calc(100vh - 340px);
+    flex-grow: 1;
+    // height: calc(100vh - 240px);
   }
 }
   

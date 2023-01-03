@@ -1,6 +1,9 @@
 @use "colors";
 @use "responsive";
 
+p, h1, h2, h3 {
+  margin: 0;
+}
 .titre {
   &__principal {
     font-family: "Nevis_Bold", sans-serif;
@@ -43,11 +46,13 @@
   font-family: "Luciole_Regular", sans-serif;
   font-size: 1em;
   color: black;
+  padding: 0px 5px;
   word-break: break-word;
   &__details {
     font-family: "M PLUS Rounded 1c", sans-serif;
     font-size: 0.8em;
     color: black;
+    padding: 0px 5px;
     word-break: break-word;
   }
   &--end {
@@ -63,7 +68,7 @@
     text-decoration: none;
     text-align: center;
     margin: 10px 0;
-    padding: 10px 5px;
+    padding: 5px 10px;
     cursor: pointer;
     color: colors.$primary-dark;
     background-color: colors.$light;
@@ -79,7 +84,7 @@
     text-decoration: none;
     text-align: center;
     margin: 5px 0;
-    padding: 10px 5px;
+    padding: 5px;
     cursor: pointer;
     color: colors.$primary-dark;
     background-color: colors.$lightest;
@@ -110,7 +115,7 @@
     box-shadow: border-box;
     text-decoration: none;
     text-align: left;
-    padding: 0.2em;
+    padding: 5px 10px;
     color: black;
     background-color: white;
     align-self: stretch;
@@ -124,8 +129,7 @@
     font-size: 1.5em;
     border: none;
     text-decoration: none;
-    padding: 0.2em;
-    margin: 0 0 10px 0;
+    margin-bottom: 10px;
     align-self: flex-end;
     color: white;
     background-color: black;
@@ -140,7 +144,8 @@
   font-family: "Luciole_Regular", sans-serif;
   font-size: 1em;
   text-align: right;
-  margin: 10px 0;
+  margin-bottom: 10px;
+  padding: 5px 10px;
   color: white;
   background-color: colors.$darkest;
   align-self: flex-end;
@@ -148,52 +153,67 @@
 
 .icone {
   &__box {
-    width: 40px;
+    width: 50px;
+    background-color: inherit;
   }
   &__parametres {
-    height: 20px;
-    width: 20px;
+    height: 30px;
+    width: 30px;
     border: none;
-    padding: 0.2em;
+    margin: 5px;
+    padding: 0;
     background-color: colors.$primary-dark;
     -webkit-mask: url("../Images/usefull_icons/gear-solid.svg") no-repeat center;
     mask: url("../Images/usefull_icons/gear-solid.svg") no-repeat center;
   }
   &__utilisateur {
-    height: 20px;
-    width: 20px;
+    height: 30px;
+    width: 30px;
     border: none;
-    padding: 0.2em;
+    margin: 5px;
+    padding: 0;
     background-color: colors.$primary-dark;
     -webkit-mask: url("../Images/usefull_icons/user-solid.svg") no-repeat center;
     mask: url("../Images/usefull_icons/user-solid.svg") no-repeat center;
   }
   &__public {
-    height: 20px;
-    width: 20px;
+    height: 30px;
+    width: 30px;
     border: none;
-    padding: 0.2em;
+    margin: 5px;
+    padding: 0;
     background-color: colors.$primary-dark;
     -webkit-mask: url("../Images/usefull_icons/people-line-solid.svg") no-repeat center;
     mask: url("../Images/usefull_icons/people-line-solid.svg") no-repeat center;
   }
   &__gestionnaire {
-    height: 20px;
-    width: 20px;
+    height: 30px;
+    width: 30px;
     border: none;
-    padding: 0.2em;
+    margin: 5px;
+    padding: 0;
     background-color: colors.$primary-dark;
     -webkit-mask: url("../Images/usefull_icons/owner-solid.svg") no-repeat center;
     mask: url("../Images/usefull_icons/owner-solid.svg") no-repeat center;
   }
   &__cadenas {
-    height: 20px;
-    width: 20px;
+    height: 30px;
+    width: 30px;
     border: none;
-    padding: 0.2em;
+    margin: 5px;
+    padding: 0;
     background-color: colors.$dark;
     -webkit-mask: url("../Images/usefull_icons/lock-solid.svg") no-repeat center;
     mask: url("../Images/usefull_icons/lock-solid.svg") no-repeat center;
+  }
+  &__fermeture {
+    height: 30px;
+    width: 30px;
+    border: none;
+    padding: 0;
+    background-color: white;
+    -webkit-mask: url("../Images/usefull_icons/xmark-solid.svg") no-repeat center;
+    mask: url("../Images/usefull_icons/xmark-solid.svg") no-repeat center;
   }
 }
 *:hover, *:focus {
@@ -207,7 +227,7 @@
 
 .message {
   margin: 5px 0;
-  padding: 5px;
+  padding: 10px 15px;
   width: 70%;
   &__written {
     background-color: colors.$lightest;
@@ -220,7 +240,7 @@
   
   &__global {
     background-color: colors.$dark;
-    width: 99%;
+    width: calc(100% - 30px);
     border: none;
     align-self: center;
   }
@@ -236,9 +256,10 @@ input {
     font-size: 1em;
     color: black;
     background-color: colors.$lightest;
-    width: 100%;
+    width: calc(100% - 4px);
     border: none;
-    margin: 0 0 10px 0;
+    margin: 5px 0;
+    padding: 2px;
     &::placeholder {
         font-family: "Luciole_Regular_Italic", sans-serif;
         font-size: 0.8em;
@@ -249,9 +270,10 @@ input {
     font-size: 1em;
     color: black;
     background-color: colors.$lightest;
-    width: 100%;
+    width: calc(100% - 4px);
     border: none;
-    margin: 0 0 10px 0;
+    margin: 5px 0;
+    padding: 2px;
     &::placeholder {
       font-family: "Luciole_Regular_Italic", sans-serif;
       font-size: 0.8em;

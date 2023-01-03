@@ -6,7 +6,7 @@
   >
     Conversation active : {{ conversationsStore.activeConversation.name }}
     <div class="icone__box">
-      <ModalComponent ref="modalRef1" :global="false" :to-close="toClose">
+      <ModalComponent ref="modalRef1" :global="true" :to-close="toClose">
         <template #callButton>
           <div
             class="icone__parametres"

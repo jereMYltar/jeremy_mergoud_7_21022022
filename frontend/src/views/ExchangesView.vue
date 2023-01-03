@@ -1,13 +1,11 @@
 <template>
-  <div class="container__col">
-    <div class="container__row jc__end w90">
-      <h2 class="text text--end w80">
-        Vous êtes connectés en tant que : {{ usersStore.activeUser.name }}
-      </h2>
-      <div class="w20">
-        <ModalComponent :global="false" :to-close="toClose">
+  <div class="container__col f1">
+    <div class="container__row jc__end w100">
+      <h2 class="text text--end w80">Vous êtes connectés en tant que :</h2>
+      <div class="">
+        <ModalComponent :global="true" :to-close="toClose">
           <template #callButton>
-            <p>Mon compte</p>
+            <p>{{ usersStore.activeUser.name }}</p>
             <div class="icone__utilisateur"></div>
           </template>
           <ModalComponent :global="true" :to-close="toClose">
@@ -19,13 +17,13 @@
               @close="closeAllModals"
             />
           </ModalComponent>
-          <button class="bouton__secondaire" @click="logOut">
+          <button class="bouton__secondaire w100" @click="logOut">
             Se déconnecter
           </button>
         </ModalComponent>
       </div>
     </div>
-    <div class="container__row w90">
+    <div class="container__row ai__start w90 f1 ai__stretch">
       <ConversationsList />
       <MessagesList v-if="conversationsStore.activeConversation" />
     </div>

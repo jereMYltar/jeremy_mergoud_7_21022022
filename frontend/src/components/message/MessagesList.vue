@@ -1,14 +1,16 @@
 <template>
-  <div class="container__col w75">
-    <ConversationHeader />
-    <div class="container__col scrollbox w100 h260">
-      <SingleMessageTile
-        v-for="message in messagesStore.messages"
-        :key="message.id"
-        :message="message"
-      />
+  <div class="container__col jc__sb w75">
+    <div class="container__col w100 f1">
+      <ConversationHeader />
+      <div class="container__col scrollbox hv__messages w100">
+        <SingleMessageTile
+          v-for="message in messagesStore.messages"
+          :key="message.id"
+          :message="message"
+        />
+      </div>
     </div>
-    <div class="h200 w100">
+    <div class="w100">
       <MessageInputField
         v-if="!conversationsStore.activeConversation.isClosed"
         :message="{}"

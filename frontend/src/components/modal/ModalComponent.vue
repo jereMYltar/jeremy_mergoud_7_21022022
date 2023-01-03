@@ -25,7 +25,7 @@
               class="bouton__fermer"
               @click="closeModal"
             >
-              X
+              <p class="icone__fermeture"></p>
             </button>
             <slot></slot>
             <button

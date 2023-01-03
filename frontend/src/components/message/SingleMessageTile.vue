@@ -35,7 +35,7 @@
           props.message.hasRightsOn ||
           conversationsStore.activeConversation.hasRightsOn
         "
-        :global="false"
+        :global="true"
         :to-close="toClose"
       >
         <template #callButton>
@@ -76,7 +76,6 @@
 
 <script setup>
 import { defineProps, ref, nextTick } from "vue";
-import moment from "moment";
 import { useMessagesStore } from "@/store/messagesStore";
 import { useConversationsStore } from "@/store/conversationsStore";
 import EventService from "@/services/EventService.js";
@@ -100,7 +99,14 @@ const conversationsStore = useConversationsStore();
 
 //methods
 const timeFormat = (a) => {
-  return moment(a).locale("fr").format("LL à LTS");
+  return new Date(a).toLocaleString("fr-fr", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  });
 };
 
 async function deleteMessage(id) {
