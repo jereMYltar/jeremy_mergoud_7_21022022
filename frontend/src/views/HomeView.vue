@@ -2,13 +2,18 @@
   <div class="main container__col">
     <h2 class="titre__secondaire w100">Bienvenue !</h2>
     <p class="text">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-      est laborum.
+      Groupomania vous souhaite la bienvenue sur votre réseau social
+      d'entreprise.
+    </p>
+    <p class="text">
+      En créant un compte puis en vous connectant, vous pourrez échanger avec
+      vos collègues, prendre connaissance des dernières actualités de
+      l'entreprise et réagir aux différents posts.
+    </p>
+    <p class="text">
+      Si vous n'avez pas encore de compte, cliquer sur "Créer un compte" puis
+      laissez-vous guider, si vous avez déjà effectué cette démarche alors il
+      vous suffit de cliquer sur "Se connecter".
     </p>
     <div class="container__col w100">
       <router-link :to="{ name: 'SignUp' }" class="bouton__principal"
