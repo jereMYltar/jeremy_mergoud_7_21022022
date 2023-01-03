@@ -11,7 +11,7 @@
           <div
             class="icone__parametres"
             role="button"
-            aria-label="Propriété de la conversation"
+            aria-label="Propriétés de la conversation"
           ></div>
         </template>
         <ModalComponent

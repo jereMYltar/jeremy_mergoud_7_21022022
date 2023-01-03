@@ -39,7 +39,11 @@
         :to-close="toClose"
       >
         <template #callButton>
-          <div class="icone__parametres"></div>
+          <div
+            class="icone__parametres"
+            role="button"
+            aria-label="Propriétés du message"
+          ></div>
         </template>
         <ModalComponent
           v-if="props.message.isAuthor"

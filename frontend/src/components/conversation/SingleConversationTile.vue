@@ -5,18 +5,24 @@
   >
     <div class="text">{{ props.conversation.name }}</div>
     <div class="container__col container__col icone__box">
-      <div v-if="props.conversation.isClosed" aria-label="Conversation fermée">
+      <div
+        v-if="props.conversation.isClosed"
+        aria-label="Conversation fermée"
+        role="note"
+      >
         <p class="icone__cadenas"></p>
       </div>
       <div
         v-if="props.conversation.isPublic"
         aria-label="Conversation publique"
+        role="note"
       >
         <p class="icone__public"></p>
       </div>
       <div
         v-if="props.conversation.hasRightsOn"
         aria-label="Vous êtes gestionnaire de cette conversation"
+        role="note"
       >
         <p class="icone__gestionnaire"></p>
       </div>
