@@ -1,0 +1,19 @@
+//liste des breakpoints en accord avec ceux proposés par Windows : https://learn.microsoft.com/en-us/windows/apps/design/layout/screen-sizes-and-breakpoints-for-responsive-design
+$breakpoints: (
+    s_screen: 640px,
+    m_screen: 1007px,
+    l_screen: 1008px,
+);
+
+//mixins permettant une mise en oeuvre rapide des media query
+@mixin small_screens {
+    @media screen and (max-width: map-get($breakpoints, s_screen)) {
+        @content;
+    }
+}
+
+@mixin medium_screens {
+    @media screen and (max-width: map-get($breakpoints, m_screen)) {
+        @content;
+    }
+}

@@ -1,5 +1,5 @@
 <template>
-  <div class="main container__col w20">
+  <div class="container__col w20">
     <button
       id="conversations-title"
       class="titre__tertiaire w100"

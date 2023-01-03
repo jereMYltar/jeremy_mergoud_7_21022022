@@ -1,5 +1,5 @@
 <template>
-  <div class="main container__col">
+  <div class="container__col">
     <h2 class="titre__secondaire w100">Bienvenue !</h2>
     <p class="text">
       Groupomania vous souhaite la bienvenue sur votre réseau social

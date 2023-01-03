@@ -1,6 +1,9 @@
+@use "responsive";
+
 .main {
   background-color: white;
-  margin: 20px 0;
+  margin: 0;
+  padding: 0px 10px;
   align-self: center;
 }
 
@@ -37,10 +40,10 @@
 .scrollbox {
   overflow-y: scroll;
   &__big {
-    height: 550px;
+    max-height: 50vh;
   }
   &__medium {
-    height: 550px;
+    height: 25vh;
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="main container__col">
+  <div class="container__col">
     <h1 class="titre__secondaire">Oops!</h1>
     <h2 class="titre__tertiaire">{{ resource }} n'existe pas.</h2>
     <router-link :to="{ name: 'HomePage' }" class="bouton__secondaire"

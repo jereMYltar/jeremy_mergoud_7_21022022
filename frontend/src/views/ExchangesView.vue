@@ -1,5 +1,5 @@
 <template>
-  <div class="main container__col">
+  <div class="container__col">
     <div class="container__row container__row--end w90">
       <h2 class="text text--end w80">
         Vous êtes connectés en tant que : {{ usersStore.activeUser.name }}

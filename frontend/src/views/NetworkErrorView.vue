@@ -1,5 +1,5 @@
 <template>
-  <div class="main container__col">
+  <div class="container__col">
     <h1 class="titre__secondaire">Mince !</h1>
     <p class="text">
       Il semblerait que vous recontriez actuellement des problèmes réseau,

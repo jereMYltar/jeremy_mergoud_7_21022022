@@ -1,5 +1,5 @@
 <template>
-  <div class="main container__col">
+  <div class="container__col">
     <h1 class="titre__secondaire">Pas pour l'instant !</h1>
     <h2 class="titre__tertiaire">Vous n'êtes pas autorisé à continuer.</h2>
     <p>

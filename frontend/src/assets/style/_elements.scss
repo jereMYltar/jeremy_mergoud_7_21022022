@@ -1,13 +1,15 @@
 @use "colors";
+@use "responsive";
 
 .titre {
   &__principal {
     font-family: "Nevis_Bold", sans-serif;
-    font-size: 2em;
+    font-size: 1.5em;
     color: colors.$dark;
     background-color: black;
     text-align: center;
-    margin: 0 0 20px 0;
+    margin: 0;
+    padding: 5px 10px;
   }
   &__secondaire {
     font-family: "Luciole_Bold", sans-serif;
@@ -15,20 +17,24 @@
     color: colors.$light;
     background-color: colors.$primary-dark;
     text-align: right;
-    margin: 0 0 20px 0;
+    margin: 0;
+    padding: 5px 10px;
   }
   &__tertiaire {
     font-family: "Luciole_Regular", sans-serif;
     font-size: 1em;
     color: colors.$lightest;
     background-color: colors.$primary-dark;
-    margin: 0 0 20px 0;
+    margin: 0;
+    padding: 5px 10px;
   }
   &__petit {
     font-family: "Luciole_Regular_Italic", sans-serif;
     font-size: 1em;
     color: white;
     background-color: colors.$secondary-dark;
+    margin: 0;
+    padding: 5px 10px;
   }
 }
 
@@ -103,15 +109,14 @@
     border: 1px solid colors.$secondary-dark;
     box-shadow: border-box;
     text-decoration: none;
-    text-align: center;
+    text-align: left;
     padding: 0.2em;
     color: black;
     background-color: white;
     align-self: stretch;
     &:hover, &:focus {
       border: 1px solid white border-box;
-      color: white;
-      background-color: black;
+      background-color: colors.$lightest;
     } 
   }
   &__fermer {
@@ -153,9 +158,6 @@
     background-color: colors.$primary-dark;
     -webkit-mask: url("../Images/usefull_icons/gear-solid.svg") no-repeat center;
     mask: url("../Images/usefull_icons/gear-solid.svg") no-repeat center;
-    &:hover, &:focus {
-      background-color: colors.$dark;
-    }
   }
   &__utilisateur {
     height: 20px;
@@ -165,9 +167,6 @@
     background-color: colors.$primary-dark;
     -webkit-mask: url("../Images/usefull_icons/user-solid.svg") no-repeat center;
     mask: url("../Images/usefull_icons/user-solid.svg") no-repeat center;
-    &:hover, &:focus {
-      background-color: colors.$secondary-dark;
-    }
   }
   &__cadenas {
     height: 20px;
@@ -177,6 +176,14 @@
     background-color: colors.$dark;
     -webkit-mask: url("../Images/usefull_icons/lock-solid.svg") no-repeat center;
     mask: url("../Images/usefull_icons/lock-solid.svg") no-repeat center;
+  }
+}
+*:hover, *:focus {
+  >.icone__parametres {
+    background-color: colors.$dark;
+  }
+  >.icone__utilisateur {
+    background-color: colors.$dark;
   }
 }
 

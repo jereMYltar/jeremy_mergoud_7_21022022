@@ -1,5 +1,5 @@
 <template>
-  <div class="main container__col">
+  <div class="container__col">
     <h2 class="titre__secondaire w100">Connexion</h2>
     <Form class="container__col w100" name="connectionForm" @submit="login">
       <div class="container__row w70">
