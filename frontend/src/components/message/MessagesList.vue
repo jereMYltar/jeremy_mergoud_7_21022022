@@ -1,5 +1,5 @@
 <template>
-  <div class="container__col container__col--jc_start w75">
+  <div class="container__col w75">
     <h2 id="messages-title" class="titre__tertiaire w100" tabindex="0">
       Conversation active : {{ conversationsStore.activeConversation.name }}
     </h2>

@@ -1,7 +1,7 @@
 /* eslint-disable */
 <template>
   <button
-    class="container__row container__row--center bouton__secondaire w100"
+    class="container__row jc__center bouton__secondaire w100"
     @click="openModal"
   >
     <slot name="callButton"></slot>

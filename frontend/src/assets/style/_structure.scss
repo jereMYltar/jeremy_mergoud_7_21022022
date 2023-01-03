@@ -13,27 +13,45 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    &--center {
-      justify-content: center;
-    }
-    &--end {
-      justify-content: flex-end;
-    }
   }
   &__col {
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
     &--rev {
       flex-direction: column-reverse;
     }
-    &--jc_start {
-      justify-content: flex-start;
+  }
+}
 
-    }
-    &--stretch {
-      align-items: stretch;
-    }
+.jc {
+  &__start {
+    justify-content: flex-start;
+  }
+  &__sb {
+    justify-content: space-between;
+  }
+  &__center {
+    justify-content: center;
+  }
+  &__end {
+    justify-content: flex-end;
+  }
+}
+
+.ai {
+  &__start {
+    align-items: flex-start;
+  }
+  &__center {
+    align-items: center;
+  }
+  &__stretch {
+    align-items: stretch;
+  }
+  &__end {
+    align-items: flex-end;
   }
 }
 
