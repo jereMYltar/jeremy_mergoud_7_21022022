@@ -1,8 +1,8 @@
 <template>
   <div class="container__col f1">
     <div class="container__row jc__end w100">
-      <h2 class="text text--end w80">Vous êtes connectés en tant que :</h2>
-      <div class="">
+      <h2 class="text text--end">Vous êtes connectés en tant que :</h2>
+      <div>
         <ModalComponent :global="true" :to-close="toClose">
           <template #callButton>
             <p>{{ usersStore.activeUser.name }}</p>

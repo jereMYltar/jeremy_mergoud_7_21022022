@@ -1,5 +1,5 @@
 <template>
-  <div class="container__col jc__sb w75">
+  <div class="container__col jc__sb w70">
     <div class="container__col w100 f1">
       <ConversationHeader />
       <div class="container__col scrollbox hv__messages w100">

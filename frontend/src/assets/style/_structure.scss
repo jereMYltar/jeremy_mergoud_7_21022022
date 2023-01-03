@@ -15,6 +15,9 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    @include responsive.medium_screens {
+      flex-direction: column;
+    }
   }
   &__col {
     display: flex;
@@ -30,6 +33,9 @@
 .jc {
   &__start {
     justify-content: flex-start;
+    @include responsive.medium_screens {
+      justify-content: center;
+    }
   }
   &__sb {
     justify-content: space-between;
@@ -39,12 +45,18 @@
   }
   &__end {
     justify-content: flex-end;
+    @include responsive.medium_screens {
+      justify-content: center;
+    }
   }
 }
 
 .ai {
   &__start {
     align-items: flex-start;
+    @include responsive.medium_screens {
+      align-items: center;
+    }
   }
   &__center {
     align-items: center;
@@ -54,12 +66,18 @@
   }
   &__end {
     align-items: flex-end;
+    @include responsive.medium_screens {
+      align-items: center;
+    }
   }
 }
 
 .ac {
   &__start {
     align-content: flex-start;
+    @include responsive.medium_screens {
+      align-content: center;
+    }
   }
   &__center {
     align-content: center;
@@ -69,11 +87,15 @@
   }
   &__end {
     align-content: flex-end;
+    @include responsive.medium_screens {
+      align-content: center;
+    }
   }
 }
 
 .scrollbox {
   overflow-y: auto;
+  margin: 3px 0;
 }
 
 .f1 {
@@ -86,24 +108,42 @@
   }
   &90 {
     width: 90%;
+    @include responsive.medium_screens {
+      width: 100%;
+    }
   }
   &80 {
     width: 80%;
+    @include responsive.medium_screens {
+      width: 100%;
+    }
   }
   &75 {
     width: 75%;
+    @include responsive.medium_screens {
+      width: 100%;
+    }
   }
   &70 {
     width: 70%;
+    @include responsive.medium_screens {
+      width: 100%;
+    }
   }
   &50 {
     width: 50%;
   }
-  &25 {
-    width: 25%;
+  &28 {
+    width: 28%;
+    @include responsive.medium_screens {
+      width: 100%;
+    }
   }
   &20 {
     width: 20%;
+    @include responsive.medium_screens {
+      width: 100%;
+    }
   }
   &15 {
     width: 15%;
@@ -114,17 +154,19 @@
 }
 
 .hv {
-  &__max {
-    height: calc(100vh - 150px);
-  }
   &__messages {
     height: calc(100vh - 440px);
     flex-grow: 1;
+    @include responsive.medium_screens {
+      height: 75vh;
+    }
   }
   &__conversations {
     height: calc(100vh - 340px);
     flex-grow: 1;
-    // height: calc(100vh - 240px);
+    @include responsive.medium_screens {
+      height: 75vh;
+    }
   }
 }
   

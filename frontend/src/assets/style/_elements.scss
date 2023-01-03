@@ -13,6 +13,9 @@ p, h1, h2, h3 {
     background-color: black;
     margin: 0;
     padding: 5px 10px;
+    @include responsive.medium_screens {
+      // font-size: 1em;
+    }
   }
   &__secondaire {
     font-family: "Luciole_Bold", sans-serif;
@@ -22,6 +25,7 @@ p, h1, h2, h3 {
     background-color: colors.$primary-dark;
     margin: 0;
     padding: 5px 10px;
+    box-sizing: border-box;
   }
   &__tertiaire {
     font-family: "Luciole_Regular", sans-serif;
@@ -31,6 +35,7 @@ p, h1, h2, h3 {
     background-color: colors.$primary-dark;
     margin: 0;
     padding: 5px 10px;
+    box-sizing: border-box;
   }
   &__petit {
     font-family: "Luciole_Regular_Italic", sans-serif;
@@ -39,6 +44,7 @@ p, h1, h2, h3 {
     background-color: colors.$secondary-dark;
     margin: 0;
     padding: 5px 10px;
+    box-sizing: border-box;
   }
 }
 
@@ -155,6 +161,9 @@ p, h1, h2, h3 {
   &__box {
     width: 50px;
     background-color: inherit;
+    @include responsive.medium_screens {
+      width: 40px;
+    }
   }
   &__parametres {
     height: 30px;
@@ -165,6 +174,11 @@ p, h1, h2, h3 {
     background-color: colors.$primary-dark;
     -webkit-mask: url("../Images/usefull_icons/gear-solid.svg") no-repeat center;
     mask: url("../Images/usefull_icons/gear-solid.svg") no-repeat center;
+    @include responsive.medium_screens {
+      height: 20px;
+      width: 20px;
+      margin: 0;
+    }
   }
   &__utilisateur {
     height: 30px;
@@ -175,6 +189,9 @@ p, h1, h2, h3 {
     background-color: colors.$primary-dark;
     -webkit-mask: url("../Images/usefull_icons/user-solid.svg") no-repeat center;
     mask: url("../Images/usefull_icons/user-solid.svg") no-repeat center;
+    @include responsive.medium_screens {
+      margin: 0;
+    }
   }
   &__public {
     height: 30px;
@@ -185,6 +202,9 @@ p, h1, h2, h3 {
     background-color: colors.$primary-dark;
     -webkit-mask: url("../Images/usefull_icons/people-line-solid.svg") no-repeat center;
     mask: url("../Images/usefull_icons/people-line-solid.svg") no-repeat center;
+    @include responsive.medium_screens {
+      margin: 0;
+    }
   }
   &__gestionnaire {
     height: 30px;
@@ -195,6 +215,9 @@ p, h1, h2, h3 {
     background-color: colors.$primary-dark;
     -webkit-mask: url("../Images/usefull_icons/owner-solid.svg") no-repeat center;
     mask: url("../Images/usefull_icons/owner-solid.svg") no-repeat center;
+    @include responsive.medium_screens {
+      margin: 0;
+    }
   }
   &__cadenas {
     height: 30px;
@@ -205,6 +228,9 @@ p, h1, h2, h3 {
     background-color: colors.$dark;
     -webkit-mask: url("../Images/usefull_icons/lock-solid.svg") no-repeat center;
     mask: url("../Images/usefull_icons/lock-solid.svg") no-repeat center;
+    @include responsive.medium_screens {
+      margin: 0;
+    }
   }
   &__fermeture {
     height: 30px;
@@ -214,6 +240,11 @@ p, h1, h2, h3 {
     background-color: white;
     -webkit-mask: url("../Images/usefull_icons/xmark-solid.svg") no-repeat center;
     mask: url("../Images/usefull_icons/xmark-solid.svg") no-repeat center;
+    @include responsive.medium_screens {
+      height: 20px;
+      width: 20px;
+      margin: 0;
+    }
   }
 }
 *:hover, *:focus {
@@ -222,6 +253,13 @@ p, h1, h2, h3 {
   }
   >.icone__utilisateur {
     background-color: colors.$dark;
+  }
+}
+
+.logo {
+  height: 3em;
+  @include responsive.medium_screens {
+    height: 2.5em;
   }
 }
 
