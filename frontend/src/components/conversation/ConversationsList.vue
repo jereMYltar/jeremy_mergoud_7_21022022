@@ -1,11 +1,16 @@
 <template>
-  <div class="main container__col w20 scrollbox scrollbox__big">
-    <SingleConversationTile
-      v-for="conversation in conversationsStore.conversations"
-      :key="conversation.id"
-      :conversation="conversation"
-    >
-    </SingleConversationTile>
+  <div class="main container__col w20">
+    <h2 id="conversations-title" class="titre__tertiaire w100" tabindex="0">
+      Liste des conversations
+    </h2>
+    <div class="container__col scrollbox scrollbox__big w100">
+      <SingleConversationTile
+        v-for="conversation in conversationsStore.conversations"
+        :key="conversation.id"
+        :conversation="conversation"
+      >
+      </SingleConversationTile>
+    </div>
     <ModalComponent :global="true" :to-close="toClose">
       <template #callButton>
         <p>Nouvelle conversation</p>

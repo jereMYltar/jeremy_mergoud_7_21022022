@@ -1,8 +1,11 @@
 <template>
   <div class="container__col container__col--jc_start w75">
-    <h3 class="titre__secondaire w100">
-      {{ conversationsStore.activeConversation.name }}
-    </h3>
+    <h2 id="messages-title" class="titre__tertiaire w100" tabindex="0">
+      Conversation active : {{ conversationsStore.activeConversation.name }}
+    </h2>
+    <button class="bouton__tertiaire w100" @click.prevent="conversationChange">
+      Changer de conversation
+    </button>
     <div class="container__col scrollbox w100 h260">
       <SingleMessageTile
         v-for="message in messagesStore.messages"
@@ -27,6 +30,10 @@ import SingleMessageTile from "@/components/message/SingleMessageTile.vue";
 
 const messagesStore = useMessagesStore();
 const conversationsStore = useConversationsStore();
+
+function conversationChange() {
+  conversationsStore.removeActiveConversation();
+}
 </script>
 
 <style scoped></style>
