@@ -1,6 +1,6 @@
 <template>
   <div class="main container__col w100">
-    <h1 class="titre__tertiaire w100">Votre message</h1>
+    <h3 class="titre__tertiaire w100">Votre message</h3>
     <Form
       :class="[
         'w100',
