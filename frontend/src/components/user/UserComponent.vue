@@ -1,9 +1,9 @@
 <template>
   <div class="container__col w100">
-    <h2 v-if="!props.userId" class="titre__secondaire w100">
+    <h2 v-if="!props.userId" class="titre__secondaire w75">
       Création de compte
     </h2>
-    <h2 v-if="props.userId" class="titre__secondaire w100">
+    <h2 v-if="props.userId" class="titre__secondaire w75">
       Modification de compte
     </h2>
     <Form

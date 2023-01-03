@@ -1,6 +1,6 @@
 <template>
   <div class="container__col">
-    <h2 class="titre__secondaire w100">Connexion</h2>
+    <h2 class="titre__secondaire w75">Connexion</h2>
     <Form
       class="container__col jc__center ai__start w75"
       name="connectionForm"

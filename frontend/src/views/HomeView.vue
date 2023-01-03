@@ -16,10 +16,10 @@
       vous suffit de cliquer sur "Se connecter".
     </p>
     <div class="container__col w100">
-      <router-link :to="{ name: 'SignUp' }" class="bouton__principal"
+      <router-link :to="{ name: 'SignUp' }" class="bouton__principal w50"
         >Créer un compte</router-link
       >
-      <router-link :to="{ name: 'Login' }" class="bouton__principal"
+      <router-link :to="{ name: 'Login' }" class="bouton__principal w50"
         >Se connecter</router-link
       >
     </div>

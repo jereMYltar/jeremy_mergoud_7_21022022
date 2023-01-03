@@ -13,6 +13,7 @@ p, h1, h2, h3 {
     background-color: black;
     margin: 0;
     padding: 5px 10px;
+    box-sizing: border-box;
     @include responsive.medium_screens {
       font-size: 1em;
     }
@@ -23,7 +24,7 @@ p, h1, h2, h3 {
     text-align: right;
     color: colors.$light;
     background-color: colors.$primary-dark;
-    margin: 0;
+    margin: 10px 0;
     padding: 5px 10px;
     box-sizing: border-box;
     @include responsive.medium_screens {
