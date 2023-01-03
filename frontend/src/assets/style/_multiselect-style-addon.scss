@@ -1,58 +1,75 @@
 @use "colors";
 @use "fonts";
+@use "responsive";
 
 .multiselect-tag {
-    font-family: "Luciole_Regular", sans-serif;
-    color: colors.$primary-dark;
-    background-color: colors.$light;
-    &-remove {
-        margin-left: 5px;
-        color: white;
-        background-color: black;
+  font-family: "Luciole_Regular", sans-serif;
+  font-size: 1em;;
+  color: colors.$primary-dark;
+  word-break: break-word;
+  background-color: colors.$light;
+  &-remove {
+    margin-left: 5px;
+    color: white;
+    background-color: black;
+  }
+  &:hover {
+    color: colors.$light;
+    background-color: colors.$primary-dark;
+    >.multiselect-tag-remove {
+      color: black;
+      background-color: white;
+      &:hover {
+        color: black;
+        background-color: colors.$light;
+      }
     }
-    &:hover {
-        color: colors.$light;
-        background-color: colors.$primary-dark;
-        >.multiselect-tag-remove {
-            color: black;
-            background-color: white;
-            &:hover {
-                color: black;
-                background-color: colors.$light;
-            }
-        }
-    }
+  }
+  @include responsive.medium_screens {
+    font-size: 0.8em;
+    align-items: flex-start;
+  }
+}
+
+.multiselect-wrapper {
+  @include responsive.medium_screens {
+    flex-wrap: wrap;
+  }
 }
 
 .multiselect-option {
-    font-family: "Luciole_Regular", sans-serif;
+  font-family: "Luciole_Regular", sans-serif;
+  color: colors.$primary-dark;
+  background-color: white;
+  &.is-pointed {
     color: colors.$primary-dark;
-    background-color: white;
-    &.is-pointed {
-        color: colors.$primary-dark;
-        background-color: colors.$light;
-    }
+    background-color: colors.$light;
+  }
+  @include responsive.medium_screens {
+    font-size: 0.8em;
+    align-items: flex-start;
+  }
 }
 
 .multiselect-clear {
-    background-color: black;
-    padding: 0.25rem;
-    margin-right: 0.5rem;
-    border-radius: 4px;
-    &:hover {
-        color: black;
-        background-color: colors.$dark;
-    }
-    &-icon {
-        background-color: white;
-    }
+  background-color: black;
+  padding: 0.25rem;
+  margin-right: 0.5rem;
+  border-radius: 4px;
+  &:hover {
+    color: black;
+    background-color: colors.$dark;
+  }
+  &-icon {
+    background-color: white;
+  }
 }
 
 .multiselect-caret {
-    background-color: black;
+  background-color: black;
 }
 
 .multiselect-placeholder {
-    font-family: "Luciole_Regular_Italic", sans-serif;
-    font-size: 0.8em;
+  font-family: "Luciole_Regular_Italic", sans-serif;
+  font-size: 0.8em;
 }

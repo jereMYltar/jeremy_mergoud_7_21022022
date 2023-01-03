@@ -105,16 +105,17 @@
 .w {
   &100 {
     width: 100%;
+    max-width: 1920px;
   }
   &90 {
     width: 90%;
-    @include responsive.medium_screens {
+    @include responsive.large_screens {
       width: 100%;
     }
   }
   &80 {
     width: 80%;
-    @include responsive.medium_screens {
+    @include responsive.large_screens {
       width: 100%;
     }
   }

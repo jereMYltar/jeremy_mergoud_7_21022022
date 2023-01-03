@@ -2,7 +2,7 @@
 $breakpoints: (
     s_screen: 640px,
     m_screen: 1007px,
-    l_screen: 1008px,
+    l_screen: 1366px,
 );
 
 //mixins permettant une mise en oeuvre rapide des media query
@@ -14,6 +14,12 @@ $breakpoints: (
 
 @mixin medium_screens {
     @media screen and (max-width: map-get($breakpoints, m_screen)) {
+        @content;
+    }
+}
+
+@mixin large_screens {
+    @media screen and (max-width: map-get($breakpoints, l_screen)) {
         @content;
     }
 }
