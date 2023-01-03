@@ -1,52 +1,55 @@
 <template>
   <div class="container__col w100">
-    <h2 class="titre__secondaire w100">Création de compte</h2>
-    <Form class="container__col w100" name="signUpForm" @submit="signUp">
-      <div class="container__row w70">
-        <label for="firstName" class="text">Prénom</label>
-        <Field
-          id="firstName"
-          v-model="firstName"
-          name="firstName"
-          type="text"
-          maxlength="20"
-          placeholder="Votre prénom"
-          :rules="validateName"
-        />
-        <ErrorMessage name="firstName" class="alerte" />
-      </div>
-      <div class="container__row w70">
-        <label for="lastName" class="text">Nom</label>
-        <Field
-          id="lastName"
-          v-model="lastName"
-          name="lastName"
-          type="text"
-          maxlength="20"
-          placeholder="Votre nom d'usage"
-          :rules="validateName"
-        />
-        <ErrorMessage name="lastName" class="alerte" />
-      </div>
-      <div class="container__row w70">
-        <label for="email" class="text">Id de connection</label>
-        <Field
-          id="email"
-          v-model="email"
-          name="email"
-          type="text"
-          maxlength="255"
-          placeholder="Votre identifiant de connexion"
-          :rules="validateEmail"
-        />
-        <ErrorMessage name="email" class="alerte" />
-      </div>
-      <div v-if="props.userId" class="container__row w70">
-        <h3>
+    <h2 v-if="!props.userId" class="titre__secondaire w100">
+      Création de compte
+    </h2>
+    <h2 v-if="props.userId" class="titre__secondaire w100">
+      Modification de compte
+    </h2>
+    <Form
+      class="container__col jc__center ai__start w75"
+      name="signUpForm"
+      @submit="signUp"
+    >
+      <label for="firstName" class="text">Prénom</label>
+      <Field
+        id="firstName"
+        v-model="firstName"
+        name="firstName"
+        type="text"
+        maxlength="20"
+        placeholder="Votre prénom"
+        :rules="validateName"
+      />
+      <ErrorMessage name="firstName" class="alerte" />
+      <label for="lastName" class="text">Nom</label>
+      <Field
+        id="lastName"
+        v-model="lastName"
+        name="lastName"
+        type="text"
+        maxlength="20"
+        placeholder="Votre nom d'usage"
+        :rules="validateName"
+      />
+      <ErrorMessage name="lastName" class="alerte" />
+      <label for="email" class="text">Id de connection</label>
+      <Field
+        id="email"
+        v-model="email"
+        name="email"
+        type="text"
+        maxlength="255"
+        placeholder="Votre identifiant de connexion"
+        :rules="validateEmail"
+      />
+      <ErrorMessage name="email" class="alerte" />
+      <div v-if="props.userId" class="container__col jc__center ai__start w100">
+        <p class="text">
           Si vous souhaitez modifier votre mot de passe, saisissez votre mot de
           passe actuel puis saississez un nouveau mot de passe, sinon laissez ce
           champs vide.
-        </h3>
+        </p>
         <label for="existingPassword" class="text">
           Votre mot de passe actuel
         </label>
@@ -61,57 +64,58 @@
         />
         <ErrorMessage name="existingPassword" class="alerte" />
       </div>
-      <div v-if="!props.userId || initialPassword" class="container_row w70">
-        <div class="container__row">
-          <label for="mdp" class="text">Mot de passe</label>
-          <Field
-            id="mdp"
-            v-model="password"
-            name="password"
-            type="password"
-            maxlength="128"
-            placeholder="Votre mot de passe"
-            :rules="validatePassword"
-          />
-          <ErrorMessage name="password" class="alerte" />
-        </div>
-        <div class="container__row">
-          <label for="mdp2" class="text">Confirmer votre mot de passe</label>
-          <Field
-            id="mdp2"
-            v-model="password2"
-            name="password2"
-            type="password"
-            maxlength="128"
-            placeholder="Confirmer votre mot de passe"
-            :rules="validatePassword2"
-          />
-          <ErrorMessage name="password2" class="alerte" />
-        </div>
+      <div
+        v-if="!props.userId || initialPassword"
+        class="container__col jc__center ai__start w100"
+      >
+        <label for="mdp" class="text">Mot de passe</label>
+        <Field
+          id="mdp"
+          v-model="password"
+          name="password"
+          type="password"
+          maxlength="128"
+          placeholder="Votre mot de passe"
+          :rules="validatePassword"
+        />
+        <ErrorMessage name="password" class="alerte" />
+        <label for="mdp2" class="text">Confirmer votre mot de passe</label>
+        <Field
+          id="mdp2"
+          v-model="password2"
+          name="password2"
+          type="password"
+          maxlength="128"
+          placeholder="Confirmer votre mot de passe"
+          :rules="validatePassword2"
+        />
+        <ErrorMessage name="password2" class="alerte" />
       </div>
-      <div class="container__col w70">
-        <div class="container__row w100">
-          <Field name="isAdminField" :value="isAdmin">
-            <label for="isAdmin" class="text">
-              Cochez cette case si vous êtes administrateur du site :
-            </label>
-            <input id="isAdmin" v-model="isAdmin" type="checkbox" />
-          </Field>
-        </div>
-        <div v-if="isAdmin" class="container__row w100">
-          <label for="adminPassword" class="text">
-            Code spécifique de vérification transmis par votre organisation.
-          </label>
-          <Field
-            id="adminPassword"
-            v-model="adminPassword"
-            name="adminPassword"
-            type="password"
-            placeholder="Mot de passe donné par votre organisation"
-            :rules="validateAdminValue"
-          />
-          <ErrorMessage name="adminPassword" class="alerte" />
-        </div>
+      <!-- <Field name="isAdminField" :value="isAdmin" class="container__row">
+        <label for="isAdmin" class="text">
+          Cochez cette case si vous êtes administrateur du site :
+        </label>
+        <input id="isAdmin" v-model="isAdmin" type="checkbox" />
+      </Field> -->
+      <p class="w100">
+        <label for="isAdmin" class="text">
+          Cochez cette case si vous êtes administrateur du site :
+        </label>
+        <input id="isAdmin" v-model="isAdmin" type="checkbox" />
+      </p>
+      <div v-if="isAdmin" class="container__col jc__center ai__start w100">
+        <label for="adminPassword" class="text">
+          Code spécifique de vérification transmis par votre organisation.
+        </label>
+        <Field
+          id="adminPassword"
+          v-model="adminPassword"
+          name="adminPassword"
+          type="password"
+          placeholder="Mot de passe donné par votre organisation"
+          :rules="validateAdminValue"
+        />
+        <ErrorMessage name="adminPassword" class="alerte" />
       </div>
       <input
         v-if="!props.userId"
@@ -121,7 +125,7 @@
       />
       <input
         v-if="props.userId"
-        class="bouton__principal"
+        class="bouton__principal w100"
         type="submit"
         value="Modifier votre compte"
       />
@@ -132,7 +136,7 @@
         (props.userId == usersStore.activeUser.id ||
           usersStore.activeUser.isAdmin)
       "
-      class="bouton__principal w100"
+      class="bouton__secondaire w75"
       @click="deleteAccount"
     >
       Supprimer le compte

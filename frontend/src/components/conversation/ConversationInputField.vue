@@ -1,36 +1,33 @@
 <template>
-  <h1 v-if="!props.existingConversation" class="titre__tertiaire w100">
+  <h2 v-if="!props.existingConversation" class="titre__tertiaire w100">
     Créer une nouvelle conversation
-  </h1>
-  <h1 v-if="props.existingConversation" class="titre__tertiaire w100">
+  </h2>
+  <h2 v-if="props.existingConversation" class="titre__tertiaire w100">
     Modifier la conversation
-  </h1>
+  </h2>
   <Form
-    class="container__col w90"
+    class="container__col jc__center ai__start w75"
     name="connectionForm"
     @submit="saveConversation"
   >
-    <div class="container_col w100">
-      <div class="container__row w100">
-        <label for="conversationName" class="text"
-          >Nom de la conversation :
-        </label>
-        <Field
-          id="conversationName"
-          v-model="conversationName"
-          name="conversationName"
-          type="text"
-          maxlength="80"
-          placeholder="Le nom de votre conversation"
-          :rules="isNotEmpty"
-        />
-      </div>
-      <div class="text">
-        Nombre de caractères restants : {{ charactersLeftInConversationName }}
-      </div>
-      <ErrorMessage name="conversationName" class="alerte" />
+    <label for="conversationName" class="text">Nom de la conversation : </label>
+    <Field
+      id="conversationName"
+      v-model="conversationName"
+      name="conversationName"
+      type="text"
+      maxlength="80"
+      placeholder="Le nom de votre conversation"
+      :rules="isNotEmpty"
+    />
+    <div class="text__details">
+      Nombre de caractères restants : {{ charactersLeftInConversationName }}
     </div>
-    <div v-if="props.existingConversation">
+    <ErrorMessage name="conversationName" class="alerte" />
+    <div
+      v-if="props.existingConversation"
+      class="container__col jc__center ai__start w100"
+    >
       <Field
         ref="ownerFieldRef"
         name="ownerField"
@@ -57,7 +54,7 @@
         <ErrorMessage name="ownerField" class="alerte" />
       </Field>
     </div>
-    <div v-if="usersStore.activeUser.isAdmin" class="container__row w100">
+    <div v-if="usersStore.activeUser.isAdmin" class="w100">
       <label for="isPublic" class="text">Conversation publique :</label>
       <input id="isPublic" v-model="isPublic" type="checkbox" />
     </div>
@@ -66,12 +63,12 @@
         props.existingConversation &&
         conversationsStore.activeConversation.hasRightsOn
       "
-      class="container__row w100"
+      class="w100"
     >
-      <label for="isClosed" class="text">Conversation close :</label>
+      <label for="isClosed" class="text">Conversation verrouillée :</label>
       <input id="isClosed" v-model="isClosed" type="checkbox" />
     </div>
-    <div v-if="!isPublic">
+    <div v-if="!isPublic" class="container__col jc__center ai__start w100">
       <Field
         ref="memberListFieldRef"
         name="conversationMembers"
@@ -99,16 +96,16 @@
         <ErrorMessage name="conversationMembers" class="alerte" />
       </Field>
     </div>
-    <div class="container__col w100">
+    <div class="w100">
       <input
         v-if="!props.existingConversation"
-        class="bouton__principal w70"
+        class="bouton__principal w100"
         type="submit"
         value="Créer la conversation"
       />
       <input
         v-if="props.existingConversation"
-        class="bouton__principal w70"
+        class="bouton__principal w100"
         type="submit"
         value="Modifier la conversation"
       />

@@ -1,36 +1,40 @@
 <template>
   <div class="container__col">
     <h2 class="titre__secondaire w100">Connexion</h2>
-    <Form class="container__col w100" name="connectionForm" @submit="login">
-      <div class="container__row w70">
-        <label for="email" class="text">Id de connection</label>
-        <Field
-          id="email"
-          v-model="email"
-          name="email"
-          type="text"
-          maxlength="255"
-          placeholder="Votre identifiant de connexion"
-          :rules="validateEmail"
-        />
-      </div>
+    <Form
+      class="container__col jc__center ai__start w75"
+      name="connectionForm"
+      @submit="login"
+    >
+      <label for="email" class="text">Id de connection</label>
+      <Field
+        id="email"
+        v-model="email"
+        name="email"
+        type="text"
+        maxlength="255"
+        placeholder="Votre identifiant de connexion"
+        :rules="validateEmail"
+      />
       <ErrorMessage name="email" class="alerte" />
-      <div class="container__row w70">
-        <label for="mdp" class="text">Mot de passe</label>
-        <Field
-          id="mdp"
-          v-model="password"
-          name="password"
-          type="password"
-          maxlength="255"
-          placeholder="Votre mot de passe"
-          :rules="validatePassword"
-        />
-      </div>
+      <label for="mdp" class="text">Mot de passe</label>
+      <Field
+        id="mdp"
+        v-model="password"
+        name="password"
+        type="password"
+        maxlength="255"
+        placeholder="Votre mot de passe"
+        :rules="validatePassword"
+      />
       <ErrorMessage name="password" class="alerte" />
-      <input class="bouton__principal" type="submit" value="Se connecter" />
+      <input
+        class="bouton__principal w100"
+        type="submit"
+        value="Se connecter"
+      />
     </Form>
-    <router-link :to="{ name: 'HomePage' }" class="bouton__secondaire w50"
+    <router-link :to="{ name: 'HomePage' }" class="bouton__tertiaire"
       >Annuler</router-link
     >
   </div>

@@ -5,24 +5,25 @@
   &__principal {
     font-family: "Nevis_Bold", sans-serif;
     font-size: 1.5em;
+    text-align: center;
     color: colors.$dark;
     background-color: black;
-    text-align: center;
     margin: 0;
     padding: 5px 10px;
   }
   &__secondaire {
     font-family: "Luciole_Bold", sans-serif;
     font-size: 1.5em;
+    text-align: right;
     color: colors.$light;
     background-color: colors.$primary-dark;
-    text-align: right;
     margin: 0;
     padding: 5px 10px;
   }
   &__tertiaire {
     font-family: "Luciole_Regular", sans-serif;
     font-size: 1em;
+    text-align: left;
     color: colors.$lightest;
     background-color: colors.$primary-dark;
     margin: 0;
@@ -61,9 +62,8 @@
     border: none;
     text-decoration: none;
     text-align: center;
-    margin: 20px 0;
-    padding: 10px;
-    width: 70%;
+    margin: 10px 0;
+    padding: 10px 5px;
     cursor: pointer;
     color: colors.$primary-dark;
     background-color: colors.$light;
@@ -78,8 +78,8 @@
     border: none;
     text-decoration: none;
     text-align: center;
-    margin: 10px 0;
-    padding: 10px;
+    margin: 5px 0;
+    padding: 10px 5px;
     cursor: pointer;
     color: colors.$primary-dark;
     background-color: colors.$lightest;
@@ -89,11 +89,11 @@
     }
   }
   &__tertiaire {
-    font-family: "Luciole_Bold", sans-serif;
+    font-family: "Luciole_Regular", sans-serif;
     font-size: 0.8em;
     border: none;
     text-decoration: none;
-    text-align: left;
+    text-align: center;
     margin: 5px 0;
     padding: 5px;
     cursor: pointer;
@@ -168,6 +168,24 @@
     -webkit-mask: url("../Images/usefull_icons/user-solid.svg") no-repeat center;
     mask: url("../Images/usefull_icons/user-solid.svg") no-repeat center;
   }
+  &__public {
+    height: 20px;
+    width: 20px;
+    border: none;
+    padding: 0.2em;
+    background-color: colors.$primary-dark;
+    -webkit-mask: url("../Images/usefull_icons/people-line-solid.svg") no-repeat center;
+    mask: url("../Images/usefull_icons/people-line-solid.svg") no-repeat center;
+  }
+  &__gestionnaire {
+    height: 20px;
+    width: 20px;
+    border: none;
+    padding: 0.2em;
+    background-color: colors.$primary-dark;
+    -webkit-mask: url("../Images/usefull_icons/owner-solid.svg") no-repeat center;
+    mask: url("../Images/usefull_icons/owner-solid.svg") no-repeat center;
+  }
   &__cadenas {
     height: 20px;
     width: 20px;
@@ -218,17 +236,25 @@ input {
     font-size: 1em;
     color: black;
     background-color: colors.$lightest;
-    width: 70%;
+    width: 100%;
     border: none;
     margin: 0 0 10px 0;
+    &::placeholder {
+        font-family: "Luciole_Regular_Italic", sans-serif;
+        font-size: 0.8em;
+      }
   }
   &[type="password"] {
     font-family: "Luciole_Regular", sans-serif;
     font-size: 1em;
     color: black;
     background-color: colors.$lightest;
-    width: 70%;
+    width: 100%;
     border: none;
     margin: 0 0 10px 0;
+    &::placeholder {
+      font-family: "Luciole_Regular_Italic", sans-serif;
+      font-size: 0.8em;
+    }
   }
 }

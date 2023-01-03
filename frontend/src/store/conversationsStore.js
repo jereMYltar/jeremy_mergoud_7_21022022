@@ -42,16 +42,15 @@ export const useConversationsStore = defineStore("conversations", () => {
     delete payload.createdAt;
     delete payload.owner;
     delete payload.members;
-    console.log("initialPayload : ", initialPayload);
-    console.log("payload : ", payload);
     if (index == -1) {
       this.conversations.unshift(payload);
+      this.activeConversation = initialPayload;
     } else {
       for (const key in payload) {
         conversations.value[index][key] = payload[key];
+        activeConversation.value[key] = payload[key];
       }
     }
-    this.activeConversation = initialPayload;
     sortConversationArray(conversations.value);
   }
   function updateActiveConversation(payload) {

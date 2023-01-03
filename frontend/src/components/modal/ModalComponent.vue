@@ -2,7 +2,7 @@
 <template>
   <button
     class="container__row jc__center bouton__secondaire w100"
-    @click="openModal"
+    @click.stop="openModal"
   >
     <slot name="callButton"></slot>
   </button>
@@ -32,7 +32,7 @@
               v-if="props.global"
               ref="lastButton1"
               type="button"
-              class="bouton__secondaire w50"
+              class="bouton__tertiaire"
               @click="closeModal"
             >
               Annuler
@@ -209,9 +209,9 @@ watch(
   padding: 1rem;
 }
 
-.vue-modal-content :deep(:focus) {
+/* .vue-modal-content :deep(:focus) {
   border: solid 5px rgb(16, 161, 66);
-}
+} */
 
 .fade-enter-active,
 .fade-leave-active {

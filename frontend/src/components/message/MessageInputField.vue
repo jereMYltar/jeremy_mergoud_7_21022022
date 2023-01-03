@@ -1,6 +1,17 @@
 <template>
-  <div class="main container__col w100">
-    <h3 class="titre__tertiaire w100">Votre message</h3>
+  <div class="container__col w100">
+    <h3
+      v-if="Object.keys(props.message).length == 0"
+      class="titre__tertiaire w100"
+    >
+      Nouveau message
+    </h3>
+    <h3
+      v-if="Object.keys(props.message).length > 0"
+      class="titre__tertiaire w100"
+    >
+      Modifiez votre message
+    </h3>
     <Form class="container__col jc__center ai__start w75" @submit="saveMessage">
       <label for="message" class="text">Votre message</label>
       <Field
@@ -12,7 +23,7 @@
         placeholder="Contenu de votre message"
         :rules="isNotEmpty"
       />
-      <div class="text">
+      <div class="text__details">
         Nombre de caractères restants : {{ charactersLeftInContent }}
       </div>
       <ErrorMessage name="messageContent" class="alerte" />
@@ -20,7 +31,7 @@
         <label for="isGlobal" class="text">Message global ? </label>
         <input id="isGlobal" v-model="isGlobal" type="checkbox" />
       </p>
-      <div class="w75">
+      <div class="w100">
         <input
           v-if="Object.keys(props.message).length == 0"
           class="bouton__secondaire w100"
