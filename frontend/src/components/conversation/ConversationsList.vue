@@ -2,11 +2,11 @@
   <div class="container__col w28">
     <button
       id="conversations-title"
-      class="titre__tertiaire w100"
-      aria-label="Cliquer pour afficher ou masquer la liste des conversations."
+      class="bouton__secondaire bouton__secondaire--rev w100"
+      aria-label="Cliquer pour afficher ou masquer la liste des conversations (liste affichée)."
       @click="toggleConversationsDisplay"
     >
-      <h2 class="titre__tertiaire">Liste des conversations</h2>
+      <h2>Liste des conversations</h2>
     </button>
     <div id="conversations-list" class="container__col w100 f1">
       <div class="container__col scrollbox w100 hv__conversations">
@@ -77,16 +77,22 @@ async function closeAllModals() {
 
 async function toggleConversationsDisplay() {
   let list = document.getElementById("conversations-list");
-  const title = document
-    .getElementById("conversations-title")
-    .getElementsByTagName("h2");
-  console.log(title[0]);
+  const button = document.getElementById("conversations-title");
+  const title = button.getElementsByTagName("h2");
   if (window.getComputedStyle(list).display != "none") {
     list.style.display = "none";
     title[0].innerText = "Liste des conversations (masquée)";
+    button.setAttribute(
+      "aria-label",
+      "Cliquer pour afficher ou masquer la liste des conversations (liste masquée)."
+    );
   } else {
     list.style.display = "block";
     title[0].innerText = "Liste des conversations";
+    button.setAttribute(
+      "aria-label",
+      "Cliquer pour afficher ou masquer la liste des conversations (liste affichée)."
+    );
   }
 }
 </script>

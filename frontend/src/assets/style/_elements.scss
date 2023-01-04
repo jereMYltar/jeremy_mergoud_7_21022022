@@ -3,6 +3,9 @@
 
 p, h1, h2, h3 {
   margin: 0;
+  display: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
 .titre {
   &__principal {
@@ -104,6 +107,14 @@ p, h1, h2, h3 {
     &:hover, &:focus {
       color: colors.$lightest;
       background-color: colors.$primary-dark;
+    }
+    &--rev {
+      color: colors.$lightest;
+      background-color: colors.$primary-dark;
+      &:hover, &:focus {
+        color: colors.$primary-dark;
+        background-color: colors.$lightest;
+      }
     }
   }
   &__tertiaire {

@@ -19,6 +19,7 @@
         type="text"
         maxlength="20"
         placeholder="Votre prénom"
+        aria-autocomplete="given-name"
         :rules="validateName"
       />
       <ErrorMessage name="firstName" class="alerte" />
@@ -30,6 +31,7 @@
         type="text"
         maxlength="20"
         placeholder="Votre nom d'usage"
+        aria-autocomplete="family-name"
         :rules="validateName"
       />
       <ErrorMessage name="lastName" class="alerte" />
@@ -41,6 +43,7 @@
         type="text"
         maxlength="255"
         placeholder="Votre identifiant de connexion"
+        aria-autocomplete="email"
         :rules="validateEmail"
       />
       <ErrorMessage name="email" class="alerte" />
@@ -60,6 +63,7 @@
           type="password"
           maxlength="128"
           placeholder="Votre mot de passe actuel"
+          aria-autocomplete="current-password"
           :rules="validateExistingPassword"
         />
         <ErrorMessage name="existingPassword" class="alerte" />
@@ -76,6 +80,7 @@
           type="password"
           maxlength="128"
           placeholder="Votre mot de passe"
+          aria-autocomplete="new-password"
           :rules="validatePassword"
         />
         <ErrorMessage name="password" class="alerte" />
@@ -87,16 +92,11 @@
           type="password"
           maxlength="128"
           placeholder="Confirmer votre mot de passe"
+          aria-autocomplete="new-password"
           :rules="validatePassword2"
         />
         <ErrorMessage name="password2" class="alerte" />
       </div>
-      <!-- <Field name="isAdminField" :value="isAdmin" class="container__row">
-        <label for="isAdmin" class="text">
-          Cochez cette case si vous êtes administrateur du site :
-        </label>
-        <input id="isAdmin" v-model="isAdmin" type="checkbox" />
-      </Field> -->
       <p class="w100">
         <label for="isAdmin" class="text">
           Cochez cette case si vous êtes administrateur du site :

@@ -14,6 +14,7 @@
         type="text"
         maxlength="255"
         placeholder="Votre identifiant de connexion"
+        aria-autocomplete="username"
         :rules="validateEmail"
       />
       <ErrorMessage name="email" class="alerte" />
@@ -25,6 +26,7 @@
         type="password"
         maxlength="255"
         placeholder="Votre mot de passe"
+        aria-autocomplete="current-password"
         :rules="validatePassword"
       />
       <ErrorMessage name="password" class="alerte" />

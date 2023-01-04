@@ -14,6 +14,9 @@
             aria-label="Propriétés de la conversation"
           ></div>
         </template>
+        <button class="bouton__secondaire w100" @click.stop="goToNewMessage()">
+          Saisir un nouveau message
+        </button>
         <ModalComponent
           v-if="conversationsStore.activeConversation.hasRightsOn"
           :global="true"
@@ -82,6 +85,15 @@ const toClose = ref(false);
 //methods
 function conversationChange() {
   conversationsStore.removeActiveConversation();
+}
+
+async function goToNewMessage() {
+  closeAllModals();
+  await nextTick();
+  alert(
+    "Vous allez être redirigé(e) vers le champs de saisie d'un nouveau message"
+  );
+  document.getElementById("messageContent").focus();
 }
 
 async function deleteConversation(id) {

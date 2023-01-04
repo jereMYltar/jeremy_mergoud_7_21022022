@@ -113,6 +113,8 @@ async function saveMessage() {
         left: 0,
         behavior: "smooth",
       });
+      alert("Vous allez être redirigé(e) vers le titre de la conversation");
+      document.getElementById("messages-title").focus();
     } catch (error) {
       console.error(error);
       return "Problème serveur";
