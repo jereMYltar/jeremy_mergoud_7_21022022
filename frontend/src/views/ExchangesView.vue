@@ -81,13 +81,4 @@ onMounted(async () => {
     return "Problème serveur";
   }
 });
-
-conversationsStore.$subscribe(async () => {
-  await nextTick();
-  if (conversationsStore.activeConversation) {
-    document.getElementById("messages-title").focus();
-  } else {
-    document.getElementById("conversations-title").focus();
-  }
-});
 </script>

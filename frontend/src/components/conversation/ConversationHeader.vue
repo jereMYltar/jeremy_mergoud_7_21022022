@@ -23,7 +23,7 @@
           :to-close="toClose"
         >
           <template #callButton>
-            <p>Modifier</p>
+            <p>Modifier la conversation</p>
           </template>
           <ConversationInputField
             :existing-conversation="1"
@@ -53,7 +53,7 @@
             deleteConversation(conversationsStore.activeConversation.id)
           "
         >
-          Supprimer
+          Supprimer la conversation
         </button>
         <button
           class="bouton__secondaire w100"
@@ -83,15 +83,18 @@ const conversationsStore = useConversationsStore();
 const toClose = ref(false);
 
 //methods
-function conversationChange() {
+async function conversationChange() {
   conversationsStore.removeActiveConversation();
+  await nextTick();
+  alert("Le focus va être déplacé vers la liste des conversations");
+  document.getElementById("conversations-title").focus();
 }
 
 async function goToNewMessage() {
   closeAllModals();
   await nextTick();
   alert(
-    "Vous allez être redirigé(e) vers le champs de saisie d'un nouveau message"
+    "Le focus va être déplacé vers le champs de saisie d'un nouveau message"
   );
   document.getElementById("messageContent").focus();
 }

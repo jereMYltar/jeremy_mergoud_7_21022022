@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { defineProps, nextTick } from "vue";
 import { useConversationsStore } from "@/store/conversationsStore";
 import EventService from "@/services/EventService.js";
 
@@ -51,6 +51,9 @@ async function showDetails(id) {
   try {
     const conversationDetails = await EventService.getConversationDetail(id);
     conversationsStore.addActiveConversation(conversationDetails.data.body);
+    await nextTick();
+    alert("Le focus va être déplacé vers le titre de la conversation");
+    document.getElementById("messages-title").focus();
   } catch (error) {
     return "Problème serveur";
   }
