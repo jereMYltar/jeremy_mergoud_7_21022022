@@ -136,7 +136,7 @@ p, h1, h2, h3 {
     font-family: "Luciole_Regular", sans-serif;
     font-size: 1em;
     border: 1px solid colors.$secondary-dark;
-    box-shadow: border-box;
+    box-sizing: border-box;
     text-decoration: none;
     text-align: left;
     padding: 5px 10px;
@@ -265,7 +265,8 @@ p, h1, h2, h3 {
     }
   }
 }
-*:hover, *:focus {
+
+*:hover,  *:focus {
   >.icone__parametres {
     background-color: colors.$dark;
   }

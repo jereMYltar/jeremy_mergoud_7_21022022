@@ -10,8 +10,8 @@
         <template #callButton>
           <div
             class="icone__parametres"
-            role="button"
-            aria-label="Propriétés de la conversation"
+            role="img"
+            alt="Propriétés de la conversation"
           ></div>
         </template>
         <button class="bouton__secondaire w100" @click.stop="goToNewMessage()">

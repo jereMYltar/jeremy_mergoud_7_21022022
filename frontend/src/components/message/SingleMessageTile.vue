@@ -41,8 +41,8 @@
         <template #callButton>
           <div
             class="icone__parametres"
-            role="button"
-            aria-label="Propriétés du message"
+            role="img"
+            alt="Propriétés du message"
           ></div>
         </template>
         <ModalComponent
