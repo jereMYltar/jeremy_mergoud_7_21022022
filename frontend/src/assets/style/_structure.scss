@@ -1,4 +1,5 @@
 @use "responsive";
+@use "colors";
 
 .main {
   background-color: white;
@@ -6,10 +7,21 @@
   padding: 0;
   align-self: center;
 }
+.footer {
+  background-color: colors.$secondary-dark;
+  margin: 0;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  align-self: center;
+}
 
 .container {
   display: flex;
   flex-direction: column;
+  &__main {
+    padding: 5px;
+    box-sizing: border-box;
+  }
   &__row {
     display: flex;
     flex-direction: row;
