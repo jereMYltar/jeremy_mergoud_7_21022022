@@ -11,10 +11,9 @@ const apiUsers = axios.create({
   },
 });
 
-apiUsers.interceptors.request.use(function (config)
-{
-  const token = sessionStorage.getItem('token');
-  config.headers.Authorization = token ? `Bearer ${token}` : 'invalid token';
+apiUsers.interceptors.request.use(function (config) {
+  const token = sessionStorage.getItem("token");
+  config.headers.Authorization = token ? `Bearer ${token}` : "invalid token";
   return config;
 });
 
@@ -25,39 +24,40 @@ apiUsers.interceptors.response.use(
   (response) => {
     if (response.data.customMessage) {
       console.log(response.data.customMessage);
-    };
+    }
     return response;
   },
   // Any status codes that falls outside the range of 2xx cause this function to trigger
   // Do something with response error
   (error) => {
-      if (error.response.status == 400) {
-        alert(error.response.data.errorMessage);
-      } else if (error.response.status == 401) {
-        router.push({
-          name: "NotAuthorized",
-        });
-      } else if (error.response.status == 403) {
-        router.push({
-          name: "NotAuthorized",
-        });
-      } else if (error.response.status == 404) {
-        router.push({
-          name: "404Resource",
-        });
-      } else if (error.response.status == 498) {
-        alert("Votre connexion a expiré. Veuillez vous authentifier à nouveau.")
-        sessionStorage.clear();
-        router.push({
-          name: "Login",
-        });
-      } else if (error.response.status == 500) {
-        alert(error.response.data.errorMessage);
-      } else {
-        router.push({ name: "NetworkError" });
-      }
+    if (error.response.status == 400) {
+      alert(error.response.data.customMessage);
+    } else if (error.response.status == 401) {
+      router.push({
+        name: "NotAuthorized",
+      });
+    } else if (error.response.status == 403) {
+      router.push({
+        name: "NotAuthorized",
+      });
+    } else if (error.response.status == 404) {
+      router.push({
+        name: "404Resource",
+      });
+    } else if (error.response.status == 418 || error.response.status == 423) {
+      alert(error.response.data.customMessage);
+      sessionStorage.clear();
+      router.push({
+        name: "Login",
+      });
+    } else if (error.response.status == 500) {
+      alert(error.response.data.customMessage);
+    } else {
+      router.push({ name: "NetworkError" });
+    }
     return Promise.reject();
-  });
+  }
+);
 
 export default {
   //user
@@ -90,7 +90,7 @@ export default {
     return apiUsers.get("/conversation/");
   },
   getConversationDetail(conversationId) {
-    return apiUsers.get(`/conversation/details/${conversationId}`)
+    return apiUsers.get(`/conversation/details/${conversationId}`);
   },
   // updateConversation(conversationId, payload) {
   //   return apiUsers.put(`/conversation/${conversationId}`, payload);
@@ -127,4 +127,3 @@ export default {
 };
 
 // export default apiUsers
-
