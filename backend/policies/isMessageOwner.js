@@ -1,3 +1,5 @@
+// permet de vérifier si l'utilisateur connecté
+// est le propriétaire du message sur lequel il tente d'agir
 const Message = require("../model/message.model");
 
 module.exports = (req, res, next) => {

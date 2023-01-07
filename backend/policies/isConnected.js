@@ -1,3 +1,4 @@
+// permet de vérifier si l'utilisateur est bien connecté (tken d'authentification valide)
 const User = require("../model/user.model");
 const jwt = require("jsonwebtoken");
 const env = require("../config/env");
@@ -21,12 +22,10 @@ module.exports = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     if (error == "TokenExpiredError: jwt expired") {
-      res
-        .status(418)
-        .json({
-          customMessage:
-            "Votre connexion a expiré. Veuillez vous authentifier à nouveau.",
-        });
+      res.status(418).json({
+        customMessage:
+          "Votre connexion a expiré. Veuillez vous authentifier à nouveau.",
+      });
     } else {
       res.status(error.status).json({ customMessage: error.customMessage });
     }
