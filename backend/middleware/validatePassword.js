@@ -1,3 +1,4 @@
+// validation du mot de passe reçu
 const schema = require("../model/password.model");
 
 module.exports = (req, res, next) => {
