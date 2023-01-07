@@ -5,7 +5,7 @@ const argon2 = require("argon2");
 const env = require("../config/env");
 
 //upsert user : si existant => UPDATE / si non existant => INSERT
-exports.signup = async (req, res) => {
+exports.upsertUser = async (req, res) => {
   try {
     let newUserData = req.body;
     if (!newUserData.id) {

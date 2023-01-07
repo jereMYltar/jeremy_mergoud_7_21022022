@@ -8,8 +8,8 @@
     </h2>
     <Form
       class="container__col jc__center ai__start w75"
-      name="signUpForm"
-      @submit="signUp"
+      name="upsertUserForm"
+      @submit="upsertUser"
     >
       <label for="firstName" class="text">Prénom</label>
       <Field
@@ -285,7 +285,7 @@ async function deleteAccount() {
   }
 }
 
-async function signUp() {
+async function upsertUser() {
   let userData = {
     firstName: firstName.value,
     lastName: lastName.value,
@@ -300,7 +300,7 @@ async function signUp() {
   };
   userData.id = props.userId ? props.userId : 0;
   try {
-    const response = await EventService.signUp(userData);
+    const response = await EventService.upsertUser(userData);
     usersStore.updateUsersStore(response.data.user);
     await nextTick();
     if (response.data.token) {
