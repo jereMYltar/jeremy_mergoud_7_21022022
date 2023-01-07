@@ -1,19 +1,7 @@
+// combinaison de tous les modules
 @use "fonts";
 @use "colors";
 @use "structure";
 @use "elements";
 @import "@vueform/multiselect/themes/default.scss";
 @import "multiselect-style-addon";
-
-html {
-    height: 100vh;
-}
-
-body {
-    background-color: #202020;
-    display: flex;
-    justify-content: center;
-    margin: 0;
-    padding: 5px 10px;
-    height: calc(100vh - 10px);
-  }

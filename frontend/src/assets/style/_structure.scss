@@ -1,12 +1,29 @@
+// module de gestion des composant structurels de l'application
+// import des modules des gestion du responsive design et des couleurs
 @use "responsive";
 @use "colors";
 
+// gestion de la hauteur d'affichege de la page
+html {
+  height: 100vh;
+}
+// gestion de l'affichage du contenu de la page
+body {
+  background-color: #202020;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 5px 10px;
+  height: calc(100vh - 10px);
+}
+// gestion d'affichage du bloc principal
 .main {
   background-color: white;
   margin: 0;
   padding: 0;
   align-self: center;
 }
+// gestion d'affichage du footer
 .footer {
   background-color: colors.$secondary-dark;
   margin: 0;
@@ -14,7 +31,7 @@
   box-sizing: border-box;
   align-self: center;
 }
-
+// gestion de l'affichage des contenants
 .container {
   display: flex;
   flex-direction: column;
@@ -41,7 +58,7 @@
     }
   }
 }
-
+// options pour spécifier l'attribut justify-content
 .jc {
   &__start {
     justify-content: flex-start;
@@ -62,7 +79,7 @@
     }
   }
 }
-
+// options pour spécifier l'attribut align-items
 .ai {
   &__start {
     align-items: flex-start;
@@ -83,7 +100,7 @@
     }
   }
 }
-
+// options pour spécifier l'attribut align-content
 .ac {
   &__start {
     align-content: flex-start;
@@ -104,16 +121,16 @@
     }
   }
 }
-
+// options pour donner des attributs aux scrollbox
 .scrollbox {
   overflow-y: auto;
   margin: 3px 0;
 }
-
+// options pour spécifier l'attribut flex
 .f1 {
   flex: 1;
 }
-
+// options pour spécifier l'attribut width
 .w {
   &100 {
     width: 100%;
@@ -165,7 +182,7 @@
     width: 10%;
   }
 }
-
+// options pour spécifier l'attribut height
 .hv {
   &__messages {
     height: calc(100vh - 440px);

@@ -1,12 +1,16 @@
+// module de définition des principaux éléments 
+// import des modules des gestion du responsive design et des couleurs
 @use "colors";
 @use "responsive";
 
+// réinitialisation des titres et de la balise paragraphe
 p, h1, h2, h3 {
   margin: 0;
   display: inherit;
   font-size: inherit;
   font-weight: inherit;
 }
+// gestion des titres
 .titre {
   &__principal {
     font-family: "Nevis_Bold", sans-serif;
@@ -54,7 +58,7 @@ p, h1, h2, h3 {
     box-sizing: border-box;
   }
 }
-
+// gestion des textes
 .text {
   font-family: "Luciole_Regular", sans-serif;
   font-size: 1em;
@@ -72,7 +76,7 @@ p, h1, h2, h3 {
     text-align: end;
   }
 }
-
+// gestion des boutons
 .bouton {
   &__principal {
     font-family: "Luciole_Bold", sans-serif;
@@ -163,7 +167,7 @@ p, h1, h2, h3 {
     }
   }
 }
-
+// gestion des messages d'alerte
 .alerte {
   font-family: "Luciole_Regular", sans-serif;
   font-size: 1em;
@@ -174,7 +178,7 @@ p, h1, h2, h3 {
   background-color: colors.$darkest;
   align-self: flex-end;
 }
-
+// gestion des icônes
 .icone {
   &__box {
     width: 50px;
@@ -265,7 +269,7 @@ p, h1, h2, h3 {
     }
   }
 }
-
+// gestion du survol et du focus des éléments (boites) contenant des icônes paramètre ou utilisateur
 *:hover,  *:focus {
   >.icone__parametres {
     background-color: colors.$dark;
@@ -274,14 +278,14 @@ p, h1, h2, h3 {
     background-color: colors.$dark;
   }
 }
-
+// gestion du logo
 .logo {
   height: 3em;
   @include responsive.medium_screens {
     height: 2.5em;
   }
 }
-
+// gestion des messages
 .message {
   margin: 5px 0;
   padding: 10px 15px;
@@ -302,7 +306,7 @@ p, h1, h2, h3 {
     align-self: center;
   }
 }
-
+// gestion des champs de saisie
 input {
   &[type="checkbox"] {
   accent-color: colors.$light;

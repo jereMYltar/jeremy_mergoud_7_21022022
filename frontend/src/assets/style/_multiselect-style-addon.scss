@@ -1,7 +1,10 @@
+// module d'adaptation du style de l'add-on vueform/multiselect
+// import des modules des gestion du responsive design, des couleurs et des polices de caractères
 @use "colors";
 @use "fonts";
 @use "responsive";
 
+// gestion des étiquettes dans les listes déroulantes
 .multiselect-tag {
   font-family: "Luciole_Regular", sans-serif;
   font-size: 1em;;
@@ -30,13 +33,13 @@
     align-items: flex-start;
   }
 }
-
+// gestion des contenants de liste déroulante
 .multiselect-wrapper {
   @include responsive.medium_screens {
     flex-wrap: wrap;
   }
 }
-
+// gestion de l'affichage des options disponibles
 .multiselect-option {
   font-family: "Luciole_Regular", sans-serif;
   color: colors.$primary-dark;
@@ -50,7 +53,7 @@
     align-items: flex-start;
   }
 }
-
+// gestion de la croix de suppression du contenu de la liste déroulante
 .multiselect-clear {
   background-color: black;
   padding: 0.25rem;
@@ -64,11 +67,11 @@
     background-color: white;
   }
 }
-
+// gestion de l'affichage de la liste déroulante
 .multiselect-caret {
   background-color: black;
 }
-
+// gestion de l'affichage des placeholder
 .multiselect-placeholder {
   font-family: "Luciole_Regular_Italic", sans-serif;
   font-size: 0.8em;
