@@ -1,39 +1,42 @@
-const { DataTypes, QueryTypes } = require('sequelize');
-const database = require('../config/database');
+const { DataTypes, QueryTypes } = require("sequelize");
+const database = require("../config/database");
 
 //définition du modèle correspondant à la table éponyme de la base de donnée
-const Message = database.define('message', {
+const Message = database.define(
+  "message",
+  {
     id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      allowNull: false,
+      primaryKey: true,
     },
     conversation_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     messageOwnerId: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     content: {
-        type: DataTypes.TEXT,
-        allowNull: false
+      type: DataTypes.TEXT,
+      allowNull: false,
     },
     isModerated: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: 0
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0,
     },
     isGlobal: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: 0
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0,
     },
-},
-{
+  },
+  {
     freezeTableName: true,
-    timestamps: true
-});
+    timestamps: true,
+  }
+);
 
 module.exports = Message;
 
@@ -45,7 +48,8 @@ module.exports = Message;
 
 //READ : récupérer un message par son id :
 module.exports.findOneById = function (messageId) {
-    return database.query(`
+  return database.query(
+    `
     SELECT message.id AS id,
         CONCAT(user.firstName, ' ', user.lastName) AS 'author',
         message.content AS 'content',
@@ -56,11 +60,14 @@ module.exports.findOneById = function (messageId) {
     FROM message
     JOIN user ON message.messageOwnerId=user.id
     WHERE message.id=${messageId} ;
-    `, { type: QueryTypes.SELECT });
+    `,
+    { type: QueryTypes.SELECT }
+  );
 };
 //READ : récupérer tous les messages d'une conversation par l'id de celle-ci
 module.exports.findAllByConversationId = function (conversationId) {
-    return database.query(`
+  return database.query(
+    `
     SELECT message.id AS id,
         CONCAT(user.firstName, ' ', user.lastName) AS 'author',
         message.content,
@@ -73,58 +80,7 @@ module.exports.findAllByConversationId = function (conversationId) {
     JOIN user ON message.messageOwnerId=user.id
     WHERE message.conversation_id=${conversationId}
     ORDER BY createdAt DESC;
-    `, { type: QueryTypes.SELECT });
+    `,
+    { type: QueryTypes.SELECT }
+  );
 };
-//READ : récupérer tous les messages actifs (non modérés) d'une conversation par l'id de celle-ci
-// module.exports.findAllActiveByConversationId = function (conversationId) {
-//     return database.query(`
-//     SELECT message.id AS id,
-//         CONCAT(user.firstName, ' ', user.lastName) AS 'author',
-//         message.content AS 'content',
-//         message.createdAt AS createdAt,
-//         message.updatedAt AS updatedAt,
-//         message.isModerated as isModerated,
-//         message.messageOwnerId AS messageOwnerId
-//     FROM message
-//     JOIN user ON message.messageOwnerId=user.id
-//     WHERE message.conversation_id=${conversationId} AND !message.isModerated;
-//     `, { type: QueryTypes.SELECT });
-// };
-//READ : récupérer les messages (tous, ou les non modérés ou les modérés) d'une conversation par l'id de celle-ci
-// module.exports.findAllByConversationId = function (conversationId, details=false, isModerated = false) {
-//     const sql = `SELECT message.id AS id,
-//         CONCAT(user.firstName, ' ', user.lastName) AS 'author',
-//         message.content AS 'content',
-//         message.createdAt AS createdAt,
-//         message.updatedAt AS updatedAt,
-//         message.isModerated as isModerated,
-//         message.messageOwnerId AS messageOwnerId
-//     FROM message
-//     JOIN user ON message.messageOwnerId=user.id
-//     WHERE message.conversation_id=${conversationId}`
-//     if (details) {
-//         if (isModerated) {
-//             sql += ` AND message.isModerated`
-//         } else {
-//             sql += ` AND !message.isModerated`
-//         }
-//     }
-//     sql += `;`
-//     return database.query(sql, { type: QueryTypes.SELECT });
-// };
-//READ : récupérer le dernier message d'une conversation
-// module.exports.findLatestByConversationId = function (conversationId) {
-//     return database.query(`
-//     SELECT message.id AS id,
-//         CONCAT(user.firstName, ' ', user.lastName) AS 'author',
-//         message.content AS 'content',
-//         message.createdAt AS createdAt,
-//         message.updatedAt AS updatedAt,
-//         message.isModerated as isModerated,
-//         message.messageOwnerId AS messageOwnerId
-//     FROM message
-//     JOIN user ON message.messageOwnerId=user.id
-//     WHERE message.conversation_id=${conversationId}
-//     ORDER BY message.id DESC LIMIT 0,1 ;
-//     `, { type: QueryTypes.SELECT });
-// };

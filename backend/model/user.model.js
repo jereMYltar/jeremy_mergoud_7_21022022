@@ -1,51 +1,54 @@
-const { DataTypes, QueryTypes } = require('sequelize');
-const database = require('../config/database');
+const { DataTypes, QueryTypes } = require("sequelize");
+const database = require("../config/database");
 
 //définition du modèle correspondant à la table éponyme de la base de donnée
-const User = database.define('user', {
+const User = database.define(
+  "user",
+  {
     id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      allowNull: false,
+      primaryKey: true,
     },
     firstName: {
-        type: DataTypes.STRING(20)
+      type: DataTypes.STRING(20),
     },
     lastName: {
-        type: DataTypes.STRING(20)
+      type: DataTypes.STRING(20),
     },
     isMale: {
-        type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
     },
     email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
     },
     pseudo: {
-        type: DataTypes.STRING(20)
+      type: DataTypes.STRING(20),
     },
     photo: {
-        type: DataTypes.STRING
+      type: DataTypes.STRING,
     },
     password: {
-        type: DataTypes.STRING(128),
-        unique: true,
-        allowNull: false
+      type: DataTypes.STRING(128),
+      unique: true,
+      allowNull: false,
     },
     isAdmin: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: 0
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0,
     },
     accountDeleted: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: 0
-    }
-},
-{
-    freezeTableName: true
-});
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0,
+    },
+  },
+  {
+    freezeTableName: true,
+  }
+);
 
 module.exports = User;
 
@@ -57,36 +60,16 @@ module.exports = User;
 
 //READ : récupérer la liste de tous les utilisateurs en excluant ou non l'utilsateur courant
 module.exports.findAllOtherUsers = function (id) {
-    let sql  = `
+  let sql = `
     SELECT CONCAT(user.firstName, ' ', user.lastName) AS 'name',
         id
     FROM user
     WHERE accountDeleted = false`;
-    if (id) {
-        sql += `
-        AND id != ${id}`
-    }
+  if (id) {
     sql += `
-    ORDER BY name ASC;`
-    return database.query(sql, { type: QueryTypes.SELECT });
+        AND id != ${id}`;
+  }
+  sql += `
+    ORDER BY name ASC;`;
+  return database.query(sql, { type: QueryTypes.SELECT });
 };
-
-//READ : récupérer un nombre limité d'éléments d'un utilisateur par son id
-// module.exports.findOneLimitedById = function (id) {
-//     return database.query(`
-//     SELECT id,
-//         isAdmin,
-//         accountDeleted
-//     FROM user
-//     WHERE id = ${id}
-//     `, { type: QueryTypes.SELECT });
-// };
-
-//READ : récupérer le nom de l'utilisateur à partir de son id
-// module.exports.findNameById = function (id) {
-//     return database.query(`
-//     SELECT CONCAT(user.firstName, ' ', user.lastName) AS 'name'
-//     FROM user
-//     WHERE id = ${id};
-//     `, { type: QueryTypes.SELECT });
-// };

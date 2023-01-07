@@ -1,37 +1,39 @@
-const { DataTypes, QueryTypes } = require('sequelize');
-const database = require('../config/database');
+const { DataTypes, QueryTypes } = require("sequelize");
+const database = require("../config/database");
 
 //définition du modèle correspondant à la table éponyme de la base de donnée
-const Conversation = database.define('conversation', {
+const Conversation = database.define(
+  "conversation",
+  {
     id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      allowNull: false,
+      primaryKey: true,
     },
     name: {
-        type: DataTypes.STRING(80),
-        allowNull: false
+      type: DataTypes.STRING(80),
+      allowNull: false,
     },
     conversationOwnerId: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        defaultValue: 0,
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0,
     },
     isClosed: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: 0
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0,
     },
     isPublic: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: 0
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0,
     },
-    
-},
-{
+  },
+  {
     freezeTableName: true,
-    timestamp: true
-});
+    timestamp: true,
+  }
+);
 
 module.exports = Conversation;
 
@@ -43,7 +45,7 @@ module.exports = Conversation;
 
 //READ : récupérer toutes les conversations auxquelles participe un utilisateur (sur la base de son id)
 module.exports.findAllAllowed = function (isAdmin, userId) {
-    let sql = `
+  let sql = `
     SELECT DISTINCT
         conversation.id,
         conversation.name,
@@ -54,33 +56,10 @@ module.exports.findAllAllowed = function (isAdmin, userId) {
     FROM conversation
     LEFT JOIN user_conversation ON user_conversation.conversation_id = conversation.id
     `;
-    if (!isAdmin) {
-        sql += `WHERE conversation.isPublic = true OR user_conversation.user_id = ${userId}
+  if (!isAdmin) {
+    sql += `WHERE conversation.isPublic = true OR user_conversation.user_id = ${userId}
         `;
-    };
-    sql += `ORDER BY conversation.updatedAt DESC;`;
-    return database.query(sql, { type: QueryTypes.SELECT });
+  }
+  sql += `ORDER BY conversation.updatedAt DESC;`;
+  return database.query(sql, { type: QueryTypes.SELECT });
 };
-//READ : récupérer une conversation par son id :
-// module.exports.findOneById = function (conversationId) {
-//     return database.query(`
-//     SELECT
-//         conversation.id,
-//         conversation.name,
-//         conversation.conversationOwnerId,
-//         conversation.isClosed,
-//         conversation.isPublic,
-//         conversation.updatedAt
-//     FROM conversation
-//     WHERE id=${conversationId} ;
-//     `, { type: QueryTypes.SELECT });
-// };
-//UPDATE : mettre à jour la date de dernière action sur une conversation
-// module.exports.updateTimestamp = async function (conversationId) {
-//     database.query(`
-//     UPDATE conversation
-//     SET updatedAt = NOW()
-//     WHERE id=${conversationId} ;
-//     `, { type: QueryTypes.UPDATE });
-//     return Promise.resolve("success");
-// };
