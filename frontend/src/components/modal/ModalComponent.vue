@@ -1,11 +1,14 @@
 /* eslint-disable */
+<!-- composant permettant de générer une fen^tre modale personnalisée et respectant le RGAA -->
 <template>
+  <!-- bouton d'appel de la modale contenant les éléments transmis via un slot -->
   <button
     class="container__row jc__center bouton__secondaire w100"
     @click.stop="openModal"
   >
     <slot name="callButton"></slot>
   </button>
+  <!-- transition permettant de masquer le reste de l'écran -->
   <transition name="fade">
     <div
       v-if="isOpen"
@@ -13,9 +16,12 @@
       :createdat="Date.now()"
       @click.self="closeModal"
     >
+      <!-- transition donnant un léger mouvement vertical lors de l'arrivée de la fenêtre modale -->
       <transition name="drop-in">
         <div class="vue-modal-inner">
+          <!-- contenu de la modale -->
           <div class="vue-modal-content container__col">
+            <!-- bouton en croix permettant de fermer la modale -->
             <button
               v-if="props.global"
               ref="firstButton1"
@@ -27,7 +33,9 @@
             >
               <p class="icone__fermeture"></p>
             </button>
+            <!-- contenu de la modale transmis via un slot -->
             <slot></slot>
+            <!-- bouton annuler permettant de fermer la modale -->
             <button
               v-if="props.global"
               ref="lastButton1"
@@ -45,7 +53,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineExpose, ref, nextTick, watch } from "vue";
+import { defineProps, ref, nextTick, watch } from "vue";
 
 //props
 const props = defineProps({
@@ -68,7 +76,11 @@ let lastButton = ref("");
 let callButton = ref("");
 
 //functions
-
+// fonction permettant d'afficher la modale, tout en :
+// - sauvegardant le bouton d'appel de la modale
+// - sauvegardant l'ordre des modales (afin de gérer les modales imbriquées)
+// - déplaçant le focus sur le premier élément focusable de la modale et le rendant captif de la modale
+// - ajoutant des eventListener pour gérer les boutons ECHAP, TAB et SHIFT+TAB
 const openModal = async () => {
   isOpen.value = true;
   await nextTick();
@@ -78,7 +90,10 @@ const openModal = async () => {
   latestModal.value.addEventListener("keydown", handleKeyDown, false);
   latestModal.value.addEventListener("keyup", handleKeyUp, false);
 };
-
+// fonction permettant de fermer la modale et de supprimer tout ce qui a été mis en place lors de son ouverture
+// - éléments et informations sauvegardés
+// - eventListener
+// - remettre le focus sur le bouton d'appel de la modale
 const closeModal = () => {
   callButton.value.focus();
   latestModal.value.removeEventListener("keydown", handleKeyDown);
@@ -89,9 +104,7 @@ const closeModal = () => {
   callButton.value = "";
   isOpen.value = false;
 };
-
-defineExpose({ closeModal });
-
+// fonction permettant de trouver la dernière fenêtre modale créée
 const findLatestModal = () => {
   const modals = document.querySelectorAll("div.vue-modal");
   let latestTimeStamp = 0;
@@ -106,11 +119,13 @@ const findLatestModal = () => {
   );
   return latestModal;
 };
-
+// fonction permettant de définir le bouton d'appel de la modale
 const defineCallButton = () => {
   return latestModal.value.previousSibling;
 };
-
+// fonction permettant de récupérer tous les éléments focusables de la modale,
+// de définir le premier élément, ainsi que le dernier
+// de déplacer le focus sur le premier élément
 const captureFocus = () => {
   const focusableElementsArray = [
     "[href]",
@@ -129,7 +144,8 @@ const captureFocus = () => {
     firstButton.value.focus();
   }
 };
-
+// fonction permettant de gérer le relachement de la touche ECHAP :
+// - fermeture de la dernière modale
 const handleKeyUp = (event) => {
   event.stopPropagation();
   switch (true) {
@@ -140,7 +156,9 @@ const handleKeyUp = (event) => {
       break;
   }
 };
-
+// fonction permettant de gérer l'appui sur la touche TAB ou sur le combo SHIFT+TAB :
+// - déplacement entre les éléments focusable de haut en bas et de bas en haut
+// - focus rendu captif par une boucle du dernier au premier élément
 const handleKeyDown = (event) => {
   event.stopPropagation();
   switch (true) {
@@ -164,6 +182,7 @@ const handleKeyDown = (event) => {
 };
 
 //watchers
+// watcher permettant de surveiller les changements de la propriété toClose afin de fermer la fenêtre modale lorsque la demande vient de l'extérieur
 watch(
   () => props.toClose,
   (newValue) => {
@@ -174,6 +193,7 @@ watch(
 );
 </script>
 
+<!-- style spécifique à la modale (aspect des éléments et transitions) -->
 <style scoped>
 *,
 ::before,
