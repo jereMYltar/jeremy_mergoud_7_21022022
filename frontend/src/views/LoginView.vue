@@ -11,7 +11,7 @@
     >
       <!-- champs de saisi de l'identifiant de connexion (email)
       en utilisant vee-validate : label, input, message d'erreur -->
-      <label for="email" class="text">Id de connection</label>
+      <label for="email" class="text">Id de connexion</label>
       <Field
         id="email"
         v-model="email"
