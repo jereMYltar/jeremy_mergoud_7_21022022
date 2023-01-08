@@ -270,7 +270,7 @@ function validateName(value) {
   // All is good
   return true;
 }
-// fonction de validation du mot de passe admin (non vide + égal à la valeur souhaitée)
+// fonction de validation du mot de passe admin (non vide + égal à la valeur souhaitée stockée dans le serveur)
 function validateAdminValue() {
   if (
     isAdmin.value &&
