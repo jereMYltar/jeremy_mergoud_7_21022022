@@ -1,29 +1,38 @@
+<!-- module permettant de créer ou modifier une conversation selon si une conversation lui est passée en props -->
 <template>
+  <!-- titre du composant qui s'adapte selon la situation -->
   <h2 v-if="!props.existingConversation" class="titre__tertiaire w100">
     Créer une nouvelle conversation
   </h2>
   <h2 v-if="props.existingConversation" class="titre__tertiaire w100">
     Modifier la conversation
   </h2>
+  <!-- formulaire de saisie des informations -->
   <Form
     class="container__col jc__center ai__start w75"
     name="connectionForm"
     @submit="saveConversation"
   >
-    <label for="conversationName" class="text">Nom de la conversation : </label>
-    <Field
-      id="conversationName"
-      v-model="conversationName"
-      name="conversationName"
-      type="text"
-      maxlength="80"
-      placeholder="Le nom de votre conversation"
-      :rules="isNotEmpty"
-    />
-    <div class="text__details">
-      Nombre de caractères restants : {{ charactersLeftInConversationName }}
+    <!-- nom de la conversation : label, champs de saisie, nombre de caractères restants, message d'erreur après vérification automatique -->
+    <div>
+      <label for="conversationName" class="text"
+        >Nom de la conversation :
+      </label>
+      <Field
+        id="conversationName"
+        v-model="conversationName"
+        name="conversationName"
+        type="text"
+        maxlength="80"
+        placeholder="Le nom de votre conversation"
+        :rules="isNotEmpty"
+      />
+      <div class="text__details">
+        Nombre de caractères restants : {{ charactersLeftInConversationName }}
+      </div>
+      <ErrorMessage name="conversationName" class="alerte" />
     </div>
-    <ErrorMessage name="conversationName" class="alerte" />
+    <!-- gestion du gestionnaire de la conversation : label, liste déroulante de choix, message d'erreur après vérification automatique -->
     <div
       v-if="props.existingConversation"
       class="container__col jc__center ai__start w100"
@@ -54,10 +63,12 @@
         <ErrorMessage name="ownerField" class="alerte" />
       </Field>
     </div>
+    <!-- gestion de l'information conversation publique : label et case à cocher -->
     <div v-if="usersStore.activeUser.isAdmin" class="w100">
       <label for="isPublic" class="text">Conversation publique :</label>
       <input id="isPublic" v-model="isPublic" type="checkbox" />
     </div>
+    <!-- gestion de l'information conversation verrouillée : label et case à cocher -->
     <div
       v-if="
         props.existingConversation &&
@@ -68,6 +79,7 @@
       <label for="isClosed" class="text">Conversation verrouillée :</label>
       <input id="isClosed" v-model="isClosed" type="checkbox" />
     </div>
+    <!-- gestion des participants à la conversation : label, liste déroulante de choix, message d'erreur après vérification automatique -->
     <div v-if="!isPublic" class="container__col jc__center ai__start w100">
       <Field
         ref="memberListFieldRef"
@@ -96,6 +108,7 @@
         <ErrorMessage name="conversationMembers" class="alerte" />
       </Field>
     </div>
+    <!-- bouton de création de la conversation renseignée / modification selon la situation -->
     <div class="w100">
       <input
         v-if="!props.existingConversation"
@@ -122,6 +135,7 @@ import EventService from "@/services/EventService.js";
 import Multiselect from "@vueform/multiselect";
 
 //props
+// si modification alors cette propriété est égale à l'id de la conversation
 const props = defineProps({
   existingConversation: {
     type: Number,
@@ -146,9 +160,11 @@ const memberListFieldRef = ref();
 const ownerFieldRef = ref();
 
 //computed
+// nombre calculé automatiquement renseignant le nombre de caractères restant pour le nom de la conversation
 const charactersLeftInConversationName = computed(() => {
   return 80 - conversationName.value.length;
 });
+// tableau des Id des utilisateurs membres de la conversation si modification, tableau vide si création
 const members = computed(() => {
   if (selectedUsers.value) {
     return Array.from(selectedUsers.value, (x) => x.id);
@@ -156,6 +172,7 @@ const members = computed(() => {
     return [];
   }
 });
+// tableau à un seul élément contenant l'Id du gestionnaire de la conversation si modification, tableau vide si création
 const owner = computed(() => {
   if (selectedOwner.value) {
     return Array.from(selectedOwner.value, (x) => x.id);
@@ -165,6 +182,7 @@ const owner = computed(() => {
 });
 
 //methods
+// fonction de vérification que le champs n'est pas vide
 function isNotEmpty() {
   if (!conversationName.value) {
     return "Vous devez saisir le nom de votre conversation !";
@@ -172,7 +190,7 @@ function isNotEmpty() {
     return true;
   }
 }
-
+// fonction de vérification de l'existence d'utilisateurs participant à la conversation si la conversation est privée
 function hasMembers() {
   if (isPublic.value || (!isPublic.value && members.value.length)) {
     return true;
@@ -180,7 +198,7 @@ function hasMembers() {
     return "Vous devez saisir au moins un participant à cette conversation !";
   }
 }
-
+// fonction de vérification de l'existence d'un gestionnaire de la conversation
 function hasOwner() {
   if (owner.value.length == 1) {
     return true;
@@ -188,15 +206,15 @@ function hasOwner() {
     return "Vous devez saisir un gestionnaire pour cette conversation !";
   }
 }
-
+// fonction permettant de déclencher la vérification de la liste des membres depuis une autre fonction
 function triggerMemberListFieldAudit() {
   memberListFieldRef.value.validate();
 }
-
+// fonction permettant de déclencher la vérification du champ gestionnaire depuis une autre fonction
 function triggerOwnerFieldAudit() {
   ownerFieldRef.value.validate();
 }
-
+// fonction permettant de sauvegarder la conversation : création si nouvelle conversation / sauvegarde des modifications si existante
 async function saveConversation() {
   let newMembers = isPublic.value ? [] : members.value;
   if (!newMembers.includes(owner.value[0])) {
@@ -230,7 +248,9 @@ async function saveConversation() {
   }
   emit("close");
 }
-
+// lifecycle hook
+// au montage de ce composant, s'il s'agit d'une modification,
+// les informations sont récupérées depuis le state activeConversation du conversationsStore (Pinia)
 onMounted(async () => {
   if (props.existingConversation) {
     selectedOwner.value = [conversationsStore.activeConversation.owner];

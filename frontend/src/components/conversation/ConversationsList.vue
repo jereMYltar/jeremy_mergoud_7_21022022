@@ -1,5 +1,7 @@
+<!-- cmoposant donnant la liste des conversations accessibles par l'utilisateur -->
 <template>
   <div class="container__col w28">
+    <!-- bouton permettant d'afficher ou de masquer la liste des conversations -->
     <button
       id="conversations-title"
       class="bouton__secondaire bouton__secondaire--rev w100"
@@ -8,6 +10,7 @@
     >
       <h2>Liste des conversations</h2>
     </button>
+    <!-- appel d'un exemplaire du composant SingleConversationTile par conversation à laquelle l'utilisateur actif a accès -->
     <div id="conversations-list" class="container__col w100 f1">
       <div class="container__col scrollbox w100 hv__conversations">
         <SingleConversationTile
@@ -49,6 +52,8 @@ const usersStore = useUsersStore();
 const toClose = ref(false);
 
 //methodes
+// souscription aux changements du conversationsStore (Pinia) :
+// - si le state activeConversation change, alors la liste des messages de la conversation est mise à jour
 conversationsStore.$subscribe(async () => {
   if (conversationsStore.activeConversation) {
     try {
@@ -62,19 +67,23 @@ conversationsStore.$subscribe(async () => {
     }
   }
 });
+// souscription aux changements du usersStore (Pinia) :
+// - si le state activeUser change, alors la liste des conversations disponible est mise à jour
 usersStore.$subscribe(async () => {
   if (usersStore.activeUser) {
     let conversations = await EventService.getAllConversationsForCurrentUser();
     conversationsStore.addConversations(conversations.data);
   }
 });
-
+// fonction permettant de fermer d'un coup toutes les fenêtres modales
 async function closeAllModals() {
   toClose.value = true;
   await nextTick();
   toClose.value = false;
 }
-
+// fonction permettant permettant d'afficher ou de masquer la liste des conversations,
+// en mettant à jour le titre du bouton d'appel de la fonction
+// et l'attribut aria-label pour une meilleure accessibilité
 async function toggleConversationsDisplay() {
   let list = document.getElementById("conversations-list");
   const button = document.getElementById("conversations-title");
