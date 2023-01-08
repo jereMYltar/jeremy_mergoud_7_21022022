@@ -1,16 +1,20 @@
+<!-- composant permettant de créer un nouvel utilisateur ou de modifier un utilisateur existant  -->
 <template>
   <div class="container__col w100">
+    <!-- titre du composant qui s'adapte selon la situation -->
     <h2 v-if="!props.userId" class="titre__secondaire w75">
       Création de compte
     </h2>
     <h2 v-if="props.userId" class="titre__secondaire w75">
       Modification de compte
     </h2>
+    <!-- formulaire de saisie des informations -->
     <Form
       class="container__col jc__center ai__start w75"
       name="upsertUserForm"
       @submit="upsertUser"
     >
+      <!-- prénom : label, champs de saisie, message d'erreur après vérification automatique -->
       <label for="firstName" class="text">Prénom</label>
       <Field
         id="firstName"
@@ -23,6 +27,7 @@
         :rules="validateName"
       />
       <ErrorMessage name="firstName" class="alerte" />
+      <!-- nom : label, champs de saisie, message d'erreur après vérification automatique -->
       <label for="lastName" class="text">Nom</label>
       <Field
         id="lastName"
@@ -35,7 +40,8 @@
         :rules="validateName"
       />
       <ErrorMessage name="lastName" class="alerte" />
-      <label for="email" class="text">Id de connection</label>
+      <!-- id de connexion : label, champs de saisie, message d'erreur après vérification automatique -->
+      <label for="email" class="text">Id de connexion</label>
       <Field
         id="email"
         v-model="email"
@@ -47,12 +53,14 @@
         :rules="validateEmail"
       />
       <ErrorMessage name="email" class="alerte" />
+      <!-- bloc permettant à l'utilisateur en cours de modification de modifier son mot de passe  -->
       <div v-if="props.userId" class="container__col jc__center ai__start w100">
         <p class="text">
           Si vous souhaitez modifier votre mot de passe, saisissez votre mot de
           passe actuel puis saississez un nouveau mot de passe, sinon laissez ce
           champs vide.
         </p>
+        <!-- mot de passe actuel : label, champs de saisie, message d'erreur après vérification automatique -->
         <label for="existingPassword" class="text">
           Votre mot de passe actuel
         </label>
@@ -68,10 +76,12 @@
         />
         <ErrorMessage name="existingPassword" class="alerte" />
       </div>
+      <!-- bloc de saisie puis de confirmation du mot de passe -->
       <div
         v-if="!props.userId || initialPassword"
         class="container__col jc__center ai__start w100"
       >
+        <!-- mot de passe : label, champs de saisie, message d'erreur après vérification automatique -->
         <label for="mdp" class="text">Mot de passe</label>
         <Field
           id="mdp"
@@ -84,6 +94,7 @@
           :rules="validatePassword"
         />
         <ErrorMessage name="password" class="alerte" />
+        <!-- confirmation du mot de passe : label, champs de saisie, message d'erreur après vérification automatique -->
         <label for="mdp2" class="text">Confirmer votre mot de passe</label>
         <Field
           id="mdp2"
@@ -97,12 +108,15 @@
         />
         <ErrorMessage name="password2" class="alerte" />
       </div>
+      <!-- bloc permettant à l'utilisateur de devenir admministrateur -->
       <p class="w100">
+        <!-- est-il admin ? label et case à cocher -->
         <label for="isAdmin" class="text">
           Cochez cette case si vous êtes administrateur du site :
         </label>
         <input id="isAdmin" v-model="isAdmin" type="checkbox" />
       </p>
+      <!-- s'il souhaite devenir admin, alors il doit renseigner un code spécifique : label, champ de saisie, message d'erreur après vérification automatique -->
       <div v-if="isAdmin" class="container__col jc__center ai__start w100">
         <label for="adminPassword" class="text">
           Code spécifique de vérification transmis par votre organisation.
@@ -117,6 +131,7 @@
         />
         <ErrorMessage name="adminPassword" class="alerte" />
       </div>
+      <!-- bouton de création de l'utilisateur renseigné / modification selon la situation -->
       <input
         v-if="!props.userId"
         class="bouton__principal w100"
@@ -130,6 +145,7 @@
         value="Modifier votre compte"
       />
     </Form>
+    <!-- bouton permettant de supprimer le compte d'un utilisateur lors de la consultation de celui-ci -->
     <button
       v-if="
         props.userId &&
@@ -187,6 +203,7 @@ const photo = ref("");
 const pseudo = ref("");
 
 //methods
+// fonction de validation de l'email (non vide + respecte le format d'un email)
 function validateEmail(value) {
   // if the field is empty
   if (!value) {
@@ -200,7 +217,7 @@ function validateEmail(value) {
   // All is good
   return true;
 }
-
+// fonction de validation du mot de passe (non vide + respecte le format imposé)
 function validatePassword(value) {
   // if the field is empty
   if (!value) {
@@ -214,7 +231,7 @@ function validatePassword(value) {
   // All is good
   return true;
 }
-
+// fonction de validation du mot de passe répété (non vide + égal au mot de passe 1)
 function validatePassword2(value) {
   // if the field is empty
   if (!value) {
@@ -227,7 +244,7 @@ function validatePassword2(value) {
   }
   // All is good
 }
-
+// fonction de validation du mot de passe existant (non vide + respecte le format imposé)
 function validateExistingPassword(value) {
   // if the field is not a valid email
   const regex = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})/g;
@@ -238,7 +255,7 @@ function validateExistingPassword(value) {
     return true;
   }
 }
-
+// fonction de validation du nom (non vide + respecte le format d'un email)
 function validateName(value) {
   // if the field is empty
   if (!value) {
@@ -253,7 +270,7 @@ function validateName(value) {
   // All is good
   return true;
 }
-
+// fonction de validation du mot de passe admin (non vide + égal à la valeur souhaitée)
 function validateAdminValue() {
   if (
     isAdmin.value &&
@@ -265,7 +282,7 @@ function validateAdminValue() {
     return true;
   }
 }
-
+// fonction de suppression de l'utilisateur
 async function deleteAccount() {
   if (
     window.confirm(`Vous vous apprêter à supprimer cet utilisateur.
@@ -284,7 +301,7 @@ async function deleteAccount() {
     emit("close");
   }
 }
-
+// fonction permettant de sauvegarder l'utilisateur : création si nouvel utilisateur / sauvegarde des modifications si existant
 async function upsertUser() {
   let userData = {
     firstName: firstName.value,
@@ -322,7 +339,8 @@ async function upsertUser() {
     }
   }
 }
-
+// lifecyclehooks
+// au montage du composant, les données de l'utilisateur consulté sont récupérées de la base de donnée et stockées dans Pinia (usersStore)
 onMounted(async () => {
   if (props.userId) {
     let user = await EventService.getUserDetails(props.userId);
@@ -341,7 +359,7 @@ onMounted(async () => {
     });
   }
 });
-
+// à la fermeture du composant, les données de l'utilisateur consulté sont effacées de Pinia (usersStore)
 onUnmounted(async () => {
   usersStore.removeUserWatched();
 });
