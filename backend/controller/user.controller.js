@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const argon2 = require("argon2");
 const env = require("../config/env");
 
-//upsert user : si existant => UPDATE / si non existant => INSERT
+//INSERT+UPDATE => upsert utilisateur : si l'utilisateur existe, alors il est mis à jour, sinon il est créé
 exports.upsertUser = async (req, res) => {
   try {
     let newUserData = req.body;
@@ -122,23 +122,7 @@ exports.login = async (req, res, next) => {
   }
 };
 
-//CREATE : créer un utilisateur
-// exports.createOne = (req, res) => {
-//     const user = JSON.parse(req.body.user);
-//     UserModel.create(user)
-//         .then(() => {
-//             res.status(201).json({
-//                 customMessage: 'Utilisateur créé avec succès'
-//             });
-//         })
-//         .catch(error => {
-//             res.status(400).json({
-//                 error: error
-//             });
-//         });
-// };
-
-// READ : récupére les informations de base (id, isAdmin, name) de l'utilisateur courant
+// READ : récupére les informations de base (id, isAdmin, name) de l'utilisateur courant (à partir du token d'identification)
 exports.findOneByToken = (req, res) => {
   res.status(200).json({
     customMessage:
@@ -203,23 +187,6 @@ exports.findUserDetails = async (req, res) => {
   }
 };
 
-// READ : récupérer tous les utilisateurs
-// exports.findAllUsers = (req, res) => {
-//     UserModel.findAllUsers()
-//         .then(users => {
-// 	        // Send all users to Client
-// 	        res.status(200).json(
-//                 users
-//                 //utilisateurs: users <= transformer en objet et mettre une clef ?
-//             );
-// 	    })
-//         .catch(error => {
-//             res.status(400).json({
-//                 error: error
-//             });
-//         });
-// };
-
 // READ : récupérer tous les utilisateurs différents de l'utilisateur courant
 exports.findAllOtherUsers = (req, res) => {
   UserModel.findAllOtherUsers(res.locals.user.id)
@@ -236,82 +203,6 @@ exports.findAllOtherUsers = (req, res) => {
       });
     });
 };
-
-//READ : récupérer un utilisateur en fonction de son id
-// exports.findOneById = (req, res) => {
-//     UserModel.findOne({ where: {id: req.params.userId}})
-//         .then(user => {
-//             // Send user found to Client
-// 	        if (!!user) {
-//                 res.status(200).json(
-//                     user
-//                 );
-//             } else {
-//                 throw 'La ressource demandée n\'existe pas';
-//             };
-//         })
-//         .catch(error => {
-//             res.status(400).json({
-//                 error: error
-//             });
-//         });
-// };
-
-//READ : récupérer une quantité d'information limité d'un utilisateur en fonction de son id
-// exports.findOneLimitedById = (req, res) => {
-//     UserModel.findOneLimitedById(req.params.userId)
-//         .then(user => {
-//             // Send user found to Client
-// 	        if (!!user) {
-//                 res.status(200).json(
-//                     user
-//                 );
-//             } else {
-//                 throw 'La ressource demandée n\'existe pas';
-//             };
-//         })
-//         .catch(error => {
-//             res.status(400).json({
-//                 error: error
-//             });
-//         });
-// };
-
-//READ : récupérer un utilisateur en fonction de son email
-// exports.findOneByEmail = (req, res) => {
-//     UserModel.findOne({ where: {email: req.body.email}})
-//         .then(user => {
-//             // Send user found to Client
-// 	        if (!!user) {
-//                 res.status(200).json(
-//                     user
-//                 );
-//             } else {
-//                 throw 'La ressource demandée n\'existe pas';
-//             };
-//         })
-//         .catch(error => {
-//             res.status(400).json({
-//                 error: error
-//             });
-//         });
-// };
-
-//UPDATE : mettre à jour un utilisateur
-// exports.updateOne = (req, res) => {
-//     const user = JSON.parse(req.body.user);
-//     UserModel.update(user, {where: {id: req.params.userId}})
-//         .then(() => {
-//             res.status(201).json({
-//                 customMessage: 'Utilisateur mis à jour avec succès'
-//             });
-//         })
-//         .catch(error => {
-//             res.status(400).json({
-//                 error: error
-//             });
-//         });
-// };
 
 //DELETE : supprimer un utilisateur
 exports.deleteOne = async (req, res) => {
@@ -343,6 +234,13 @@ exports.deleteOne = async (req, res) => {
   }
 };
 
+// fonction permettant d'anonymiser une donnée de type STRING :
+// - s'il s'agit d'un email alors on garde les trois premiers caractères de la portion précédent le @,
+//     on ajoute des étoiles jusqu'à avoir 10 caractères
+//     on ajoute le timestamp de l'action
+//     on remets la fin de l'email (ex : @domaine.fr)
+// - sinon on garde les trois premiers caractères de la portion précédent le @,
+//     on ajoute des étoiles jusqu'à avoir 10 caractères
 function anonymize(str) {
   const strSplited = str.split("@");
   let stringSplited = strSplited[0].slice(0, 3);

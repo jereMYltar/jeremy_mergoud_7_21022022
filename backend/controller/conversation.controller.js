@@ -4,7 +4,7 @@ const UserConversationCtrl = require("../controller/user_conversation.controller
 const MessageModel = require("../model/message.model");
 const UserModel = require("../model/user.model");
 
-//upsert conversation : si existante => UPDATE / si non existante => INSERT
+//INSERT+UPDATE => upsert conversation : si la conversation existe, alors elle est mise à jour, sinon elle est créée
 exports.upsertOne = async (req, res) => {
   let conversation = req.body;
   if (!conversation.id) {
@@ -106,42 +106,6 @@ exports.findDetails = async (req, res) => {
     });
   }
 };
-
-//UPDATE : mettre à jour une conversation
-// exports.updateOne = async (req, res) => {
-//     try {
-//         await ConversationModel.update(req.body, {
-//             where: {
-//               id: req.params.conversationId,
-//             }
-//         })
-//         const updatedConversation = await ConversationModel.findOne({ where: { id: req.params.conversationId } });
-//         res.status(200).json({
-//         customMessage: 'Conversation mise à jour avec succès',
-//         body: updatedConversation[0]
-//         });
-//     } catch (error) {
-//         res.status(400).json({
-//             error: error
-//           });
-//     }
-// };
-
-//UPDATE : mettre à jour la date de dernière action sur une conversation
-// exports.updateTimestamp = async (req, res) => {
-//     try {
-//         await ConversationModel.updateTimestamp(req.params.conversationId)
-//         const updatedConversation = await ConversationModel.findOneById(req.params.conversationId);
-//         res.status(200).json({
-//             customMessage: 'Conversation mise à jour avec succès',
-//             body: updatedConversation[0].updatedAt
-//         });
-//     } catch (error) {
-//         res.status(400).json({
-//             error: error
-//           });
-//     }
-// };
 
 //DELETE : supprimer une Conversation, tous ses messages, ainsi que toutes les relations user-conversation
 exports.deleteOne = async (req, res) => {

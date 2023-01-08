@@ -30,22 +30,7 @@ exports.createOne = async (req, res) => {
   }
 };
 
-//READ : récupérer un message par son id
-// exports.findOne = async (req, res) => {
-//   const messageId = req.params.messageId;
-//   try {
-//     const message = await MessageModel.findOneById(messageId)
-//     res.status(200).json(
-//       message
-//     );
-//   } catch (error) {
-//      res.status(400).json({
-//       error: error
-//     });
-//   }
-// };
-
-//READ : récupérer tous les messages d'une conversation
+//READ : récupérer tous les messages d'une conversation à partir de l'Id de celle-ci
 exports.readAllByConversationId = async (req, res) => {
   try {
     const conversationId = req.params.conversationId;
