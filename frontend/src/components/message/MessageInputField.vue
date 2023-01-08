@@ -1,5 +1,7 @@
+<!-- composant permettant de créer un nouveau message ou de modifier un message existant selon si un message est passé en props -->
 <template>
   <div class="container__col w100">
+    <!-- titre du composant s'adaptant à la situation : création ou modification -->
     <h3
       v-if="Object.keys(props.message).length == 0"
       class="titre__tertiaire w100"
@@ -12,7 +14,9 @@
     >
       Modifiez votre message
     </h3>
+    <!-- formulaire de saisie du message -->
     <Form class="container__col jc__center ai__start w75" @submit="saveMessage">
+      <!-- message : label, champ de saisie, nombre de caractères restants, message d'erreur après vérification automatique -->
       <label for="message" class="text">Votre message</label>
       <Field
         id="messageContent"
@@ -27,10 +31,12 @@
         Nombre de caractères restants : {{ charactersLeftInContent }}
       </div>
       <ErrorMessage name="messageContent" class="alerte" />
+      <!-- est-ce que le message est public : label et case à cocher -->
       <p v-if="conversationsStore.activeConversation.hasRightsOn" class="w100">
         <label for="isGlobal" class="text">Message global ? </label>
         <input id="isGlobal" v-model="isGlobal" type="checkbox" />
       </p>
+      <!-- bouton de validation du formulaire s'adaptant à la situation : création ou modification -->
       <div class="w100">
         <input
           v-if="Object.keys(props.message).length == 0"
@@ -80,11 +86,13 @@ const isGlobal = ref(
 );
 
 //computed
+// nombre calculé automatiquement renseignant le nombre de caractères restant pour le message
 const charactersLeftInContent = computed(() => {
   return 1000 - messageContent.value.length;
 });
 
 //methods
+// fonction de vérification que le champs n'est pas vide
 function isNotEmpty() {
   if (!messageContent.value) {
     return "Vous devez saisir un contenu pour votre message !";
@@ -92,7 +100,7 @@ function isNotEmpty() {
     return true;
   }
 }
-
+// fonction permettant de sauvegarder le message : création si nouveau message / sauvegarde des modifications si existant
 async function saveMessage() {
   let payload = {
     content: messageContent.value,
