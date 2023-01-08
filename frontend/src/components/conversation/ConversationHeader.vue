@@ -27,6 +27,7 @@
           :global="true"
           :to-close="toClose"
         >
+          <!-- bouton d'appel de la fenêtre de modification -->
           <template #callButton>
             <p>Modifier la conversation</p>
           </template>
