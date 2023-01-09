@@ -8,8 +8,8 @@
   >
     <slot name="callButton"></slot>
   </button>
-  <!-- transition permettant de masquer le reste de l'écran -->
-  <transition name="fade">
+  <transition name="fade"
+    ><!-- transition permettant de masquer le reste de l'écran -->
     <div
       v-if="isOpen"
       class="vue-modal"
